@@ -1,3 +1,9 @@
+.App {
+  position: relative;
+  background-color: #131316;
+  height: 100vh;
+}
+
 .AppMain {
   height: 100%;
   padding-top: 128px;

@@ -28,8 +28,8 @@ class AppHeader extends React.Component {
               </li>
               <li className={`${styles.NavListItem} pt-4 pb-4 pl-5`}>
                 <a href="/">
-                  <ProfileIcon type="primary" />
-                  <span className="pl-2">Личный кабинет</span>
+                  <ProfileIcon type="secondary" />
+                  <span className="pl-2 text_color_inactive">Личный кабинет</span>
                 </a>
               </li>
             </ul>

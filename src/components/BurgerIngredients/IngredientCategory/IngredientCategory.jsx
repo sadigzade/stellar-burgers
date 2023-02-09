@@ -1,11 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+import { dataPropTypes } from "../../../utils/prop-types";
+
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import styles from "./IngredientsBlock.module.css";
+import styles from "./IngredientCategory.module.css";
 
-function IngredientsBlock({ text, data }) {
+function IngredientCategory({ text, data }) {
   return (
-    <div className={`${styles.IngredientsBlock} mb-10`}>
+    <div className={`${styles.IngredientCategory} mb-10`}>
       <h2 className="text text_type_main-medium mb-6">{text}</h2>
       <div className={`${styles.Ingredients} mt-6 ml-4`}>
         {data.map((ingredient) => (
@@ -24,4 +28,9 @@ function IngredientsBlock({ text, data }) {
   );
 }
 
-export default IngredientsBlock;
+IngredientCategory.propTypes = {
+  text: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(dataPropTypes),
+};
+
+export default IngredientCategory;

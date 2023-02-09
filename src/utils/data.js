@@ -210,3 +210,55 @@ export const products = [
     __v: 0,
   },
 ];
+
+export const buns = products.filter((product) => product.type === "bun");
+export const sauces = products.filter((product) => product.type === "sauce");
+export const mains = products.filter((product) => product.type === "main");
+
+export const constructorIngredients = [
+  {
+    _id: "60666c42cc7b410027a1a9b1",
+    name: "Краторная булка N-200i",
+    type: "bun",
+    price: 1255,
+    thumbnail: "https://code.s3.yandex.net/react/code/bun-02.png",
+  },
+  {
+    _id: "60666c42cc7b410027a1a9b9",
+    name: "Соус традиционный галактический",
+    type: "sauce",
+    price: 15,
+    thumbnail: "https://code.s3.yandex.net/react/code/sauce-03.png",
+  },
+  {
+    _id: "60666c42cc7b410027a1a9b4",
+    name: "Мясо бессмертных моллюсков Protostomia",
+    type: "main",
+    price: 1337,
+    thumbnail: "https://code.s3.yandex.net/react/code/meat-02.png",
+  },
+  {
+    _id: "60666c42cc7b410027a1a9bc",
+    name: "Плоды Фалленианского дерева",
+    type: "main",
+    price: 874,
+    thumbnail: "https://code.s3.yandex.net/react/code/sp_1.png",
+  },
+  {
+    _id: "60666c42cc7b410027a1a9bb",
+    name: "Хрустящие минеральные кольца",
+    type: "main",
+    price: 300,
+    thumbnail: "https://code.s3.yandex.net/react/code/mineral_rings.png",
+  },
+  {
+    _id: "60666c42cc7b410027a1a9bb",
+    name: "Хрустящие минеральные кольца",
+    type: "main",
+    price: 300,
+    thumbnail: "https://code.s3.yandex.net/react/code/mineral_rings.png",
+  },
+];
+
+export const bun = constructorIngredients.find((ingredient) => ingredient.type === "bun");
+export const ingredients = constructorIngredients.filter((ingredient) => ingredient.type !== "bun");

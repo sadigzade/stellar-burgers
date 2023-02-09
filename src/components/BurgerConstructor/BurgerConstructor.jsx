@@ -1,24 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
-
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
+
+import { dataPropTypes } from "../../utils/prop-types";
+
 import styles from "./BurgerConstructor.module.css";
 
-const constructorIngredients = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-});
-
-function BurgerConstructor({ constructorIngredients }) {
+function BurgerConstructor({ bun, ingredients }) {
   return (
     <section className={`${styles.BurgerConstructor} mt-15`}>
       <div className={`${styles.BurgerConstructorBlock} mr-4`}>
@@ -26,15 +20,20 @@ function BurgerConstructor({ constructorIngredients }) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.thumbnail}
           />
         </div>
 
         <div className={styles.ConstructorIngredientsBlock}>
-          {constructorIngredients.map((item, index) => (
-            <ConstructorIngredients key={`${item._id}_${index}`} {...item} />
+          {ingredients.map((item, index) => (
+            <ConstructorIngredients
+              key={`${item._id}_${index}`}
+              name={item.name}
+              price={item.price}
+              thumbnail={item.thumbnail}
+            />
           ))}
         </div>
 
@@ -42,9 +41,9 @@ function BurgerConstructor({ constructorIngredients }) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={200}
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.thumbnail}
           />
         </div>
       </div>
@@ -57,13 +56,13 @@ function BurgerConstructor({ constructorIngredients }) {
           Оформить заказ
         </Button>
       </div>
-      image.png{" "}
     </section>
   );
 }
 
 BurgerConstructor.propTypes = {
-  constructorIngredients: PropTypes.arrayOf(constructorIngredients),
+  bun: dataPropTypes.isRequired,
+  ingredients: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default BurgerConstructor;
