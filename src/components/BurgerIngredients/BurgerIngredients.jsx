@@ -1,54 +1,63 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
-
-import { buns, mains, sauces } from "../../utils/data";
+import { dataPropTypes } from "../../utils/prop-types";
 
 import styles from "./BurgerIngredients.module.css";
 
-const ingredients = [
-  { value: "bun", text: "Булки", data: buns },
-  { value: "sauce", text: "Соусы", data: sauces },
-  { value: "main", text: "Начинки", data: mains },
+const INGREDIENTS_TYPES = [
+  { type: "bun", text: "Булки" },
+  { type: "sauce", text: "Соусы" },
+  { type: "main", text: "Начинки" },
 ];
 
-class BurgerIngredients extends React.Component {
-  state = {
-    current: "bun",
+const BurgerIngredients = ({ products }) => {
+  const [ingredientType, setIngredientType] = React.useState("bun");
+  const [buns, setBuns] = React.useState([]);
+  const [sauces, setSauces] = React.useState([]);
+  const [mains, setMains] = React.useState([]);
+
+  const handleClick = (type) => {
+    setIngredientType(type);
   };
 
-  setCurrent = (tabName) => {
-    this.setState({
-      current: tabName,
-    });
-  };
+  React.useEffect(() => {
+    if (products) {
+      setBuns(products.filter((item) => item.type === "bun"));
+      setSauces(products.filter((item) => item.type === "sauce"));
+      setMains(products.filter((item) => item.type === "main"));
+    }
+  }, [products]);
 
-  render() {
-    return (
-      <section className={styles.BurgerIngredients}>
-        <h1 className={`${styles.BurgerIngredientsTitle} mb-5 text text_type_main-large`}>
-          Соберите бургер
-        </h1>
-        <div className={`${styles.BurgerIngredientsTabs} mb-10`}>
-          {ingredients.map((tabInfo, index) => (
-            <IngredientTab
-              key={index}
-              currentTab={this.state.current}
-              onClick={this.setCurrent}
-              value={tabInfo.value}
-              text={tabInfo.text}
-            />
-          ))}
-        </div>
-        <div className={`${styles.BurgerIngredientsContent} mb-10`}>
-          {ingredients.map((ingredient, index) => (
-            <IngredientCategory key={index} text={ingredient.text} data={ingredient.data} />
-          ))}
-        </div>
-      </section>
-    );
-  }
-}
+  return (
+    <section className={styles.BurgerIngredients}>
+      <h1 className={`${styles.BurgerIngredientsTitle} mb-5 text text_type_main-large`}>
+        Соберите бургер
+      </h1>
+      <div className={`${styles.BurgerIngredientsTabs} mb-10`}>
+        {INGREDIENTS_TYPES.map((tabInfo, index) => (
+          <IngredientTab
+            key={index}
+            currentTab={ingredientType}
+            onClick={handleClick}
+            type={tabInfo.type}
+            text={tabInfo.text}
+          />
+        ))}
+      </div>
+      <div className={`${styles.BurgerIngredientsContent} mb-10`}>
+        <IngredientCategory text={"Булки"} products={buns} />
+        <IngredientCategory text={"Соусы"} products={sauces} />
+        <IngredientCategory text={"Начинки"} products={mains} />
+      </div>
+    </section>
+  );
+};
+
+BurgerIngredients.propTypes = {
+  products: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
+};
 
 export default BurgerIngredients;

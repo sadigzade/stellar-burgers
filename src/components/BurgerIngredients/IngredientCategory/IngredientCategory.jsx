@@ -3,25 +3,16 @@ import PropTypes from "prop-types";
 
 import { dataPropTypes } from "../../../utils/prop-types";
 
-import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import styles from "./IngredientCategory.module.css";
+import Ingredient from "./Ingredient/Ingredient";
 
-function IngredientCategory({ text, data }) {
+function IngredientCategory({ text, products }) {
   return (
     <div className={`${styles.IngredientCategory} mb-10`}>
       <h2 className="text text_type_main-medium mb-6">{text}</h2>
       <div className={`${styles.Ingredients} mt-6 ml-4`}>
-        {data.map((ingredient) => (
-          <div key={ingredient._id} className={styles.Ingredient}>
-            <img className={styles.IngredientImage} src={ingredient.image} alt={ingredient.name} />
-            <div className={`${styles.IngredientPrice} mt-1 mb-1`}>
-              <span className="text text_type_digits-default mr-2">{ingredient.price}</span>
-              <CurrencyIcon type="primary" />
-            </div>
-            <p className={styles.IngredientTitle}>{ingredient.name}</p>
-            {ingredient.__v ? <Counter count={1} size="default" extraClass="m-1" /> : null}
-          </div>
+        {products.map((ingredient, index) => (
+          <Ingredient key={`${ingredient._id}_${index}`} ingredient={ingredient} />
         ))}
       </div>
     </div>
@@ -30,7 +21,7 @@ function IngredientCategory({ text, data }) {
 
 IngredientCategory.propTypes = {
   text: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(dataPropTypes),
+  products: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default IngredientCategory;

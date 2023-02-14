@@ -1,0 +1,15 @@
+.Ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.IngredientPrice {
+  display: flex;
+  align-items: center;
+}
+
+.IngredientTitle {
+  text-align: center;
+}
