@@ -9,8 +9,6 @@ import styles from "./Modal.module.css";
 const modalRoot = document.getElementById("react-modals");
 
 function Modal({ children, onCloseClick }) {
-  const modalRef = React.useRef(null);
-
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
       onCloseClick();
@@ -18,18 +16,14 @@ function Modal({ children, onCloseClick }) {
   };
 
   React.useEffect(() => {
-    modalRef.current.focus();
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return ReactDOM.createPortal(
     <>
-      <div
-        ref={modalRef}
-        className={`${styles.Modal} pr-10 pl-10`}
-        tabIndex="0"
-        onKeyDown={handleKeyDown}>
-        {children}
-      </div>
+      <div className={`${styles.Modal} pr-10 pl-10`}>{children}</div>
       <ModalOverlay onCloseClick={onCloseClick} />
     </>,
     modalRoot,

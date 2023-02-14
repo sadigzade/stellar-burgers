@@ -30,11 +30,9 @@ function Ingredient({ ingredient }) {
         {ingredient.__v ? <Counter count={1} size="default" extraClass="m-1" /> : null}
       </div>
       {modalVisible && (
-        <>
-          <Modal onCloseClick={handleCloseModal}>
-            <IngredientDetails ingredient={ingredient} onCloseClick={handleCloseModal} />
-          </Modal>
-        </>
+        <Modal onCloseClick={handleCloseModal}>
+          <IngredientDetails ingredient={ingredient} onCloseClick={handleCloseModal} />
+        </Modal>
       )}
     </>
   );

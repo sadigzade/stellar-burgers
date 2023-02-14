@@ -15,21 +15,13 @@ const INGREDIENTS_TYPES = [
 
 const BurgerIngredients = ({ products }) => {
   const [ingredientType, setIngredientType] = React.useState("bun");
-  const [buns, setBuns] = React.useState([]);
-  const [sauces, setSauces] = React.useState([]);
-  const [mains, setMains] = React.useState([]);
+  const buns = React.useMemo(() => products.filter((item) => item.type === "bun"), [products]);
+  const sauces = React.useMemo(() => products.filter((item) => item.type === "sauce"), [products]);
+  const mains = React.useMemo(() => products.filter((item) => item.type === "main"), [products]);
 
   const handleClick = (type) => {
     setIngredientType(type);
   };
-
-  React.useEffect(() => {
-    if (products) {
-      setBuns(products.filter((item) => item.type === "bun"));
-      setSauces(products.filter((item) => item.type === "sauce"));
-      setMains(products.filter((item) => item.type === "main"));
-    }
-  }, [products]);
 
   return (
     <section className={styles.BurgerIngredients}>

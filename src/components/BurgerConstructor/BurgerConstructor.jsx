@@ -14,9 +14,16 @@ import { dataPropTypes } from "../../utils/prop-types";
 import styles from "./BurgerConstructor.module.css";
 
 function BurgerConstructor({ products }) {
-  const [bun, setBun] = React.useState({});
-  const [ingredients, setIngredients] = React.useState([]);
   const [modalVisible, setModalVisible] = React.useState(false);
+
+  const bun = React.useMemo(
+    () => products.find((ingredient) => ingredient.type === "bun"),
+    [products],
+  );
+  const ingredients = React.useMemo(
+    () => products.filter((ingredient) => ingredient.type !== "bun"),
+    [products],
+  );
 
   const handleModalOpen = () => {
     setModalVisible(true);
@@ -25,13 +32,6 @@ function BurgerConstructor({ products }) {
   const handleCloseModal = () => {
     setModalVisible(false);
   };
-
-  React.useEffect(() => {
-    if (products) {
-      setBun(products.find((item) => item.type === "bun"));
-      setIngredients(products.filter((item) => item.type !== "bun"));
-    }
-  }, [products]);
 
   return (
     <section className={`${styles.BurgerConstructor} mt-15`}>
