@@ -10,13 +10,34 @@ import OrderDetails from "./OrderDetails/OrderDetails";
 import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
 import { IngredientsContext } from "../../services/appContext";
 import { postOrderNumber } from "../../utils/burger-api";
+import { calcTotalPrice } from "../../utils/calcTotalPrice";
 
 import styles from "./BurgerConstructor.module.css";
+
+const totalPriceInitialState = { totalPrice: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "calc":
+      return {
+        totalPrice: action.totalPrice,
+      };
+    default:
+      throw new Error(`Wrong type of action: ${action.type}`);
+  }
+}
 
 function BurgerConstructor() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [orderNumber, setOrderNumber] = React.useState(null);
-  const { products, totalPriceState, totalPriceDispatch } = React.useContext(IngredientsContext);
+
+  const { products } = React.useContext(IngredientsContext);
+
+  const [totalPriceState, totalPriceDispatch] = React.useReducer(
+    reducer,
+    totalPriceInitialState,
+    undefined,
+  );
 
   const bun = React.useMemo(
     () => products.find((ingredient) => ingredient.type === "bun"),
@@ -27,21 +48,24 @@ function BurgerConstructor() {
     [products],
   );
 
+  const totalPrice = React.useMemo(() => calcTotalPrice(bun, ingredients), [bun, ingredients]);
+  React.useMemo(() => totalPriceDispatch({ type: "calc", totalPrice }), [totalPrice]);
+
   const handleModalOpen = () => {
     setModalVisible(!modalVisible);
   };
 
   const handleClick = () => {
     const ingredientsId = [bun._id];
-
     ingredients.forEach((ingredient) => ingredientsId.push(ingredient._id));
-
     postOrderNumber(ingredientsId).then((res) => setOrderNumber(res.order.number));
   };
 
   React.useEffect(() => {
-    totalPriceDispatch({ type: "calc", payload: { bun, ingredients } });
-  }, [totalPriceState.totalPrice, totalPriceDispatch, bun, ingredients]);
+    if (orderNumber && !modalVisible) {
+      setOrderNumber(null);
+    }
+  }, [orderNumber, modalVisible]);
 
   return (
     <section className={`${styles.BurgerConstructor} mt-15`}>
