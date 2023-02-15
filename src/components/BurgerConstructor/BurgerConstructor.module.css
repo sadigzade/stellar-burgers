@@ -1,0 +1,52 @@
+.BurgerConstructor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 40px;
+  width: 100%;
+}
+
+.BurgerConstructorBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.ConstructorIngredientsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 272px;
+  overflow-y: scroll;
+  padding-right: 8px;
+  position: relative;
+  right: -16px;
+}
+
+.ConstructorIngredientsBlock::-webkit-scrollbar {
+  background-color: #2f2f37;
+  width: 8px;
+  margin-left: 5px;
+}
+
+.ConstructorIngredientsBlock::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.BurgerConstructorFooter {
+  display: flex;
+  gap: 40px;
+}
+
+.ConstructorPrice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ConstructorPrice svg {
+  width: 33px;
+  height: 33px;
+}
