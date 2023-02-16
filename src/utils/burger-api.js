@@ -7,3 +7,15 @@ const checkResponse = (res) => {
 export function getIngredients() {
   return fetch(`${BURGER_API_URL}/ingredients`).then(checkResponse);
 }
+
+export function postOrderNumber(ingredientsId) {
+  return fetch(`${BURGER_API_URL}/orders`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ingredients: ingredientsId,
+    }),
+  }).then(checkResponse);
+}

@@ -4,7 +4,7 @@ import { CheckMarkIcon, CloseIcon } from "@ya.praktikum/react-developer-burger-u
 
 import styles from "./OrderDetails.module.css";
 
-function OrderDetails({ onCloseClick }) {
+function OrderDetails({ orderNumber, onCloseClick }) {
   return (
     <>
       <div className={`${styles.OrderDetailsHeader} mt-15`}>
@@ -13,7 +13,7 @@ function OrderDetails({ onCloseClick }) {
         </button>
       </div>
       <div className={`${styles.OrderDetailsContent} mt-9 mb-30`}>
-        <h2 className={`${styles.OrderNumber} text text_type_digits-large`}>034536</h2>
+        <h2 className={`${styles.OrderNumber} text text_type_digits-large`}>{orderNumber}</h2>
         <span className="text text_type_main-medium mt-8">идентификатор заказа</span>
         <div className={`${styles.OrderCheck} mt-15 mb-15`}>
           <CheckMarkIcon type="primary" />
@@ -28,6 +28,7 @@ function OrderDetails({ onCloseClick }) {
 }
 
 OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired,
   onCloseClick: PropTypes.func.isRequired,
 };
 

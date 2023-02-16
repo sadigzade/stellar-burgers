@@ -4,6 +4,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { getIngredients } from "../../utils/burger-api";
+import { IngredientsContext } from "../../services/appContext";
 
 import styles from "./App.module.css";
 
@@ -18,8 +19,12 @@ const App = () => {
     <div className={styles.App}>
       <AppHeader />
       <main className={`${styles.AppMain} container`}>
-        {products.data && <BurgerIngredients products={products.data} />}
-        {products.data && <BurgerConstructor products={products.data} />}
+        {products.data && (
+          <IngredientsContext.Provider value={{ products: products.data }}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </IngredientsContext.Provider>
+        )}
       </main>
     </div>
   );

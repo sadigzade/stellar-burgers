@@ -1,9 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
-import { dataPropTypes } from "../../utils/prop-types";
+import { IngredientsContext } from "../../services/appContext";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -13,8 +12,11 @@ const INGREDIENTS_TYPES = [
   { type: "main", text: "Начинки" },
 ];
 
-const BurgerIngredients = ({ products }) => {
+const BurgerIngredients = () => {
   const [ingredientType, setIngredientType] = React.useState("bun");
+
+  const { products } = React.useContext(IngredientsContext);
+
   const buns = React.useMemo(() => products.filter((item) => item.type === "bun"), [products]);
   const sauces = React.useMemo(() => products.filter((item) => item.type === "sauce"), [products]);
   const mains = React.useMemo(() => products.filter((item) => item.type === "main"), [products]);
@@ -46,10 +48,6 @@ const BurgerIngredients = ({ products }) => {
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  products: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
 };
 
 export default BurgerIngredients;
