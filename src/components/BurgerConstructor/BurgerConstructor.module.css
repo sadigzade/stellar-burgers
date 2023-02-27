@@ -12,27 +12,42 @@
   justify-content: flex-end;
   align-items: flex-end;
   gap: 16px;
+  width: 100%;
+}
+
+.ConstructorBlock {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .ConstructorIngredientsBlock {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 16px;
   max-height: 272px;
   overflow-y: scroll;
   padding-right: 8px;
   position: relative;
-  right: -16px;
+  right: -8px;
+  width: 100%;
 }
 
-.ConstructorIngredientsBlock::-webkit-scrollbar {
+.scrollbar {
+  right: -16px !important;
+}
+
+.scrollbar::-webkit-scrollbar {
   background-color: #2f2f37;
+  border-radius: 5px;
   width: 8px;
   margin-left: 5px;
 }
 
-.ConstructorIngredientsBlock::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb {
   background-color: #8585ad;
+  border-radius: 5px;
 }
 
 .BurgerConstructorFooter {

@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  transition: all 300ms ease-in-out;
 }
 
 .IngredientPrice {
