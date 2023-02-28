@@ -6,36 +6,22 @@ import {
 } from "../actions/constants";
 
 const initialState = {
-  orderNumberRequest: false,
-  orderNumberFailed: false,
-  modalVisible: false,
-  number: null,
+  order: null,
 };
 
 export const orderModalReducer = (state = initialState, action) => {
   switch (action.type) {
     case ORDER_NUMBER_REQUEST: {
-      return {
-        ...state,
-        orderNumberRequest: true,
-        orderNumberFailed: false,
-      };
+      return state;
     }
     case ORDER_NUMBER_REQUEST_SUCCESS: {
       return {
         ...state,
-        orderNumberRequest: false,
-        modalVisible: true,
-        number: action.number,
+        order: action.number,
       };
     }
     case ORDER_NUMBER_REQUEST_FAILD: {
-      return {
-        ...state,
-        orderNumberRequest: false,
-        orderNumberFailed: true,
-        modalVisible: false,
-      };
+      return state;
     }
     case ORDER_NUMBER_RESET: {
       return initialState;

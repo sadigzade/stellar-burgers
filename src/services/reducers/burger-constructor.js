@@ -7,9 +7,8 @@ import {
 } from "../actions/constants";
 
 const initialState = {
-  bun: {},
+  bun: null,
   ingredients: [],
-  totalPrice: 0,
 };
 
 export const constructorIngredientsReducer = (state = initialState, action) => {
@@ -18,10 +17,6 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         bun: action.item,
-        totalPrice:
-          state.totalPrice -
-          2 * (state.bun.price === undefined ? 0 : state.bun.price) +
-          2 * action.item.price,
       };
     }
     case CONSTRUCTOR_ADD_INDGREDIENT: {
@@ -33,21 +28,23 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: [...state.ingredients, newIngredient],
-        totalPrice: state.totalPrice + action.item.price,
       };
     }
     case CONSTRUCTOR_REMOVE_INGREDIENT: {
       return {
         ...state,
         ingredients: state.ingredients.filter((item) => item.dragId !== action.index),
-        totalPrice:
-          state.totalPrice - state.ingredients.find((item) => item.dragId === action.index).price,
       };
     }
     case CONSTRUCTOR_UPDATE: {
+      const dragCard = state.ingredients[action.dragIndex];
+      const newCards = [...state.ingredients];
+      newCards.splice(action.dragIndex, 1);
+      newCards.splice(action.hoverIndex, 0, dragCard);
+
       return {
         ...state,
-        ingredients: action.optional,
+        ingredients: newCards,
       };
     }
     default: {

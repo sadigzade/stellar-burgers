@@ -47,9 +47,8 @@ export const orderNumberRequestAsync = (ingredientsId) => async (dispatch) => {
 
     const data = await checkResponse(res);
 
-    dispatch(orderNumberRequestSuccess(data.order.number));
+    dispatch(orderNumberRequestSuccess(data.order));
   } catch (error) {
-    console.log(error);
     dispatch(orderNumberRequestFailed());
   }
 };

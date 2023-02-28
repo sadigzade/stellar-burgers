@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { CheckMarkIcon, CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./OrderDetails.module.css";
 
-function OrderDetails({ onCloseClick }) {
-  const orderNumber = useSelector((state) => state.orderModal.number);
+function OrderDetails({ orderNumber, onCloseClick }) {
   return (
     <>
       <div className={`${styles.OrderDetailsHeader} mt-15`}>
@@ -30,6 +28,7 @@ function OrderDetails({ onCloseClick }) {
 }
 
 OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired,
   onCloseClick: PropTypes.func.isRequired,
 };
 

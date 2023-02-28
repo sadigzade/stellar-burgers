@@ -17,23 +17,25 @@ import {
   constructorRemoveIngredient,
   constructorUpdate,
 } from "../../services/actions/burger-constructor";
+import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/order-modal";
+import { DNDTypes } from "../../services/actions/dnd-types";
 
 import styles from "./BurgerConstructor.module.css";
-import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/order-modal";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const bun = useSelector((state) => state.constructorIngredients.bun);
+  const ingredients = useSelector((state) => state.constructorIngredients.ingredients);
+  const order = useSelector((state) => state.orderModal.order);
 
-  const { bun, ingredients, totalPrice, modalVisible } = useSelector((state) => ({
-    bun: state.constructorIngredients.bun,
-    ingredients: state.constructorIngredients.ingredients,
-    totalPrice: state.constructorIngredients.totalPrice,
-    modalVisible: state.orderModal.modalVisible,
-    number: state.orderModal.number,
-  }));
+  const totalPrice = React.useMemo(() => {
+    const bunPrice = bun?.price ? bun?.price : 0;
+    const ingredientsPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    return 2 * bunPrice + ingredientsPrice;
+  }, [bun?.price, ingredients]);
 
   const [{ isHoverBunTop }, dropBunTopRef] = useDrop({
-    accept: "bun",
+    accept: DNDTypes.BUN,
     collect: (monitor) => ({
       isHoverBunTop: monitor.isOver(),
     }),
@@ -41,9 +43,8 @@ const BurgerConstructor = () => {
       dispatch(constructorAddBun(item));
     },
   });
-
   const [{ isHoverBunBottom }, dropBunBottomRef] = useDrop({
-    accept: "bun",
+    accept: DNDTypes.BUN,
     collect: (monitor) => ({
       isHoverBunBottom: monitor.isOver(),
     }),
@@ -51,9 +52,8 @@ const BurgerConstructor = () => {
       dispatch(constructorAddBun(item));
     },
   });
-
   const [{ isHoverIngredient }, dropIngredientRef] = useDrop({
-    accept: "ingredient",
+    accept: DNDTypes.INGREDIENT,
     collect: (monitor) => ({
       isHoverIngredient: monitor.isOver(),
     }),
@@ -62,24 +62,18 @@ const BurgerConstructor = () => {
     },
   });
 
-  const moveCard = React.useCallback(
-    (dragIndex, hoverIndex) => {
-      const dragCard = ingredients[dragIndex];
-      const newCards = [...ingredients];
-      newCards.splice(dragIndex, 1);
-      newCards.splice(hoverIndex, 0, dragCard);
-
-      dispatch(constructorUpdate(newCards));
-    },
-    [ingredients, dispatch],
-  );
+  const moveCard = (dragIndex, hoverIndex) => {
+    dispatch(constructorUpdate(dragIndex, hoverIndex));
+  };
 
   const borderColorBun = isHoverBunBottom || isHoverBunTop ? "lightgreen" : "transparent";
   const borderColorIngredient = isHoverIngredient ? "lightgreen" : "transparent";
 
   const handleClick = () => {
-    const ingredientsId = [bun._id];
-    ingredients.forEach((ingredient) => ingredientsId.push(ingredient._id));
+    const ingredientsId = ingredients.reduce(
+      (res, ingredient) => [...res, ingredient._id],
+      [bun?._id],
+    );
     dispatch(orderNumberRequestAsync(ingredientsId));
   };
 
@@ -95,13 +89,13 @@ const BurgerConstructor = () => {
     <section className={`${styles.BurgerConstructor} mt-15`}>
       <div className={`${styles.BurgerConstructorBlock} mr-4`}>
         <div ref={dropBunTopRef} className={styles.ConstructorBlock}>
-          {Object.keys(bun).length ? (
+          {bun ? (
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${bun?.name} (верх)`}
+              price={bun?.price}
+              thumbnail={bun?.image}
             />
           ) : (
             <ConstructorElementEmpty
@@ -144,13 +138,13 @@ const BurgerConstructor = () => {
         </div>
 
         <div ref={dropBunBottomRef} className={styles.ConstructorBlock}>
-          {Object.keys(bun).length ? (
+          {bun ? (
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${bun?.name} (низ)`}
+              price={bun?.price}
+              thumbnail={bun?.image}
             />
           ) : (
             <ConstructorElementEmpty
@@ -163,20 +157,20 @@ const BurgerConstructor = () => {
       </div>
       <div className={`${styles.BurgerConstructorFooter} mr-4`}>
         <div className={styles.ConstructorPrice}>
-          <span className="text text_type_digits-medium">{String(totalPrice)}</span>
+          <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
         <Button
           htmlType="button"
           type="primary"
-          disabled={!Object.keys(bun).length || !Object.keys(ingredients).length}
+          disabled={!bun || !ingredients.length}
           size="medium"
           onClick={handleClick}>
           Оформить заказ
         </Button>
-        {modalVisible && (
+        {order?.number && (
           <Modal onCloseClick={handleResetModal}>
-            <OrderDetails onCloseClick={handleResetModal} />
+            <OrderDetails orderNumber={order?.number} onCloseClick={handleResetModal} />
           </Modal>
         )}
       </div>

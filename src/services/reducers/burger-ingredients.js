@@ -8,33 +8,22 @@ import {
 import { initialCount } from "../../utils/initial-count";
 
 export const initialState = {
-  ingredientsRequest: false,
-  ingredientsFailed: false,
   ingredients: [],
 };
 
 export const burgerIngredientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case INGREDIENTS_REQUEST: {
-      return {
-        ...state,
-        ingredientsRequest: true,
-        ingredientsFailed: false,
-      };
+      return state;
     }
     case INGREDIENTS_REQUEST_SUCCESS: {
       return {
         ...state,
         ingredients: [...state.ingredients, ...initialCount(action.ingredients)],
-        ingredientsRequest: false,
       };
     }
     case INGREDIENTS_REQUEST_FAILED: {
-      return {
-        ...state,
-        ingredientsRequest: false,
-        ingredientsFailed: true,
-      };
+      return state;
     }
     case INGREDIENTS_PLUS_COUNT: {
       return {

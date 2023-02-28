@@ -49,7 +49,6 @@ export const ingredientsRequestAsync = () => async (dispatch) => {
 
     dispatch(ingredientsRequestSuccess(data.data));
   } catch (error) {
-    console.log(error);
     dispatch(ingredientsRequestFailed());
   }
 };

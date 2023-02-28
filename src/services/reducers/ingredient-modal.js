@@ -1,7 +1,7 @@
 import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../actions/constants";
 
 const initialState = {
-  ingredient: {},
+  ingredient: null,
 };
 
 export const ingredientModalReducer = (state = initialState, action) => {

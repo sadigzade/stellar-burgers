@@ -29,9 +29,10 @@ export const constructorRemoveIngredient = (dragId, ingredientId) => (dispatch) 
   dispatch(ingredientMinusCount(ingredientId));
 };
 
-export const constructorUpdate = (newCards) => {
+export const constructorUpdate = (dragIndex, hoverIndex) => {
   return {
     type: CONSTRUCTOR_UPDATE,
-    optional: newCards,
+    dragIndex,
+    hoverIndex,
   };
 };

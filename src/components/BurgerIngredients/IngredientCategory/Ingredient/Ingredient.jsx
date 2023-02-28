@@ -1,7 +1,7 @@
 import React from "react";
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../../../Modal/Modal";
 import IngredientDetails from "./IngredientDetails/IngredientDetails";
@@ -10,16 +10,19 @@ import {
   ingredientModalClose,
   ingredientModalOpen,
 } from "../../../../services/actions/ingredient-modal";
+import { DNDTypes } from "../../../../services/actions/dnd-types";
 
 import styles from "./Ingredient.module.css";
 
 function Ingredient({ ingredient }) {
   const { _id, image, name, price, type, count } = ingredient;
-  const [modalVisible, setModalVisible] = React.useState(false);
+
   const dispatch = useDispatch();
+  const modalIngredient = useSelector((state) => state.ingredientModal.ingredient);
+  const modalVisible = modalIngredient?._id === _id;
 
   const [{ opacity }, dragRef] = useDrag({
-    type: type === "bun" ? type : "ingredient",
+    type: type === DNDTypes.BUN ? type : DNDTypes.INGREDIENT,
     item: { ...ingredient },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
@@ -28,12 +31,10 @@ function Ingredient({ ingredient }) {
 
   const handleOpenModal = () => {
     dispatch(ingredientModalOpen(ingredient));
-    setModalVisible(true);
   };
 
   const handleCloseModal = () => {
     dispatch(ingredientModalClose());
-    setModalVisible(false);
   };
 
   return (

@@ -4,6 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { dataPropTypes } from "../../../utils/prop-types";
+import { DNDTypes } from "../../../services/actions/dnd-types";
 
 import styles from "./ConstructorIngredients.module.css";
 
@@ -13,7 +14,7 @@ function ConstructorIngredients({ ingredient, index, onRemoveHandler, moveCard }
   const ref = React.useRef(null);
 
   const [{ handlerId }, drop] = useDrop({
-    accept: "component",
+    accept: DNDTypes.COMPONENT,
     collect: (monitor) => ({
       handlerId: monitor.getHandlerId(),
     }),
@@ -28,7 +29,7 @@ function ConstructorIngredients({ ingredient, index, onRemoveHandler, moveCard }
   });
 
   const [{ isDragging }, drag] = useDrag({
-    type: "component",
+    type: DNDTypes.COMPONENT,
     item: () => ({ index }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
