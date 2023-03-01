@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
 import {
   Button,
   ConstructorElement,
@@ -8,121 +10,172 @@ import {
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
-import { IngredientsContext } from "../../services/appContext";
-import { postOrderNumber } from "../../utils/burger-api";
-import { calcTotalPrice } from "../../utils/calcTotalPrice";
+import ConstructorElementEmpty from "./ConstructorElementEmpty/ConstructorElementEmpty";
+import {
+  constructorAddBun,
+  constructorAddIngredient,
+  constructorRemoveIngredient,
+  constructorUpdate,
+} from "../../services/actions/burger-constructor";
+import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/order-modal";
+import { DNDTypes } from "../../services/actions/dnd-types";
 
 import styles from "./BurgerConstructor.module.css";
 
-const totalPriceInitialState = { totalPrice: 0 };
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+  const bun = useSelector((state) => state.constructorIngredients.bun);
+  const ingredients = useSelector((state) => state.constructorIngredients.ingredients);
+  const order = useSelector((state) => state.orderModal.order);
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "calc":
-      return {
-        totalPrice: action.totalPrice,
-      };
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
+  const totalPrice = React.useMemo(() => {
+    const bunPrice = bun?.price ? bun?.price : 0;
+    const ingredientsPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    return 2 * bunPrice + ingredientsPrice;
+  }, [bun?.price, ingredients]);
 
-function BurgerConstructor() {
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [orderNumber, setOrderNumber] = React.useState(null);
+  const [{ isHoverBunTop }, dropBunTopRef] = useDrop({
+    accept: DNDTypes.BUN,
+    collect: (monitor) => ({
+      isHoverBunTop: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch(constructorAddBun(item));
+    },
+  });
+  const [{ isHoverBunBottom }, dropBunBottomRef] = useDrop({
+    accept: DNDTypes.BUN,
+    collect: (monitor) => ({
+      isHoverBunBottom: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch(constructorAddBun(item));
+    },
+  });
+  const [{ isHoverIngredient }, dropIngredientRef] = useDrop({
+    accept: DNDTypes.INGREDIENT,
+    collect: (monitor) => ({
+      isHoverIngredient: monitor.isOver(),
+    }),
+    drop(item) {
+      dispatch(constructorAddIngredient(item));
+    },
+  });
 
-  const { products } = React.useContext(IngredientsContext);
-
-  const [totalPriceState, totalPriceDispatch] = React.useReducer(
-    reducer,
-    totalPriceInitialState,
-    undefined,
-  );
-
-  const bun = React.useMemo(
-    () => products.find((ingredient) => ingredient.type === "bun"),
-    [products],
-  );
-  const ingredients = React.useMemo(
-    () => products.filter((ingredient) => ingredient.type !== "bun"),
-    [products],
-  );
-
-  const totalPrice = React.useMemo(() => calcTotalPrice(bun, ingredients), [bun, ingredients]);
-  React.useMemo(() => totalPriceDispatch({ type: "calc", totalPrice }), [totalPrice]);
-
-  const handleModalOpen = () => {
-    setModalVisible(!modalVisible);
+  const moveCard = (dragIndex, hoverIndex) => {
+    dispatch(constructorUpdate(dragIndex, hoverIndex));
   };
+
+  const borderColorBun = isHoverBunBottom || isHoverBunTop ? "lightgreen" : "transparent";
+  const borderColorIngredient = isHoverIngredient ? "lightgreen" : "transparent";
 
   const handleClick = () => {
-    const ingredientsId = [bun._id];
-    ingredients.forEach((ingredient) => ingredientsId.push(ingredient._id));
-    postOrderNumber(ingredientsId).then((res) => setOrderNumber(res.order.number));
+    const ingredientsId = ingredients.reduce(
+      (res, ingredient) => [...res, ingredient._id],
+      [bun?._id],
+    );
+    dispatch(orderNumberRequestAsync(ingredientsId));
   };
 
-  React.useEffect(() => {
-    if (orderNumber && !modalVisible) {
-      setOrderNumber(null);
-    }
-  }, [orderNumber, modalVisible]);
+  const handleResetModal = () => {
+    dispatch(orderNumberReset());
+  };
+
+  const handleRemoveIngredient = (dragId, ingredientId) => {
+    dispatch(constructorRemoveIngredient(dragId, ingredientId));
+  };
 
   return (
     <section className={`${styles.BurgerConstructor} mt-15`}>
       <div className={`${styles.BurgerConstructorBlock} mr-4`}>
-        <div className={styles.ConstructorBlock}>
-          {bun && (
+        <div ref={dropBunTopRef} className={styles.ConstructorBlock}>
+          {bun ? (
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${bun?.name} (верх)`}
+              price={bun?.price}
+              thumbnail={bun?.image}
+            />
+          ) : (
+            <ConstructorElementEmpty
+              position={"top"}
+              borderColor={borderColorBun}
+              text={"Выберите булку"}
             />
           )}
         </div>
 
-        <div className={styles.ConstructorIngredientsBlock}>
-          {ingredients.map((item, index) => (
-            <ConstructorIngredients
-              key={`${item._id}_${index}`}
-              name={item.name}
-              price={item.price}
-              thumbnail={item.image}
+        <div
+          ref={dropIngredientRef}
+          className={`${styles.ConstructorIngredientsBlock} ${
+            ingredients.length > 2 ? styles.scrollbar : ""
+          }`}>
+          {Object.keys(ingredients).length ? (
+            ingredients.map((item, index) => (
+              <ConstructorIngredients
+                key={`${item._id}_${index}`}
+                ingredient={item}
+                index={index}
+                onRemoveHandler={handleRemoveIngredient}
+                moveCard={moveCard}
+              />
+            ))
+          ) : (
+            <ConstructorElementEmpty
+              position={"center"}
+              borderColor={borderColorIngredient}
+              text={"Выберите начинку"}
             />
-          ))}
+          )}
+          {ingredients.length ? (
+            <ConstructorElementEmpty
+              position={"center"}
+              borderColor={borderColorIngredient}
+              text={"Добавить еще..."}
+            />
+          ) : null}
         </div>
 
-        <div className={styles.ConstructorBlock}>
-          {bun && (
+        <div ref={dropBunBottomRef} className={styles.ConstructorBlock}>
+          {bun ? (
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${bun?.name} (низ)`}
+              price={bun?.price}
+              thumbnail={bun?.image}
+            />
+          ) : (
+            <ConstructorElementEmpty
+              position={"bottom"}
+              borderColor={borderColorBun}
+              text={"Выберите булку"}
             />
           )}
         </div>
       </div>
       <div className={`${styles.BurgerConstructorFooter} mr-4`}>
         <div className={styles.ConstructorPrice}>
-          <span className="text text_type_digits-medium">{totalPriceState.totalPrice}</span>
+          <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <div onClick={handleModalOpen}>
-          <Button htmlType="button" type="primary" size="medium" onClick={handleClick}>
-            Оформить заказ
-          </Button>
-        </div>
-        {modalVisible && orderNumber && (
-          <Modal onCloseClick={handleModalOpen}>
-            <OrderDetails orderNumber={orderNumber} onCloseClick={handleModalOpen} />
+        <Button
+          htmlType="button"
+          type="primary"
+          disabled={!bun || !ingredients.length}
+          size="medium"
+          onClick={handleClick}>
+          Оформить заказ
+        </Button>
+        {order?.number && (
+          <Modal onCloseClick={handleResetModal}>
+            <OrderDetails orderNumber={order?.number} onCloseClick={handleResetModal} />
           </Modal>
         )}
       </div>
     </section>
   );
-}
+};
 
 export default BurgerConstructor;

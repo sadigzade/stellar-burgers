@@ -9,17 +9,20 @@ import styles from "./Modal.module.css";
 const modalRoot = document.getElementById("react-modals");
 
 function Modal({ children, onCloseClick }) {
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      onCloseClick();
-    }
-  };
+  const handleKeyDown = React.useCallback(
+    (e) => {
+      if (e.key === "Escape") {
+        onCloseClick();
+      }
+    },
+    [onCloseClick],
+  );
 
   React.useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [handleKeyDown]);
 
   return ReactDOM.createPortal(
     <>
