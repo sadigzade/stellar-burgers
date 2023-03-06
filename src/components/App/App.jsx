@@ -1,13 +1,20 @@
 import React from "react";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { applyMiddleware, compose, createStore } from "redux";
+import { Routes, Route } from "react-router-dom";
 
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import {
+  ForgotPasswordPage,
+  HomePage,
+  IngredientPage,
+  LoginPage,
+  NotFoundPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+} from "../../pages";
 import { rootReducer } from "../../services/reducers";
 
 import styles from "./App.module.css";
@@ -25,10 +32,16 @@ const App = () => {
       <div className={styles.App}>
         <AppHeader />
         <main className={`${styles.AppMain} container`}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/ingredients/:id" element={<IngredientPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </main>
       </div>
     </Provider>
