@@ -86,7 +86,7 @@ const BurgerConstructor = () => {
   };
 
   return (
-    <section className={`${styles.BurgerConstructor} mt-15`}>
+    <section className={`${styles.BurgerConstructor} mt-25`}>
       <div className={`${styles.BurgerConstructorBlock} mr-4`}>
         <div ref={dropBunTopRef} className={styles.ConstructorBlock}>
           {bun ? (

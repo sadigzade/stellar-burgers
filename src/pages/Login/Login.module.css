@@ -1,0 +1,42 @@
+.LoginPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.FormInputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.LoginPageFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.LoginPageFooter div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.Login {
+  color: #4c4cff;
+  transition: all 300ms ease-in-out;
+}
+
+.Login:hover {
+  color: #ffffff;
+}

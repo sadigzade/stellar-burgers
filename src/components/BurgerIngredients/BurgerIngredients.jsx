@@ -78,7 +78,7 @@ const BurgerIngredients = () => {
   }, [dispatch]);
 
   return (
-    <section className={styles.BurgerIngredients}>
+    <section className={`mt-20 ${styles.BurgerIngredients}`}>
       <h1 className={`${styles.BurgerIngredientsTitle} mb-5 text text_type_main-large`}>
         Соберите бургер
       </h1>
