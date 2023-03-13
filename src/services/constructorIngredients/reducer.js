@@ -3,8 +3,9 @@ import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INDGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_RESET,
   CONSTRUCTOR_UPDATE,
-} from "../actions/constants";
+} from "../constants";
 
 const initialState = {
   bun: null,
@@ -46,6 +47,9 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
         ...state,
         ingredients: newCards,
       };
+    }
+    case CONSTRUCTOR_RESET: {
+      return initialState;
     }
     default: {
       return state;

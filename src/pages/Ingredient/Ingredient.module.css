@@ -1,0 +1,23 @@
+.IngredientPage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.IngredientPageContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.IngredientPageInfo {
+  display: flex;
+  gap: 20px;
+}
+
+.InfoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

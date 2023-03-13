@@ -1,24 +1,44 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginRequestAsync } from "../../services/login/action";
+import Preloader from "../../components/Preloader/Preloader";
+import { getCookie } from "../../utils/cookie";
 import styles from "./Login.module.css";
 
 export const LoginPage = () => {
-  const [passwordValue, setPasswordValue] = React.useState("");
-  const [emailValue, setEmailValue] = React.useState("");
+  const [form, setForm] = React.useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.login.user);
+  const token = getCookie("accessToken");
 
-  const onChangeEmail = (e) => {
-    setEmailValue(e.target.value);
+  const onChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onChangePassword = (e) => {
-    setPasswordValue(e.target.value);
-  };
+  const login = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(loginRequestAsync(form));
+    },
+    [dispatch, form],
+  );
+
+  React.useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user]);
+
+  if (token) {
+    return <Preloader />;
+  }
 
   return (
     <section className={styles.LoginPage}>
@@ -26,22 +46,22 @@ export const LoginPage = () => {
         <h1 className="mb-6">Вход</h1>
 
         <div className={`mb-6 ${styles.FormInputs}`}>
-          <EmailInput onChange={onChangeEmail} value={emailValue} name={"email"} isIcon={false} />
+          <EmailInput onChange={onChange} value={form.email} name={"email"} isIcon={false} />
           <PasswordInput
-            onChange={onChangePassword}
-            value={passwordValue}
+            onChange={onChange}
+            value={form.password}
             name={"password"}
             extraClass="mb-2"
           />
         </div>
 
-        <Button htmlType="submit" type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium" onClick={login}>
           Войти
         </Button>
       </form>
       <div className={`mt-20 ${styles.LoginPageFooter}`}>
         <div>
-          <span className="text_color_inactive">Вы — новый пользователь?</span>
+          <span className="text_color_inactive">Вы — новый пользователь?</span>
           <Link to="/register" className={styles.Login}>
             Зарегистрироваться
           </Link>

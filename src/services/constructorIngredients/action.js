@@ -1,10 +1,11 @@
-import { ingredientMinusCount, ingredientPlusCount } from "./burger-ingredients";
+import { ingredientMinusCount, ingredientPlusCount } from "../burgerIngredients/action";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INDGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_RESET,
   CONSTRUCTOR_UPDATE,
-} from "./constants";
+} from "../constants";
 
 export const constructorAddBun = (item) => {
   return {
@@ -34,5 +35,11 @@ export const constructorUpdate = (dragIndex, hoverIndex) => {
     type: CONSTRUCTOR_UPDATE,
     dragIndex,
     hoverIndex,
+  };
+};
+
+export const constructorReset = () => {
+  return {
+    type: CONSTRUCTOR_RESET,
   };
 };

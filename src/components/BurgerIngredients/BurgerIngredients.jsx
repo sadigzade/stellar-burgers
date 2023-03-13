@@ -1,11 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
-
+import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
 import styles from "./BurgerIngredients.module.css";
-import { ingredientsRequestAsync } from "../../services/actions/burger-ingredients";
 
 const INGREDIENTS_TYPES = [
   { type: "bun", text: "Булки" },
@@ -73,12 +71,8 @@ const BurgerIngredients = () => {
       setIngredientType("main");
   };
 
-  React.useEffect(() => {
-    dispatch(ingredientsRequestAsync());
-  }, [dispatch]);
-
   return (
-    <section className={`mt-20 ${styles.BurgerIngredients}`}>
+    <section className={`${styles.BurgerIngredients} mt-20`}>
       <h1 className={`${styles.BurgerIngredientsTitle} mb-5 text text_type_main-large`}>
         Соберите бургер
       </h1>

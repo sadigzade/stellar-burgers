@@ -1,4 +1,4 @@
-import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../actions/constants";
+import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../constants";
 
 const initialState = {
   ingredient: null,

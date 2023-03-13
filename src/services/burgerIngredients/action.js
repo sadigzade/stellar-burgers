@@ -1,17 +1,11 @@
 import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
 import {
+  INGREDIENTS_COUNT_RESET,
   INGREDIENTS_MINUS_COUNT,
   INGREDIENTS_PLUS_COUNT,
-  INGREDIENTS_REQUEST,
-  INGREDIENTS_REQUEST_FAILED,
+  INGREDIENTS_REQUEST_ERROR,
   INGREDIENTS_REQUEST_SUCCESS,
-} from "./constants";
-
-const ingredientsRequest = () => {
-  return {
-    type: INGREDIENTS_REQUEST,
-  };
-};
+} from "../constants";
 
 const ingredientsRequestSuccess = (data) => {
   return {
@@ -20,9 +14,15 @@ const ingredientsRequestSuccess = (data) => {
   };
 };
 
-const ingredientsRequestFailed = () => {
+const ingredientsRequestError = () => {
   return {
-    type: INGREDIENTS_REQUEST_FAILED,
+    type: INGREDIENTS_REQUEST_ERROR,
+  };
+};
+
+export const ingredientsCountReset = () => {
+  return {
+    type: INGREDIENTS_COUNT_RESET,
   };
 };
 
@@ -41,14 +41,12 @@ export const ingredientMinusCount = (ingredientId) => {
 };
 
 export const ingredientsRequestAsync = () => async (dispatch) => {
-  dispatch(ingredientsRequest());
-
   try {
     const res = await fetch(`${BURGER_API_URL}/ingredients`);
     const data = await checkResponse(res);
 
     dispatch(ingredientsRequestSuccess(data.data));
   } catch (error) {
-    dispatch(ingredientsRequestFailed());
+    dispatch(ingredientsRequestError());
   }
 };

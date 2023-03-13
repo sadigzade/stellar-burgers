@@ -6,43 +6,60 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link, NavLink } from "react-router-dom";
 
-class AppHeader extends React.Component {
-  render() {
-    return (
-      <header className={styles.AppHeader}>
-        <div className="container">
-          <nav className={styles.HeaderNav}>
-            <ul className={styles.NavList}>
-              <li className={`${styles.NavListItem} pt-4 pb-4 pr-5`}>
-                <a href="/">
-                  <BurgerIcon type="primary" />
-                  <span className="pl-2">Конструктор</span>
-                </a>
-              </li>
-              <li className={`${styles.NavListItem} pt-4 pb-4 pr-5 pl-5`}>
-                <a href="/">
-                  <ListIcon type="secondary" />
-                  <span className="pl-2 text_color_inactive">Лента заказов</span>
-                </a>
-              </li>
-              <li className={`${styles.NavListItem} pt-4 pb-4 pl-5`}>
-                <a href="/">
-                  <ProfileIcon type="secondary" />
-                  <span className="pl-2 text_color_inactive">Личный кабинет</span>
-                </a>
-              </li>
-            </ul>
-            <div className={styles.NavLogo}>
-              <a href="/">
-                <Logo />
-              </a>
-            </div>
-          </nav>
-        </div>
-      </header>
-    );
-  }
-}
+const AppHeader = () => {
+  return (
+    <header className={styles.AppHeader}>
+      <div className="container">
+        <nav className={styles.HeaderNav}>
+          <ul className={styles.NavList}>
+            <li className={`${styles.NavListItem} pt-4 pb-4 pr-5`}>
+              <NavLink to="/">
+                {({ isActive }) => (
+                  <>
+                    <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                      Конструктор
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            </li>
+            <li className={`${styles.NavListItem} pt-4 pb-4 pr-5 pl-5`}>
+              <NavLink to="/feed">
+                {({ isActive }) => (
+                  <>
+                    <ListIcon type={isActive ? "primary" : "secondary"} />
+                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                      Лента заказов
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            </li>
+            <li className={`${styles.NavListItem} pt-4 pb-4 pl-5`}>
+              <NavLink to="/profile">
+                {({ isActive }) => (
+                  <>
+                    <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                      Личный кабинет
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            </li>
+          </ul>
+          <div className={styles.NavLogo}>
+            <Link to="/" replace>
+              <Logo />
+            </Link>
+          </div>
+        </nav>
+      </div>
+    </header>
+  );
+};
 
 export default AppHeader;

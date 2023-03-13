@@ -1,12 +1,14 @@
-.IngredientDetailsHeader {
+.IngredientDetails {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
 }
 
-.CloseIcon {
-  cursor: pointer;
+.IngredientDetailsHeader {
+  height: 64px;
+  display: flex;
+  align-items: center;
 }
 
 .IngredientDetailsContent {

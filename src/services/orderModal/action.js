@@ -1,16 +1,11 @@
 import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
+import { ingredientsCountReset } from "../burgerIngredients/action";
 import {
-  ORDER_NUMBER_REQUEST,
-  ORDER_NUMBER_REQUEST_FAILD,
+  ORDER_NUMBER_REQUEST_ERROR,
   ORDER_NUMBER_REQUEST_SUCCESS,
   ORDER_NUMBER_RESET,
-} from "./constants";
-
-const orderNumberRequest = () => {
-  return {
-    type: ORDER_NUMBER_REQUEST,
-  };
-};
+} from "../constants";
+import { constructorReset } from "../constructorIngredients/action";
 
 const orderNumberRequestSuccess = (number) => {
   return {
@@ -19,9 +14,10 @@ const orderNumberRequestSuccess = (number) => {
   };
 };
 
-const orderNumberRequestFailed = () => {
+const orderNumberRequestError = (error) => {
   return {
-    type: ORDER_NUMBER_REQUEST_FAILD,
+    type: ORDER_NUMBER_REQUEST_ERROR,
+    error,
   };
 };
 
@@ -32,8 +28,6 @@ export const orderNumberReset = () => {
 };
 
 export const orderNumberRequestAsync = (ingredientsId) => async (dispatch) => {
-  dispatch(orderNumberRequest());
-
   try {
     const res = await fetch(`${BURGER_API_URL}/orders`, {
       method: "post",
@@ -48,7 +42,9 @@ export const orderNumberRequestAsync = (ingredientsId) => async (dispatch) => {
     const data = await checkResponse(res);
 
     dispatch(orderNumberRequestSuccess(data.order));
+    dispatch(constructorReset());
+    dispatch(ingredientsCountReset());
   } catch (error) {
-    dispatch(orderNumberRequestFailed());
+    dispatch(orderNumberRequestError(error));
   }
 };

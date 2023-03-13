@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { dataPropTypes } from "../../../utils/prop-types";
-import { DNDTypes } from "../../../services/actions/dnd-types";
+import { DNDTypes } from "../../../services/dnd-types";
 
 import styles from "./ConstructorIngredients.module.css";
 
