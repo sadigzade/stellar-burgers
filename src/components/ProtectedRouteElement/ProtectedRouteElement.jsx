@@ -7,7 +7,7 @@ const ProtectedRouteElement = ({ children, onlyUnAuth = false }) => {
   const location = useLocation();
 
   if (onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: "/" } };
+    const from = location.state?.from || "/";
 
     return <Navigate to={from} replace />;
   }

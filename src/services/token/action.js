@@ -1,5 +1,5 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
 import { getCookie } from "../../utils/cookie";
+import { request } from "../../utils/request";
 import {
   GET_PROFILE,
   UPDATE_PROFILE,
@@ -22,9 +22,9 @@ export const updateTokenRequestError = (error) => {
   };
 };
 
-export const updateTokenRequestAsync = (request) => async (dispatch) => {
+export const updateTokenRequestAsync = (options) => async (dispatch) => {
   try {
-    const response = await fetch(`${BURGER_API_URL}/auth/token`, {
+    const data = await request("/auth/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,17 +34,15 @@ export const updateTokenRequestAsync = (request) => async (dispatch) => {
       }),
     });
 
-    const data = await checkResponse(response);
-
     dispatch(updateTokenRequestSuccess(data));
 
-    switch (request.type) {
+    switch (options.type) {
       case GET_PROFILE: {
         dispatch(profileRequestAsync());
         break;
       }
       case UPDATE_PROFILE: {
-        dispatch(profileRequestUpdate(request.form));
+        dispatch(profileRequestUpdate(options.form));
         break;
       }
       default: {

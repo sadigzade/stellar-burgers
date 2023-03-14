@@ -10,25 +10,23 @@ import styles from "./ResetPassword.module.css";
 import { getCookie } from "../../utils/cookie";
 import Preloader from "../../components/Preloader/Preloader";
 import { forgotPasswordReset } from "../../services/forgotPassword/action";
+import { useForm } from "../../hooks/useForm";
 
 export const ResetPasswordPage = () => {
-  const [form, setForm] = React.useState({ password: "", token: "" });
+  const { values, handleChange } = useForm({ password: "", token: "" });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const resetAnswer = useSelector((state) => state.resetPassword.success);
   const token = getCookie("accessToken");
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const resetPassword = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(resetPasswordRequestAsync(form));
+      dispatch(resetPasswordRequestAsync(values));
     },
-    [dispatch, form],
+    [dispatch, values],
   );
 
   React.useEffect(() => {
@@ -56,21 +54,21 @@ export const ResetPasswordPage = () => {
 
   return (
     <section className={styles.ResetPasswordPage}>
-      <form className={styles.Form}>
+      <form className={styles.Form} onSubmit={resetPassword}>
         <h1 className="mb-6">Восстановление пароля</h1>
 
         <div className={`mb-6 ${styles.FormInputs}`}>
           <PasswordInput
-            onChange={onChange}
-            value={form.password}
+            onChange={handleChange}
+            value={values.password}
             name="password"
             placeholder="Введите новый пароль"
           />
           <Input
             type={"text"}
             placeholder={"Введите код из письма"}
-            onChange={onChange}
-            value={form.token}
+            onChange={handleChange}
+            value={values.token}
             name={"token"}
             error={false}
             errorText={"Ошибка"}
@@ -78,7 +76,7 @@ export const ResetPasswordPage = () => {
           />
         </div>
 
-        <Button htmlType="submit" type="primary" size="medium" onClick={resetPassword}>
+        <Button htmlType="submit" type="primary" size="medium">
           Сохранить
         </Button>
       </form>

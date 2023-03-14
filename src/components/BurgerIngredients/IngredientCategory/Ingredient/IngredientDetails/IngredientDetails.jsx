@@ -1,24 +1,16 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import { ingredientsRequestAsync } from "../../../../../services/burgerIngredients/action";
 import styles from "./IngredientDetails.module.css";
 
 function IngredientDetails() {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const location = useLocation();
   const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
   const ingredient = React.useMemo(
     () => ingredients.find((item) => item._id === id),
     [id, ingredients],
   );
-
-  React.useEffect(() => {
-    if (!ingredient) {
-      dispatch(ingredientsRequestAsync());
-    }
-  }, [ingredient]);
 
   if (!ingredient) {
     return null;

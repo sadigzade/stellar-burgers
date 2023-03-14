@@ -119,7 +119,7 @@ const BurgerConstructor = () => {
           {Object.keys(ingredients).length ? (
             ingredients.map((item, index) => (
               <ConstructorIngredients
-                key={`${item._id}_${index}`}
+                key={item.dragId}
                 ingredient={item}
                 index={index}
                 onRemoveHandler={handleRemoveIngredient}

@@ -17,12 +17,15 @@ import { checkUserAuth } from "../../services/profile/action";
 import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
 import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
 import styles from "./App.module.css";
+import Preloader from "../Preloader/Preloader";
+import { getCookie } from "../../utils/cookie";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-
-  let background = location.state && location.state.background ? true : false;
+  const user = useSelector((state) => state.profile.user);
+  const token = getCookie("accessToken");
+  const background = location.state && location.state.background ? true : false;
 
   React.useEffect(() => {
     dispatch(ingredientsRequestAsync());
@@ -33,30 +36,34 @@ const App = () => {
     <div className={styles.App}>
       <AppHeader />
       <main className={`${styles.AppMain} container`}>
-        <Routes location={background || location}>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRouteElement>
-                <ProfilePage />
-              </ProtectedRouteElement>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <ProtectedRouteElement onlyUnAuth>
-                <LoginPage />
-              </ProtectedRouteElement>
-            }
-          />
-          <Route path="/ingredients/:id" element={<IngredientDetails />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        {user || !token ? (
+          <Routes location={background || location}>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRouteElement>
+                  <ProfilePage />
+                </ProtectedRouteElement>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRouteElement onlyUnAuth>
+                  <LoginPage />
+                </ProtectedRouteElement>
+              }
+            />
+            <Route path="/ingredients/:id" element={<IngredientDetails />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        ) : (
+          <Preloader />
+        )}
         <ModalSwitch background={background} />
       </main>
     </div>

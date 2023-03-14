@@ -1,4 +1,4 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
+import { request } from "../../utils/request";
 import { SIGN_UP_REQUEST, SIGN_UP_REQUEST_ERROR, SIGN_UP_REQUEST_SUCCESS } from "../constants";
 
 const signupRequest = () => {
@@ -25,20 +25,13 @@ export const signupRequestAsync = (form) => async (dispatch) => {
   dispatch(signupRequest());
 
   try {
-    const response = await fetch(`${BURGER_API_URL}/auth/register`, {
+    const data = await request("/auth/register", {
       method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
       },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
       body: JSON.stringify(form),
     });
-
-    const data = await checkResponse(response);
 
     dispatch(signupRequestSuccess(data));
   } catch (error) {

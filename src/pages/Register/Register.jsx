@@ -10,25 +10,22 @@ import {
 import { getCookie } from "../../utils/cookie";
 import { signupRequestAsync } from "../../services/signup/action";
 import Preloader from "../../components/Preloader/Preloader";
+import { useForm } from "../../hooks/useForm";
 
 import styles from "./Register.module.css";
 
 export const RegisterPage = () => {
-  const [form, setForm] = React.useState({ name: "", email: "", password: "" });
+  const { values, handleChange } = useForm({ name: "", email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = getCookie("accessToken");
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const register = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(signupRequestAsync(form));
+      dispatch(signupRequestAsync(values));
     },
-    [dispatch, form],
+    [dispatch, values],
   );
 
   React.useEffect(() => {
@@ -43,30 +40,28 @@ export const RegisterPage = () => {
 
   return (
     <section className={styles.RegiserPage}>
-      <form className={styles.Form}>
+      <form className={styles.Form} onSubmit={register}>
         <h1 className="mb-6">Регистрация</h1>
-
         <div className={`mb-6 ${styles.FormInputs}`}>
           <Input
             type={"text"}
             placeholder={"Имя"}
-            onChange={onChange}
-            value={form.name}
+            onChange={handleChange}
+            value={values.name}
             name={"name"}
             error={false}
             errorText={"Ошибка"}
             size={"default"}
           />
-          <EmailInput onChange={onChange} value={form.email} name={"email"} isIcon={false} />
+          <EmailInput onChange={handleChange} value={values.email} name={"email"} isIcon={false} />
           <PasswordInput
-            onChange={onChange}
-            value={form.password}
+            onChange={handleChange}
+            value={values.password}
             name={"password"}
             extraClass="mb-2"
           />
         </div>
-
-        <Button htmlType="submit" type="primary" size="medium" onClick={register}>
+        <Button htmlType="submit" type="primary" size="medium">
           Зарегистрироваться
         </Button>
       </form>

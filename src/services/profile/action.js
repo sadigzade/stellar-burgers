@@ -1,5 +1,5 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
 import { getCookie } from "../../utils/cookie";
+import { request } from "../../utils/request";
 import {
   PROFILE_REQUEST,
   PROFILE_REQUEST_ERROR,
@@ -40,20 +40,13 @@ export const profileRequestAsync = () => async (dispatch) => {
   dispatch(profileRequest());
 
   try {
-    const response = await fetch(`${BURGER_API_URL}/auth/user`, {
+    const data = await request("/auth/user", {
       method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getCookie("accessToken"),
       },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
     });
-
-    const data = await checkResponse(response);
 
     dispatch(profileRequestSuccess(data));
   } catch (error) {
@@ -69,7 +62,7 @@ export const profileRequestUpdate = (form) => async (dispatch) => {
   dispatch(profileRequest());
 
   try {
-    const response = await fetch(`${BURGER_API_URL}/auth/user`, {
+    const data = await request("/auth/user", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -77,8 +70,6 @@ export const profileRequestUpdate = (form) => async (dispatch) => {
       },
       body: JSON.stringify(form),
     });
-
-    const data = await checkResponse(response);
 
     dispatch(profileRequestSuccess(data));
   } catch (error) {

@@ -5,63 +5,44 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequestAsync, logoutStateReset } from "../../services/logout/action";
-import { loginStateReset } from "../../services/login/action";
-import { deleteCookie } from "../../utils/cookie";
-import { profileRequestUpdate, profileStateReset } from "../../services/profile/action";
+import { logoutRequestAsync } from "../../services/login/action";
+import { profileRequestUpdate } from "../../services/profile/action";
+import { useForm } from "../../hooks/useForm";
 import styles from "./Profile.module.css";
 
 export const ProfilePage = () => {
-  const [form, setForm] = React.useState({
+  const { values, handleChange, setValues } = useForm({
     name: "",
     email: "",
     password: "",
   });
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
-  const success = useSelector((state) => state.logout.success);
   const userLogin = useSelector((state) => state.login.user);
   const userProfile = useSelector((state) => state.profile.user);
-  const [saveVisible, setSaveVisible] = React.useState(false);
-  const [isValsid, setIsValid] = React.useState(false);
 
   const onIconClick = () => {
     inputRef.current.focus();
   };
 
-  const onChange = (e) => {
-    setIsValid(true);
-    setSaveVisible(true);
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-    if (e.target.closest("form").checkValidity()) {
-      setIsValid(true);
-    }
-
-    if (userProfile[e.target.name] === e.target.value || e.target.value === "") {
-      setIsValid(false);
-      setSaveVisible(false);
-    }
-  };
-
   const cancleClick = (e) => {
     if (userProfile) {
-      setForm({ name: userProfile.name, email: userProfile.email, password: "" });
+      setValues({ name: userProfile.name, email: userProfile.email, password: "" });
     }
     if (userLogin) {
-      setForm({ name: userLogin.name, email: userLogin.email, password: "" });
+      setValues({ name: userLogin.name, email: userLogin.email, password: "" });
     }
   };
 
   const updateClick = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(profileRequestUpdate(form));
-      setForm({ ...form, password: "" });
+      dispatch(profileRequestUpdate(values));
+      setValues({ ...values, password: "" });
     },
-    [dispatch, form],
+    [dispatch, setValues, values],
   );
 
   const logout = React.useCallback(
@@ -74,26 +55,15 @@ export const ProfilePage = () => {
 
   React.useEffect(() => {
     if (userLogin) {
-      setForm({ ...form, name: userLogin.name, email: userLogin.email });
+      setValues({ ...values, name: userLogin.name, email: userLogin.email });
     }
   }, [userLogin]);
 
   React.useEffect(() => {
     if (userProfile) {
-      setForm({ ...form, name: userProfile.name, email: userProfile.email });
+      setValues({ ...values, name: userProfile.name, email: userProfile.email });
     }
   }, [userProfile]);
-
-  if (success) {
-    dispatch(logoutStateReset());
-    dispatch(loginStateReset());
-    dispatch(profileStateReset());
-
-    deleteCookie("accessToken");
-    deleteCookie("refreshToken");
-
-    return <Navigate to="/login" replace />;
-  }
 
   return (
     <section className={`mt-30 ${styles.ProfilePage}`}>
@@ -142,8 +112,8 @@ export const ProfilePage = () => {
       <form className={`ml-15 form ${styles.Form}`} onSubmit={updateClick}>
         <Input
           type="text"
-          onChange={onChange}
-          value={form.name}
+          onChange={handleChange}
+          value={values.name}
           name="name"
           placeholder="Имя"
           icon="EditIcon"
@@ -151,24 +121,25 @@ export const ProfilePage = () => {
           onIconClick={onIconClick}
         />
         <EmailInput
-          onChange={onChange}
-          value={form.email}
+          onChange={handleChange}
+          value={values.email}
           name="email"
           placeholder="Логин"
           isIcon={true}
         />
-        <PasswordInput onChange={onChange} value={form.password} name="password" icon="EditIcon" />
+        <PasswordInput
+          onChange={handleChange}
+          value={values.password}
+          name="password"
+          icon="EditIcon"
+        />
         <div>
-          {saveVisible && (
-            <>
-              <Button htmlType="button" type="secondary" size="medium" onClick={cancleClick}>
-                Отмена
-              </Button>
-              <Button htmlType="submit" type="primary" size="medium" disabled={!isValsid}>
-                Сохранить
-              </Button>
-            </>
-          )}
+          <Button htmlType="button" type="secondary" size="medium" onClick={cancleClick}>
+            Отмена
+          </Button>
+          <Button htmlType="submit" type="primary" size="medium">
+            Сохранить
+          </Button>
         </div>
       </form>
     </section>

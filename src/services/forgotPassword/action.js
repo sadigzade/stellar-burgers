@@ -1,4 +1,4 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
+import { request } from "../../utils/request";
 import {
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_REQUEST_ERROR,
@@ -36,20 +36,13 @@ export const forgotPasswordRequestAsync = (form) => async (dispatch) => {
   dispatch(forgotPasswordRequest());
 
   try {
-    const response = await fetch(`${BURGER_API_URL}/password-reset`, {
+    const data = await request("/password-reset", {
       method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
       },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
       body: JSON.stringify(form),
     });
-
-    const data = await checkResponse(response);
 
     dispatch(forgotPasswordRequestSuccess(data));
   } catch (error) {

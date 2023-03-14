@@ -6,24 +6,21 @@ import { forgotPasswordRequestAsync } from "../../services/forgotPassword/action
 import { getCookie } from "../../utils/cookie";
 import styles from "./ForgotPassword.module.css";
 import Preloader from "../../components/Preloader/Preloader";
+import { useForm } from "../../hooks/useForm";
 
 export const ForgotPasswordPage = () => {
-  const [form, setForm] = React.useState({ email: "" });
+  const { values, handleChange } = useForm({ email: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const token = getCookie("accessToken");
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const forgotPassword = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(forgotPasswordRequestAsync(form));
+      dispatch(forgotPasswordRequestAsync(values));
     },
-    [dispatch, form],
+    [dispatch, values],
   );
 
   React.useEffect(() => {
@@ -42,20 +39,18 @@ export const ForgotPasswordPage = () => {
 
   return (
     <section className={styles.ForgotPasswordPage}>
-      <form className={styles.Form}>
+      <form className={styles.Form} onSubmit={forgotPassword}>
         <h1 className="mb-6">Восстановление пароля</h1>
-
         <div className="mb-6">
           <EmailInput
-            onChange={onChange}
+            onChange={handleChange}
             placeholder="Укажите e-mail"
-            value={form.email}
+            value={values.email}
             name={"email"}
             isIcon={false}
           />
         </div>
-
-        <Button htmlType="submit" type="primary" size="medium" onClick={forgotPassword}>
+        <Button htmlType="submit" type="primary" size="medium">
           Восстановить
         </Button>
       </form>

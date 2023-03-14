@@ -1,61 +1,41 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Button,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginRequestAsync } from "../../services/login/action";
-import Preloader from "../../components/Preloader/Preloader";
-import { getCookie } from "../../utils/cookie";
+import { useForm } from "../../hooks/useForm";
 import styles from "./Login.module.css";
 
 export const LoginPage = () => {
-  const [form, setForm] = React.useState({ email: "", password: "" });
+  const { values, handleChange } = useForm({ email: "", password: "" });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.login.user);
-  const token = getCookie("accessToken");
-
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const login = React.useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(loginRequestAsync(form));
+      dispatch(loginRequestAsync(values));
     },
-    [dispatch, form],
+    [dispatch, values],
   );
-
-  React.useEffect(() => {
-    if (user) {
-      navigate("/", { replace: true });
-    }
-  }, [navigate, user]);
-
-  if (token) {
-    return <Preloader />;
-  }
 
   return (
     <section className={styles.LoginPage}>
-      <form className={styles.Form}>
+      <form className={styles.Form} onSubmit={login}>
         <h1 className="mb-6">Вход</h1>
-
         <div className={`mb-6 ${styles.FormInputs}`}>
-          <EmailInput onChange={onChange} value={form.email} name={"email"} isIcon={false} />
+          <EmailInput onChange={handleChange} value={values.email} name={"email"} isIcon={false} />
           <PasswordInput
-            onChange={onChange}
-            value={form.password}
+            onChange={handleChange}
+            value={values.password}
             name={"password"}
             extraClass="mb-2"
           />
         </div>
-
-        <Button htmlType="submit" type="primary" size="medium" onClick={login}>
+        <Button htmlType="submit" type="primary" size="medium">
           Войти
         </Button>
       </form>

@@ -1,4 +1,4 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
+import { request } from "../../utils/request";
 import { ingredientsCountReset } from "../burgerIngredients/action";
 import {
   ORDER_NUMBER_REQUEST_ERROR,
@@ -29,8 +29,8 @@ export const orderNumberReset = () => {
 
 export const orderNumberRequestAsync = (ingredientsId) => async (dispatch) => {
   try {
-    const res = await fetch(`${BURGER_API_URL}/orders`, {
-      method: "post",
+    const data = await request("/orders", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,8 +38,6 @@ export const orderNumberRequestAsync = (ingredientsId) => async (dispatch) => {
         ingredients: ingredientsId,
       }),
     });
-
-    const data = await checkResponse(res);
 
     dispatch(orderNumberRequestSuccess(data.order));
     dispatch(constructorReset());

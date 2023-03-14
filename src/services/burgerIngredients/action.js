@@ -1,4 +1,4 @@
-import { BURGER_API_URL, checkResponse } from "../../utils/burger-api";
+import { request } from "../../utils/request";
 import {
   INGREDIENTS_COUNT_RESET,
   INGREDIENTS_MINUS_COUNT,
@@ -42,8 +42,7 @@ export const ingredientMinusCount = (ingredientId) => {
 
 export const ingredientsRequestAsync = () => async (dispatch) => {
   try {
-    const res = await fetch(`${BURGER_API_URL}/ingredients`);
-    const data = await checkResponse(res);
+    const data = await request("/ingredients");
 
     dispatch(ingredientsRequestSuccess(data.data));
   } catch (error) {

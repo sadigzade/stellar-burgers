@@ -4,6 +4,7 @@ import {
   LOGIN_REQUEST_ERROR,
   LOGIN_REQUEST_SUCCESS,
   LOGIN_STATE_RESET,
+  LOGOUT_REQUEST_ERROR,
 } from "../constants";
 
 const initialState = {
@@ -42,6 +43,12 @@ export const loginReducer = (state = initialState, action) => {
     }
     case LOGIN_STATE_RESET: {
       return initialState;
+    }
+    case LOGOUT_REQUEST_ERROR: {
+      return {
+        ...state,
+        error: action.error,
+      };
     }
     default: {
       return state;
