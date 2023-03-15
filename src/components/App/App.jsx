@@ -1,10 +1,12 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import AppHeader from "../AppHeader/AppHeader";
 import {
   ForgotPasswordPage,
   HomePage,
+  IngredientPage,
   LoginPage,
   NotFoundPage,
   ProfilePage,
@@ -12,13 +14,13 @@ import {
   ResetPasswordPage,
 } from "../../pages";
 import ModalSwitch from "../ModalSwitch/ModalSwitch";
-import IngredientDetails from "../BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
-import { checkUserAuth } from "../../services/profile/action";
-import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
 import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
-import styles from "./App.module.css";
 import Preloader from "../Preloader/Preloader";
+import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
+import { checkUserAuth } from "../../services/profile/action";
 import { getCookie } from "../../utils/cookie";
+
+import styles from "./App.module.css";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -55,7 +57,7 @@ const App = () => {
                 </ProtectedRouteElement>
               }
             />
-            <Route path="/ingredients/:id" element={<IngredientDetails />} />
+            <Route path="/ingredients/:id" element={<IngredientPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

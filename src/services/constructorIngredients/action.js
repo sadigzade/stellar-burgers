@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { ingredientMinusCount, ingredientPlusCount } from "../burgerIngredients/action";
 import {
   CONSTRUCTOR_ADD_BUN,
@@ -11,6 +12,7 @@ export const constructorAddBun = (item) => {
   return {
     type: CONSTRUCTOR_ADD_BUN,
     item,
+    dragId: uuid(),
   };
 };
 

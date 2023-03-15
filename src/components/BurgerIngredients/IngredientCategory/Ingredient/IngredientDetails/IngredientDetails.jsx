@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import styles from "./IngredientDetails.module.css";
 
 function IngredientDetails() {
   const { id } = useParams();
-  const location = useLocation();
   const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
   const ingredient = React.useMemo(
     () => ingredients.find((item) => item._id === id),
@@ -16,10 +16,8 @@ function IngredientDetails() {
     return null;
   }
 
-  const style = !location.state ? "mt-30" : "";
-
   return (
-    <div className={`${styles.IngredientDetails} ${style}`}>
+    <div className={styles.IngredientDetails}>
       <div className={`${styles.IngredientDetailsHeader} mt-10`}>
         <h2 className="text text_type_main-large">Детали ингредиента</h2>
       </div>
