@@ -8,7 +8,7 @@ import { DNDTypes } from "../../../services/dnd-types";
 
 import styles from "./ConstructorIngredients.module.css";
 
-function ConstructorIngredients({ ingredient, index, onRemoveHandler, moveCard }) {
+const ConstructorIngredients = ({ ingredient, index, onRemoveHandler, moveCard }) => {
   const { _id, dragId, name, price, image } = ingredient;
 
   const ref = React.useRef(null);
@@ -58,7 +58,7 @@ function ConstructorIngredients({ ingredient, index, onRemoveHandler, moveCard }
       />
     </div>
   );
-}
+};
 
 ConstructorIngredients.propTypes = {
   ingredient: dataPropTypes.isRequired,

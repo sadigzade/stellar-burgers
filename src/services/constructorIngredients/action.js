@@ -12,7 +12,6 @@ export const constructorAddBun = (item) => {
   return {
     type: CONSTRUCTOR_ADD_BUN,
     item,
-    dragId: uuid(),
   };
 };
 
@@ -20,6 +19,7 @@ export const constructorAddIngredient = (item) => (dispatch) => {
   dispatch({
     type: CONSTRUCTOR_ADD_INDGREDIENT,
     item,
+    dragId: uuid(),
   });
   dispatch(ingredientPlusCount(item._id));
 };
