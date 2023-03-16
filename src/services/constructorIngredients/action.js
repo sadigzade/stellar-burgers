@@ -1,10 +1,12 @@
-import { ingredientMinusCount, ingredientPlusCount } from "./burger-ingredients";
+import { v4 as uuid } from "uuid";
+import { ingredientMinusCount, ingredientPlusCount } from "../burgerIngredients/action";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INDGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_RESET,
   CONSTRUCTOR_UPDATE,
-} from "./constants";
+} from "../constants";
 
 export const constructorAddBun = (item) => {
   return {
@@ -17,6 +19,7 @@ export const constructorAddIngredient = (item) => (dispatch) => {
   dispatch({
     type: CONSTRUCTOR_ADD_INDGREDIENT,
     item,
+    dragId: uuid(),
   });
   dispatch(ingredientPlusCount(item._id));
 };
@@ -34,5 +37,11 @@ export const constructorUpdate = (dragIndex, hoverIndex) => {
     type: CONSTRUCTOR_UPDATE,
     dragIndex,
     hoverIndex,
+  };
+};
+
+export const constructorReset = () => {
+  return {
+    type: CONSTRUCTOR_RESET,
   };
 };

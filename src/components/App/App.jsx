@@ -1,37 +1,74 @@
 import React from "react";
-import thunk from "redux-thunk";
-import { Provider } from "react-redux";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { applyMiddleware, compose, createStore } from "redux";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { rootReducer } from "../../services/reducers";
+import {
+  ForgotPasswordPage,
+  HomePage,
+  IngredientPage,
+  LoginPage,
+  NotFoundPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+} from "../../pages";
+import ModalSwitch from "../ModalSwitch/ModalSwitch";
+import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
+import Preloader from "../Preloader/Preloader";
+import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
+import { checkUserAuth } from "../../services/profile/action";
+import { getCookie } from "../../utils/cookie";
 
 import styles from "./App.module.css";
 
-const composeEnhancers =
-  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
-
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
-
 const App = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const user = useSelector((state) => state.profile.user);
+  const token = getCookie("accessToken");
+  const background = location.state && location.state.background ? true : false;
+
+  React.useEffect(() => {
+    dispatch(ingredientsRequestAsync());
+    dispatch(checkUserAuth());
+  }, [dispatch]);
+
   return (
-    <Provider store={store}>
-      <div className={styles.App}>
-        <AppHeader />
-        <main className={`${styles.AppMain} container`}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      </div>
-    </Provider>
+    <div className={styles.App}>
+      <AppHeader />
+      <main className={`${styles.AppMain} container`}>
+        {user || !token ? (
+          <Routes location={background || location}>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRouteElement>
+                  <ProfilePage />
+                </ProtectedRouteElement>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRouteElement onlyUnAuth>
+                  <LoginPage />
+                </ProtectedRouteElement>
+              }
+            />
+            <Route path="/ingredients/:id" element={<IngredientPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        ) : (
+          <Preloader />
+        )}
+        <ModalSwitch background={background} />
+      </main>
+    </div>
   );
 };
 

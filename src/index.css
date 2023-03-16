@@ -46,6 +46,7 @@ button {
 
 #root {
   height: 100vh;
+  position: relative;
 }
 
 .container {

@@ -1,10 +1,10 @@
-import { v4 as uuid } from "uuid";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INDGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_RESET,
   CONSTRUCTOR_UPDATE,
-} from "../actions/constants";
+} from "../constants";
 
 const initialState = {
   bun: null,
@@ -21,7 +21,7 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
     }
     case CONSTRUCTOR_ADD_INDGREDIENT: {
       const newIngredient = {
-        dragId: uuid(),
+        dragId: action.dragId,
         ...action.item,
       };
 
@@ -39,6 +39,7 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
     case CONSTRUCTOR_UPDATE: {
       const dragCard = state.ingredients[action.dragIndex];
       const newCards = [...state.ingredients];
+
       newCards.splice(action.dragIndex, 1);
       newCards.splice(action.hoverIndex, 0, dragCard);
 
@@ -46,6 +47,9 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
         ...state,
         ingredients: newCards,
       };
+    }
+    case CONSTRUCTOR_RESET: {
+      return initialState;
     }
     default: {
       return state;

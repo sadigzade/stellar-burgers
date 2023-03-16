@@ -1,4 +1,4 @@
-import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "./constants";
+import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../constants";
 
 export const ingredientModalOpen = (ingredient) => {
   return {

@@ -6,7 +6,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
@@ -16,10 +16,9 @@ import {
   constructorAddIngredient,
   constructorRemoveIngredient,
   constructorUpdate,
-} from "../../services/actions/burger-constructor";
-import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/order-modal";
-import { DNDTypes } from "../../services/actions/dnd-types";
-
+} from "../../services/constructorIngredients/action";
+import { orderNumberRequestAsync, orderNumberReset } from "../../services/orderModal/action";
+import { DNDTypes } from "../../services/dnd-types";
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
@@ -27,6 +26,8 @@ const BurgerConstructor = () => {
   const bun = useSelector((state) => state.constructorIngredients.bun);
   const ingredients = useSelector((state) => state.constructorIngredients.ingredients);
   const order = useSelector((state) => state.orderModal.order);
+  const user = useSelector((state) => state.profile.user);
+  const navigate = useNavigate();
 
   const totalPrice = React.useMemo(() => {
     const bunPrice = bun?.price ? bun?.price : 0;
@@ -70,14 +71,18 @@ const BurgerConstructor = () => {
   const borderColorIngredient = isHoverIngredient ? "lightgreen" : "transparent";
 
   const handleClick = () => {
-    const ingredientsId = ingredients.reduce(
-      (res, ingredient) => [...res, ingredient._id],
-      [bun?._id],
-    );
-    dispatch(orderNumberRequestAsync(ingredientsId));
+    if (user) {
+      const ingredientsId = ingredients.reduce(
+        (res, ingredient) => [...res, ingredient._id],
+        [bun?._id],
+      );
+      dispatch(orderNumberRequestAsync(ingredientsId));
+    } else {
+      navigate("/login");
+    }
   };
 
-  const handleResetModal = () => {
+  const handleModalClose = () => {
     dispatch(orderNumberReset());
   };
 
@@ -86,7 +91,7 @@ const BurgerConstructor = () => {
   };
 
   return (
-    <section className={`${styles.BurgerConstructor} mt-15`}>
+    <section className={`${styles.BurgerConstructor} mt-25`}>
       <div className={`${styles.BurgerConstructorBlock} mr-4`}>
         <div ref={dropBunTopRef} className={styles.ConstructorBlock}>
           {bun ? (
@@ -114,7 +119,7 @@ const BurgerConstructor = () => {
           {Object.keys(ingredients).length ? (
             ingredients.map((item, index) => (
               <ConstructorIngredients
-                key={`${item._id}_${index}`}
+                key={item.dragId}
                 ingredient={item}
                 index={index}
                 onRemoveHandler={handleRemoveIngredient}
@@ -169,8 +174,8 @@ const BurgerConstructor = () => {
           Оформить заказ
         </Button>
         {order?.number && (
-          <Modal onCloseClick={handleResetModal}>
-            <OrderDetails orderNumber={order?.number} onCloseClick={handleResetModal} />
+          <Modal onClose={handleModalClose}>
+            <OrderDetails orderNumber={order?.number} />
           </Modal>
         )}
       </div>
