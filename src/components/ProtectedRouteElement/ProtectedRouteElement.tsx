@@ -1,9 +1,17 @@
-import React from "react";
+import { FC, ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const ProtectedRouteElement = ({ children, onlyUnAuth = false }) => {
-  const user = useSelector((state) => state.profile.user);
+interface IProtectedRouteElementProps {
+  children?: ReactNode;
+  onlyUnAuth?: boolean;
+}
+
+const ProtectedRouteElement: FC<IProtectedRouteElementProps> = ({
+  children,
+  onlyUnAuth = false,
+}) => {
+  const user = useSelector<any>((state) => state.profile.user);
   const location = useLocation();
 
   if (onlyUnAuth && user) {

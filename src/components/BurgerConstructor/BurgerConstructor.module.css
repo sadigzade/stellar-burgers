@@ -4,6 +4,7 @@
   align-items: flex-end;
   gap: 40px;
   width: 100%;
+  margin-top: 88px;
 }
 
 .BurgerConstructorBlock {
@@ -25,13 +26,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  width: 100%;
+}
+
+.IngredientsList {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  max-height: 272px;
+  max-height: 368px;
   overflow-y: scroll;
   padding-right: 8px;
   position: relative;
-  right: -8px;
   width: 100%;
+  right: -8px;
 }
 
 .scrollbar {

@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import AppHeader from "../AppHeader/AppHeader";
 import {
   ForgotPasswordPage,
@@ -19,19 +18,18 @@ import Preloader from "../Preloader/Preloader";
 import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
 import { checkUserAuth } from "../../services/profile/action";
 import { getCookie } from "../../utils/cookie";
-
 import styles from "./App.module.css";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector((state) => state.profile.user);
+  const user = useSelector<any>((state) => state.profile.user);
   const token = getCookie("accessToken");
-  const background = location.state && location.state.background ? true : false;
+  const background = location.state && location.state.background;
 
   React.useEffect(() => {
-    dispatch(ingredientsRequestAsync());
-    dispatch(checkUserAuth());
+    dispatch<any>(ingredientsRequestAsync());
+    dispatch<any>(checkUserAuth());
   }, [dispatch]);
 
   return (

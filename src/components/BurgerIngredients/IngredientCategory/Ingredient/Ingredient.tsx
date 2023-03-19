@@ -1,23 +1,25 @@
-import React from "react";
+import { FC } from "react";
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import { useDispatch } from "react-redux";
-
-import { dataPropTypes } from "../../../../utils/prop-types";
+import { Link, useLocation } from "react-router-dom";
 import { ingredientModalOpen } from "../../../../services/ingredientModal/action";
 import { DNDTypes } from "../../../../services/dnd-types";
-
+import { TBurgerIngredients } from "../../../../services/types/types";
 import styles from "./Ingredient.module.css";
-import { Link, useLocation } from "react-router-dom";
 
-function Ingredient({ ingredient }) {
+interface IIngredientProps {
+  ingredient: TBurgerIngredients;
+}
+
+const Ingredient: FC<IIngredientProps> = ({ ingredient }) => {
   const { _id, image, name, price, type, count } = ingredient;
   const dispatch = useDispatch();
   const location = useLocation();
 
   const [{ opacity }, dragRef] = useDrag({
     type: type === DNDTypes.BUN ? type : DNDTypes.INGREDIENT,
-    item: { ...ingredient },
+    item: ingredient,
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -40,10 +42,6 @@ function Ingredient({ ingredient }) {
       </div>
     </Link>
   );
-}
-
-Ingredient.propTypes = {
-  ingredient: dataPropTypes.isRequired,
 };
 
 export default Ingredient;

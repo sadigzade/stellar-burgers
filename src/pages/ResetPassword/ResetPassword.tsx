@@ -1,4 +1,4 @@
-import React from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,30 +6,32 @@ import {
   resetPasswordInitial,
   resetPasswordRequestAsync,
 } from "../../services/resetPassword/action";
-import styles from "./ResetPassword.module.css";
-import { getCookie } from "../../utils/cookie";
-import Preloader from "../../components/Preloader/Preloader";
 import { forgotPasswordReset } from "../../services/forgotPassword/action";
+import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
+import Preloader from "../../components/Preloader/Preloader";
+import styles from "./ResetPassword.module.css";
+
+type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ResetPasswordPage = () => {
   const { values, handleChange } = useForm({ password: "", token: "" });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const forgotAnswer = useSelector((state) => state.forgotPassword.success);
-  const resetAnswer = useSelector((state) => state.resetPassword.success);
+  const forgotAnswer = useSelector<any>((state) => state.forgotPassword.success);
+  const resetAnswer = useSelector<any>((state) => state.resetPassword.success);
   const token = getCookie("accessToken");
 
-  const resetPassword = React.useCallback(
+  const resetPassword = useCallback<TResetPassword>(
     (e) => {
       e.preventDefault();
-      dispatch(resetPasswordRequestAsync(values));
+      dispatch<any>(resetPasswordRequestAsync(values));
     },
     [dispatch, values],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (resetAnswer) {
       navigate("/login", { replace: true });
     }
@@ -57,7 +59,7 @@ export const ResetPasswordPage = () => {
       <form className={styles.Form} onSubmit={resetPassword}>
         <h1 className="mb-6">Восстановление пароля</h1>
 
-        <div className={`mb-6 ${styles.FormInputs}`}>
+        <div className={`${styles.FormInputs} mb-6`}>
           <PasswordInput
             onChange={handleChange}
             value={values.password}
@@ -80,7 +82,7 @@ export const ResetPasswordPage = () => {
           Сохранить
         </Button>
       </form>
-      <div className={`mt-20 ${styles.ResetPasswordPageFooter}`}>
+      <div className={`${styles.ResetPasswordPageFooter} mt-20`}>
         <span className="text_color_inactive">Вспомнили пароль?</span>
         <Link to="/login" className={styles.Login}>
           Войти

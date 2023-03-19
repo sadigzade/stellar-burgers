@@ -1,16 +1,21 @@
-import React from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import { TBurgerIngredients } from "../../../../../services/types/types";
 import styles from "./IngredientDetails.module.css";
 
-function IngredientDetails() {
+interface BurgerIngredientsState {
+  burgerIngredients: {
+    ingredients: TBurgerIngredients[];
+  };
+}
+
+const IngredientDetails = () => {
   const { id } = useParams();
-  const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
-  const ingredient = React.useMemo(
-    () => ingredients.find((item) => item._id === id),
-    [id, ingredients],
+  const ingredients = useSelector(
+    (state: BurgerIngredientsState) => state.burgerIngredients.ingredients,
   );
+  const ingredient = useMemo(() => ingredients.find((item) => item._id === id), [id, ingredients]);
 
   if (!ingredient) {
     return null;
@@ -53,6 +58,6 @@ function IngredientDetails() {
       </div>
     </div>
   );
-}
+};
 
 export default IngredientDetails;

@@ -1,12 +1,20 @@
-import React from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import IngredientDetails from "../BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
 import { ingredientModalClose } from "../../services/ingredientModal/action";
 import Modal from "../Modal/Modal";
 
-const ModalSwitch = ({ background }) => {
+interface ILocationState {
+  pathname: string;
+  state: null | ILocationState;
+}
+
+interface IModalSwitchProps {
+  background: null | ILocationState;
+}
+
+const ModalSwitch: FC<IModalSwitchProps> = ({ background }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -31,10 +39,6 @@ const ModalSwitch = ({ background }) => {
       )}
     </>
   );
-};
-
-ModalSwitch.propTypes = {
-  background: PropTypes.bool.isRequired,
 };
 
 export default ModalSwitch;

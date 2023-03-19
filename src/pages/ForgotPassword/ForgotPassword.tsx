@@ -1,29 +1,31 @@
-import React from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordRequestAsync } from "../../services/forgotPassword/action";
+import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
-import styles from "./ForgotPassword.module.css";
-import Preloader from "../../components/Preloader/Preloader";
 import { useForm } from "../../hooks/useForm";
+import Preloader from "../../components/Preloader/Preloader";
+import styles from "./ForgotPassword.module.css";
+
+type TForgotPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ForgotPasswordPage = () => {
   const { values, handleChange } = useForm({ email: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const forgotAnswer = useSelector((state) => state.forgotPassword.success);
+  const forgotAnswer = useSelector<any>((state) => state.forgotPassword.success);
   const token = getCookie("accessToken");
 
-  const forgotPassword = React.useCallback(
+  const forgotPassword = useCallback<TForgotPassword>(
     (e) => {
       e.preventDefault();
-      dispatch(forgotPasswordRequestAsync(values));
+      dispatch<any>(forgotPasswordRequestAsync(values));
     },
     [dispatch, values],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (forgotAnswer) {
       navigate("/reset-password", { replace: true });
     }

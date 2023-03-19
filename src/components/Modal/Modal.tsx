@@ -1,29 +1,28 @@
-import React from "react";
+import { FC, ReactNode, useEffect } from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-
-import ModalOverlay from "./ModalOverlay/ModalOverlay";
-
-import styles from "./Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import ModalOverlay from "./ModalOverlay/ModalOverlay";
+import styles from "./Modal.module.css";
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-function Modal({ children, onClose }) {
-  const handleKeyDown = React.useCallback(
-    (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    },
-    [onClose],
-  );
+interface IModalProps {
+  children?: ReactNode;
+  onClose: () => void;
+}
 
-  React.useEffect(() => {
+const Modal: FC<IModalProps> = ({ children, onClose }) => {
+  const handleKeyDown = (e: globalThis.KeyboardEvent): void => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
-
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return ReactDOM.createPortal(
     <div className={styles.Modal}>
@@ -37,11 +36,6 @@ function Modal({ children, onClose }) {
     </div>,
     modalRoot,
   );
-}
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

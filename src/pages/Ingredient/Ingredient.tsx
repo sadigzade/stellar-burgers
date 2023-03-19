@@ -1,7 +1,4 @@
-import React from "react";
-
 import IngredientDetails from "../../components/BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
-
 import styles from "./Ingredient.module.css";
 
 export const IngredientPage = () => {

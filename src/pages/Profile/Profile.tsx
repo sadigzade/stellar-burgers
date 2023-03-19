@@ -1,16 +1,18 @@
-import React from "react";
+import { FormEvent, SyntheticEvent, useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { logoutRequestAsync } from "../../services/login/action";
 import { profileRequestUpdate } from "../../services/profile/action";
 import { useForm } from "../../hooks/useForm";
 import styles from "./Profile.module.css";
+
+type updateSumbitType = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ProfilePage = () => {
   const { values, handleChange, setValues } = useForm({
@@ -18,51 +20,56 @@ export const ProfilePage = () => {
     email: "",
     password: "",
   });
-  const inputRef = React.useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.login.user);
-  const userProfile = useSelector((state) => state.profile.user);
+  const userLogin: any = useSelector<any>((state) => state.login.user);
+  const userProfile: any = useSelector<any>((state) => state.profile.user);
 
   const onIconClick = () => {
-    inputRef.current.focus();
+    inputRef?.current?.focus();
   };
 
-  const cancleClick = (e) => {
-    if (userProfile) {
-      setValues({ name: userProfile.name, email: userProfile.email, password: "" });
-    }
-    if (userLogin) {
-      setValues({ name: userLogin.name, email: userLogin.email, password: "" });
-    }
-  };
-
-  const updateClick = React.useCallback(
+  const updateSumbit = useCallback<updateSumbitType>(
     (e) => {
       e.preventDefault();
-      dispatch(profileRequestUpdate(values));
+      dispatch<any>(profileRequestUpdate(values));
       setValues({ ...values, password: "" });
     },
     [dispatch, setValues, values],
   );
 
-  const logout = React.useCallback(
-    (e) => {
+  const cancleClick = useCallback(
+    (e: SyntheticEvent) => {
+      if (userProfile) {
+        setValues({ name: userProfile.name, email: userProfile.email, password: "" });
+      }
+      if (userLogin) {
+        setValues({ name: userLogin.name, email: userLogin.email, password: "" });
+      }
+    },
+    [setValues, userLogin, userProfile],
+  );
+
+  const logout = useCallback(
+    (e: SyntheticEvent) => {
       e.preventDefault();
-      dispatch(logoutRequestAsync());
+      dispatch<any>(logoutRequestAsync());
     },
     [dispatch],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userLogin) {
       setValues({ ...values, name: userLogin.name, email: userLogin.email });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLogin]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile) {
       setValues({ ...values, name: userProfile.name, email: userProfile.email });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
   return (
@@ -109,7 +116,7 @@ export const ProfilePage = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <form className={`ml-15 form ${styles.Form}`} onSubmit={updateClick}>
+      <form className={`ml-15 form ${styles.Form}`} onSubmit={updateSumbit}>
         <Input
           type="text"
           onChange={handleChange}

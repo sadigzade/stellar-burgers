@@ -1,4 +1,4 @@
-import React from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -7,12 +7,13 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getCookie } from "../../utils/cookie";
 import { signupRequestAsync } from "../../services/signup/action";
-import Preloader from "../../components/Preloader/Preloader";
+import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
-
+import Preloader from "../../components/Preloader/Preloader";
 import styles from "./Register.module.css";
+
+type TRegister = (e: FormEvent<HTMLFormElement>) => void;
 
 export const RegisterPage = () => {
   const { values, handleChange } = useForm({ name: "", email: "", password: "" });
@@ -20,15 +21,15 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const token = getCookie("accessToken");
 
-  const register = React.useCallback(
+  const register = useCallback<TRegister>(
     (e) => {
       e.preventDefault();
-      dispatch(signupRequestAsync(values));
+      dispatch<any>(signupRequestAsync(values));
     },
     [dispatch, values],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       navigate("/", { replace: true });
     }

@@ -1,14 +1,14 @@
-import React from "react";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import ErrorImg from "../../images/404.svg";
 import styles from "./NotFound.module.css";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
-  const clickBack = () => {
+  const clickBack = useCallback(() => {
     navigate("/");
-  };
+  }, [navigate]);
 
   return (
     <div className={styles.NotFoundPage}>

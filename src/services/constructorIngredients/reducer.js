@@ -37,15 +37,9 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
       };
     }
     case CONSTRUCTOR_UPDATE: {
-      const dragCard = state.ingredients[action.dragIndex];
-      const newCards = [...state.ingredients];
-
-      newCards.splice(action.dragIndex, 1);
-      newCards.splice(action.hoverIndex, 0, dragCard);
-
       return {
         ...state,
-        ingredients: newCards,
+        ingredients: action.newList,
       };
     }
     case CONSTRUCTOR_RESET: {
