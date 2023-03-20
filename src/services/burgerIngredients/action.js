@@ -14,9 +14,10 @@ const ingredientsRequestSuccess = (data) => {
   };
 };
 
-const ingredientsRequestError = () => {
+const ingredientsRequestError = (error) => {
   return {
     type: INGREDIENTS_REQUEST_ERROR,
+    error,
   };
 };
 
@@ -43,9 +44,8 @@ export const ingredientMinusCount = (ingredientId) => {
 export const ingredientsRequestAsync = () => async (dispatch) => {
   try {
     const data = await request("/ingredients");
-
     dispatch(ingredientsRequestSuccess(data.data));
   } catch (error) {
-    dispatch(ingredientsRequestError());
+    dispatch(ingredientsRequestError(error));
   }
 };

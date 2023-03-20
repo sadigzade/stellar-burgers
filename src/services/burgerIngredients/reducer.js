@@ -9,6 +9,7 @@ import { initialCount } from "../../utils/initial-count";
 
 export const initialState = {
   ingredients: [],
+  error: null,
 };
 
 export const burgerIngredientsReducer = (state = initialState, action) => {
@@ -20,7 +21,10 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
       };
     }
     case INGREDIENTS_REQUEST_ERROR: {
-      return state;
+      return {
+        ...state,
+        error: action.error,
+      };
     }
     case INGREDIENTS_COUNT_RESET: {
       return {

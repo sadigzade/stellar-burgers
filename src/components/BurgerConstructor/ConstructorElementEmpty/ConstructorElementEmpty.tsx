@@ -1,8 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { FC } from "react";
 import styles from "./ConstructorElementEmpty.module.css";
 
-const ConstructorElementEmpty = ({ position, borderColor, text }) => {
+interface IConstructorElementEmptyProps {
+  position: string;
+  borderColor: string;
+  text: string;
+}
+
+const ConstructorElementEmpty: FC<IConstructorElementEmptyProps> = ({
+  position,
+  borderColor,
+  text,
+}) => {
   return (
     <div
       className={`${styles.ConstructorElementEmpty} ${styles[position]}`}
@@ -10,12 +19,6 @@ const ConstructorElementEmpty = ({ position, borderColor, text }) => {
       <p className="text text_type_main-medium">{text}</p>
     </div>
   );
-};
-
-ConstructorElementEmpty.propTypes = {
-  position: PropTypes.string.isRequired,
-  borderColor: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
 };
 
 export default ConstructorElementEmpty;
