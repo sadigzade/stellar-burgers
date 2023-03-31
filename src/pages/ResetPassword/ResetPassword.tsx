@@ -1,16 +1,15 @@
 import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/hooks";
 import {
   resetPasswordInitial,
   resetPasswordRequestAsync,
-} from "../../services/resetPassword/action";
-import { forgotPasswordReset } from "../../services/forgotPassword/action";
+} from "../../services/actions/resetPassword";
+import { forgotPasswordReset } from "../../services/actions/forgotPassword";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
-import styles from "./ResetPassword.module.css";
 
 type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
 
@@ -19,14 +18,14 @@ export const ResetPasswordPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const forgotAnswer = useSelector<any>((state) => state.forgotPassword.success);
-  const resetAnswer = useSelector<any>((state) => state.resetPassword.success);
+  const forgotAnswer = useSelector((state) => state.forgotPassword.success);
+  const resetAnswer = useSelector((state) => state.resetPassword.success);
   const token = getCookie("accessToken");
 
   const resetPassword = useCallback<TResetPassword>(
     (e) => {
       e.preventDefault();
-      dispatch<any>(resetPasswordRequestAsync(values));
+      dispatch(resetPasswordRequestAsync(values));
     },
     [dispatch, values],
   );
@@ -55,11 +54,10 @@ export const ResetPasswordPage = () => {
   }
 
   return (
-    <section className={styles.ResetPasswordPage}>
-      <form className={styles.Form} onSubmit={resetPassword}>
+    <section className="flex flex-col items-center mt-45">
+      <form className="flex flex-col items-center" onSubmit={resetPassword}>
         <h1 className="mb-6">Восстановление пароля</h1>
-
-        <div className={`${styles.FormInputs} mb-6`}>
+        <div className="flex flex-col items-center gap-y-6 mb-6">
           <PasswordInput
             onChange={handleChange}
             value={values.password}
@@ -77,14 +75,13 @@ export const ResetPasswordPage = () => {
             size={"default"}
           />
         </div>
-
         <Button htmlType="submit" type="primary" size="medium">
           Сохранить
         </Button>
       </form>
-      <div className={`${styles.ResetPasswordPageFooter} mt-20`}>
+      <div className="flex gap-x-2 mt-20">
         <span className="text_color_inactive">Вспомнили пароль?</span>
-        <Link to="/login" className={styles.Login}>
+        <Link to="/login" className="login">
           Войти
         </Link>
       </div>

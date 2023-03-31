@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import AppHeader from "../AppHeader/AppHeader";
+
 import {
   ForgotPasswordPage,
   HomePage,
@@ -11,31 +10,37 @@ import {
   ProfilePage,
   RegisterPage,
   ResetPasswordPage,
+  FeedPage,
+  OrderDetailsPage,
 } from "../../pages";
-import ModalSwitch from "../ModalSwitch/ModalSwitch";
-import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
+
+import AppHeader from "../AppHeader/AppHeader";
 import Preloader from "../Preloader/Preloader";
-import { ingredientsRequestAsync } from "../../services/burgerIngredients/action";
-import { checkUserAuth } from "../../services/profile/action";
+import ModalSwitch from "../ModalSwitch/ModalSwitch";
+import HistoryOrders from "../HistoryOrders/HistoryOrders";
+import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
+
 import { getCookie } from "../../utils/cookie";
-import styles from "./App.module.css";
+import { useSelector, useDispatch } from "../../hooks/hooks";
+import { checkUserAuth } from "../../services/actions/profile";
+import { ingredientsRequestAsync } from "../../services/actions/burgerIngredients";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector<any>((state) => state.profile.user);
+  const user = useSelector((state) => state.profile.user);
   const token = getCookie("accessToken");
   const background = location.state && location.state.background;
 
   React.useEffect(() => {
-    dispatch<any>(ingredientsRequestAsync());
-    dispatch<any>(checkUserAuth());
+    dispatch(ingredientsRequestAsync());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
   return (
-    <div className={styles.App}>
+    <div className="relative h-full">
       <AppHeader />
-      <main className={`${styles.AppMain} container`}>
+      <main className="container pt-88 h-full">
         {user || !token ? (
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
@@ -45,8 +50,9 @@ const App = () => {
                 <ProtectedRouteElement>
                   <ProfilePage />
                 </ProtectedRouteElement>
-              }
-            />
+              }>
+              <Route path="/profile/orders" element={<HistoryOrders />} />
+            </Route>
             <Route
               path="/login"
               element={
@@ -55,6 +61,9 @@ const App = () => {
                 </ProtectedRouteElement>
               }
             />
+            <Route path="/profile/orders/:id" element={<OrderDetailsPage />} />
+            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/feed/:id" element={<OrderDetailsPage />} />
             <Route path="/ingredients/:id" element={<IngredientPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />

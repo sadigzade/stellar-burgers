@@ -1,34 +1,33 @@
 import { FormEvent, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/hooks";
 import { Link } from "react-router-dom";
 import {
   Button,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { loginRequestAsync } from "../../services/login/action";
+import { logoutRequestThunk } from "../../services/actions/login";
 import { useForm } from "../../hooks/useForm";
-import styles from "./Login.module.css";
 
-type TLogin = (e: FormEvent<HTMLFormElement>) => void;
+type Login = (e: FormEvent<HTMLFormElement>) => void;
 
 export const LoginPage = () => {
   const { values, handleChange } = useForm({ email: "", password: "" });
   const dispatch = useDispatch();
 
-  const login = useCallback<TLogin>(
+  const login = useCallback<Login>(
     (e) => {
       e.preventDefault();
-      dispatch<any>(loginRequestAsync(values));
+      dispatch(logoutRequestThunk(values));
     },
     [dispatch, values],
   );
 
   return (
-    <section className={styles.LoginPage}>
-      <form className={styles.Form} onSubmit={login}>
+    <section className="mt-45">
+      <form className="flex flex-col items-center" onSubmit={login}>
         <h1 className="mb-6">Вход</h1>
-        <div className={`mb-6 ${styles.FormInputs}`}>
+        <div className="flex flex-col gap-y-6 mb-6">
           <EmailInput onChange={handleChange} value={values.email} name={"email"} isIcon={false} />
           <PasswordInput
             onChange={handleChange}
@@ -41,16 +40,16 @@ export const LoginPage = () => {
           Войти
         </Button>
       </form>
-      <div className={`mt-20 ${styles.LoginPageFooter}`}>
-        <div>
+      <div className="flex flex-col items-center gap-y-4 mt-20">
+        <div className="flex items-center gap-x-4">
           <span className="text_color_inactive">Вы — новый пользователь?</span>
-          <Link to="/register" className={styles.Login}>
+          <Link to="/register" className="login">
             Зарегистрироваться
           </Link>
         </div>
-        <div>
+        <div className="flex items-center gap-x-4">
           <span className="text_color_inactive">Забыли пароль?</span>
-          <Link to="/forgot-password" className={styles.Login}>
+          <Link to="/forgot-password" className="login">
             Восстановить пароль
           </Link>
         </div>

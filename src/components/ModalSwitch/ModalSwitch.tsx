@@ -1,20 +1,20 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/hooks";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import IngredientDetails from "../BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
-import { ingredientModalClose } from "../../services/ingredientModal/action";
+import { ingredientModalClose } from "../../services/actions/ingredientModal";
 import Modal from "../Modal/Modal";
 
-interface ILocationState {
+type LocationState = {
   pathname: string;
-  state: null | ILocationState;
-}
+  state: null | LocationState;
+};
 
-interface IModalSwitchProps {
-  background: null | ILocationState;
-}
+type ModalSwitchProps = {
+  background: null | LocationState;
+};
 
-const ModalSwitch: FC<IModalSwitchProps> = ({ background }) => {
+const ModalSwitch: FC<ModalSwitchProps> = ({ background }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

@@ -7,8 +7,10 @@ import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstruc
 export const HomePage = () => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <BurgerIngredients />
-      <BurgerConstructor />
+      <div className="flex gap-x-10">
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </div>
     </DndProvider>
   );
 };

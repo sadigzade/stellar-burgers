@@ -1,15 +1,8 @@
 import { MouseEvent, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/hooks";
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
-import { TBurgerIngredients, TIngredient } from "../../services/types/types";
-import styles from "./BurgerIngredients.module.css";
-
-interface BurgerIngredientsState {
-  burgerIngredients: {
-    ingredients: TBurgerIngredients[];
-  };
-}
+import type { TIngredient } from "../../services/types/data";
 
 const BurgerIngredients = () => {
   const [ingredientType, setIngredientType] = useState<TIngredient>("bun");
@@ -17,9 +10,7 @@ const BurgerIngredients = () => {
   const refSauce = useRef<HTMLDivElement>(null);
   const refMain = useRef<HTMLDivElement>(null);
 
-  const ingredients = useSelector(
-    (state: BurgerIngredientsState) => state.burgerIngredients.ingredients,
-  );
+  const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
 
   const buns = useMemo(() => ingredients.filter((item) => item.type === "bun"), [ingredients]);
   const sauces = useMemo(() => ingredients.filter((item) => item.type === "sauce"), [ingredients]);
@@ -46,6 +37,7 @@ const BurgerIngredients = () => {
       }
     }
   };
+
   const handleScroll = (e: MouseEvent<HTMLDivElement>) => {
     const ingredeintsCoords = e.currentTarget.getBoundingClientRect();
     const bunCoords = refBun.current?.getBoundingClientRect();
@@ -64,11 +56,9 @@ const BurgerIngredients = () => {
   };
 
   return (
-    <section className={`${styles.BurgerIngredients} pt-10`}>
-      <h1 className={`${styles.BurgerIngredientsTitle} mb-5 text text_type_main-large`}>
-        Соберите бургер
-      </h1>
-      <div className={`${styles.BurgerIngredientsTabs} mb-10`}>
+    <section className="w-full mt-10">
+      <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
+      <div className="flex mb-10">
         <IngredientTab
           type={"bun"}
           text={"Булки"}
@@ -88,7 +78,7 @@ const BurgerIngredients = () => {
           clickHandler={handleClick}
         />
       </div>
-      <div onScroll={handleScroll} className={`${styles.BurgerIngredientsContent} mb-10`}>
+      <div onScroll={handleScroll} className="overflow-y-scroll scrollbar pr-2 h-auto-304 mb-5">
         <IngredientCategory ref={refBun} text={"Булки"} products={buns} />
         <IngredientCategory ref={refSauce} text={"Соусы"} products={sauces} />
         <IngredientCategory ref={refMain} text={"Начинки"} products={mains} />

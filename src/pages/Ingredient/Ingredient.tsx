@@ -1,9 +1,8 @@
 import IngredientDetails from "../../components/BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
-import styles from "./Ingredient.module.css";
 
 export const IngredientPage = () => {
   return (
-    <div className={`${styles.IngredientPage} mt-30`}>
+    <div className="mt-20">
       <IngredientDetails />
     </div>
   );

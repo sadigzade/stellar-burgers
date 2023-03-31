@@ -1,19 +1,18 @@
 import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/hooks";
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { signupRequestAsync } from "../../services/signup/action";
+import { signupRequestAsync } from "../../services/actions/signup";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
-import styles from "./Register.module.css";
 
-type TRegister = (e: FormEvent<HTMLFormElement>) => void;
+type Register = (e: FormEvent<HTMLFormElement>) => void;
 
 export const RegisterPage = () => {
   const { values, handleChange } = useForm({ name: "", email: "", password: "" });
@@ -21,10 +20,10 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const token = getCookie("accessToken");
 
-  const register = useCallback<TRegister>(
+  const register = useCallback<Register>(
     (e) => {
       e.preventDefault();
-      dispatch<any>(signupRequestAsync(values));
+      dispatch(signupRequestAsync(values));
     },
     [dispatch, values],
   );
@@ -40,10 +39,10 @@ export const RegisterPage = () => {
   }
 
   return (
-    <section className={styles.RegiserPage}>
-      <form className={styles.Form} onSubmit={register}>
+    <section className="flex flex-col items-center mt-45">
+      <form className="flex flex-col items-center" onSubmit={register}>
         <h1 className="mb-6">Регистрация</h1>
-        <div className={`mb-6 ${styles.FormInputs}`}>
+        <div className="flex flex-col items-center gap-y-6 mb-6">
           <Input
             type={"text"}
             placeholder={"Имя"}
@@ -66,9 +65,9 @@ export const RegisterPage = () => {
           Зарегистрироваться
         </Button>
       </form>
-      <div className={`mt-20 ${styles.RegiserPageFooter}`}>
+      <div className="flex gap-x-2 mt-20">
         <span className="text_color_inactive">Уже зарегистрированы?</span>
-        <Link to="/login" className={styles.Login}>
+        <Link to="/login" className="login">
           Войти
         </Link>
       </div>

@@ -1,20 +1,19 @@
-import styles from "./AppHeader.module.css";
+import { Link, NavLink } from "react-router-dom";
 import {
   BurgerIcon,
   ListIcon,
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, NavLink } from "react-router-dom";
 
 const AppHeader = () => {
   return (
-    <header className={styles.AppHeader}>
+    <header className="absolute top-0 left-0 w-full box-shadow bg-[#1c1c21]">
       <div className="container">
-        <nav className={styles.HeaderNav}>
-          <ul className={styles.NavList}>
-            <li className={`${styles.NavListItem} pt-4 pb-4 pr-5`}>
-              <NavLink to="/">
+        <nav className="relative">
+          <ul className="flex items-center justify-between py-4">
+            <li className="py-4 pr-5">
+              <NavLink to="/" className="flex items-center">
                 {({ isActive }) => (
                   <>
                     <BurgerIcon type={isActive ? "primary" : "secondary"} />
@@ -25,8 +24,8 @@ const AppHeader = () => {
                 )}
               </NavLink>
             </li>
-            <li className={`${styles.NavListItem} pt-4 pb-4 pr-5 pl-5`}>
-              <NavLink to="/feed">
+            <li className="py-4 px-5">
+              <NavLink to="/feed" className="flex items-center">
                 {({ isActive }) => (
                   <>
                     <ListIcon type={isActive ? "primary" : "secondary"} />
@@ -37,8 +36,8 @@ const AppHeader = () => {
                 )}
               </NavLink>
             </li>
-            <li className={`${styles.NavListItem} pt-4 pb-4 pl-5`}>
-              <NavLink to="/profile">
+            <li className="flex justify-end grow py-4 pl-5">
+              <NavLink to="/profile" className="flex items-center">
                 {({ isActive }) => (
                   <>
                     <ProfileIcon type={isActive ? "primary" : "secondary"} />
@@ -50,8 +49,8 @@ const AppHeader = () => {
               </NavLink>
             </li>
           </ul>
-          <div className={styles.NavLogo}>
-            <Link to="/" replace>
+          <div className="absolute top-1/2 left-1/2 transform-50">
+            <Link to="/" replace className="flex">
               <Logo />
             </Link>
           </div>
