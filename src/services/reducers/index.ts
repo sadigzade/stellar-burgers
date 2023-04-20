@@ -1,25 +1,27 @@
 import { combineReducers } from "redux";
 
-import { burgerIngredientsReducer } from "./burgerIngredients";
-import { constructorIngredientsReducer } from "./constructorIngredients";
+import { loginReducer } from "./login";
+import { tokenReducer } from "./token";
+import { wsReducer } from "./wsReducer";
+import { signupReducer } from "./signup";
+import { profileReducer } from "./profile";
+import { orderModalReducer } from "./orderModal";
+import { resetPasswordReducer } from "./resetPassword";
 import { forgotPasswordReducer } from "./forgotPassword";
 import { ingredientModalReducer } from "./ingredientModal";
-import { loginReducer } from "./login";
-import { orderModalReducer } from "./orderModal";
-import { profileReducer } from "./profile";
-import { resetPasswordReducer } from "./resetPassword";
-import { signupReducer } from "./signup";
-import { tokenReducer } from "./token";
+import { burgerIngredientsReducer } from "./burgerIngredients";
+import { constructorIngredientsReducer } from "./constructorIngredients";
 
 export const rootReducer = combineReducers({
-  burgerIngredients: burgerIngredientsReducer,
-  constructorIngredients: constructorIngredientsReducer,
+  login: loginReducer,
+  token: tokenReducer,
+  webSocket: wsReducer,
+  signup: signupReducer,
+  profile: profileReducer,
+  orderModal: orderModalReducer,
+  resetPassword: resetPasswordReducer,
   forgotPassword: forgotPasswordReducer,
   ingredientModal: ingredientModalReducer,
-  login: loginReducer,
-  orderModal: orderModalReducer,
-  profile: profileReducer,
-  resetPassword: resetPasswordReducer,
-  signup: signupReducer,
-  token: tokenReducer,
+  burgerIngredients: burgerIngredientsReducer,
+  constructorIngredients: constructorIngredientsReducer,
 });

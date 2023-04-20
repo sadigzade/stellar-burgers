@@ -1,6 +1,8 @@
+import { WS_CONNECTION_START, WS_DISCONNECTING } from "../constants/wsActionTypes";
+
 export type TRequestData = {
-  success: boolean;
-  message: string;
+  readonly success: boolean;
+  readonly message: string;
 };
 
 export type TOrder = {
@@ -48,7 +50,7 @@ export type TBurgerIngredients = {
   readonly image_mobile: string;
   readonly image_large: string;
   readonly __v: number;
-  count?: number | undefined;
+  count: number;
 };
 
 export type TForm = {
@@ -58,6 +60,33 @@ export type TForm = {
 };
 
 export type TOptions = {
-  type: string;
+  readonly type: string;
   form?: TForm;
+};
+
+export enum TWSOrdersStatus {
+  CREATED = "created",
+  PENDING = "pending",
+  DONE = "done",
+}
+
+export type TWSOrders = {
+  readonly _id: string;
+  readonly ingredients: string[];
+  readonly status: TWSOrdersStatus;
+  readonly name: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly number: number;
+};
+
+export type TWSGetMessage = {
+  readonly orders: ReadonlyArray<TWSOrders>;
+  readonly total: number;
+  readonly totalToday: number;
+};
+
+export type TWSStoreActions = {
+  wsInit: typeof WS_CONNECTION_START;
+  wsDisconnecting: typeof WS_DISCONNECTING;
 };

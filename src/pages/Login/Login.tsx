@@ -6,7 +6,7 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { logoutRequestThunk } from "../../services/actions/login";
+import { loginRequestThunk } from "../../services/actions/login";
 import { useForm } from "../../hooks/useForm";
 
 type Login = (e: FormEvent<HTMLFormElement>) => void;
@@ -18,7 +18,7 @@ export const LoginPage = () => {
   const login = useCallback<Login>(
     (e) => {
       e.preventDefault();
-      dispatch(logoutRequestThunk(values));
+      dispatch(loginRequestThunk(values));
     },
     [dispatch, values],
   );

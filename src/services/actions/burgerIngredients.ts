@@ -57,8 +57,6 @@ export const ingredientsCountReset = (): IngredientsCountResetAction => {
 };
 
 export const ingredientPlusCount = (ingredientId: string): IngredientPlusCountAction => {
-  console.log(ingredientId);
-
   return {
     type: INGREDIENTS_PLUS_COUNT,
     ingredientId,

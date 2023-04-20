@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import {
@@ -11,7 +11,7 @@ import {
   RegisterPage,
   ResetPasswordPage,
   FeedPage,
-  OrderDetailsPage,
+  OrderPage,
 } from "../../pages";
 
 import AppHeader from "../AppHeader/AppHeader";
@@ -32,7 +32,7 @@ const App = () => {
   const token = getCookie("accessToken");
   const background = location.state && location.state.background;
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(ingredientsRequestAsync());
     dispatch(checkUserAuth());
   }, [dispatch]);
@@ -61,9 +61,9 @@ const App = () => {
                 </ProtectedRouteElement>
               }
             />
-            <Route path="/profile/orders/:id" element={<OrderDetailsPage />} />
             <Route path="/feed" element={<FeedPage />} />
-            <Route path="/feed/:id" element={<OrderDetailsPage />} />
+            <Route path="/feed/:id" element={<OrderPage />} />
+            <Route path="/profile/orders/:id" element={<OrderPage />} />
             <Route path="/ingredients/:id" element={<IngredientPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />

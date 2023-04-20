@@ -1,4 +1,4 @@
-import React from "react";
+import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { Reorder } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import {
   constructorUpdate,
 } from "../../services/actions/constructorIngredients";
 import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/orderModal";
-import { DNDTypes } from "../../services/dnd-types";
+import { DNDTypes } from "../../services/types/dnd-types";
 import { TBurgerIngredients } from "../../services/types/data";
 import {
   ingredientMinusCount,
@@ -31,10 +31,11 @@ const BurgerConstructor = () => {
   const bun = useSelector((state) => state.constructorIngredients.bun);
   const ingredients = useSelector((state) => state.constructorIngredients.ingredients);
   const order = useSelector((state) => state.orderModal.order);
+  const status = useSelector((state) => state.orderModal.status);
   const user = useSelector((state) => state.profile.user);
   const navigate = useNavigate();
 
-  const totalPrice = React.useMemo(() => {
+  const totalPrice = useMemo(() => {
     const bunPrice = bun?.price ? bun?.price : 0;
     const ingredientsPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
     return 2 * bunPrice + ingredientsPrice;
@@ -174,7 +175,7 @@ const BurgerConstructor = () => {
           onClick={handleClick}>
           Оформить заказ
         </Button>
-        {order?.number && (
+        {status && (
           <Modal onClose={handleModalClose}>
             <OrderDetailsModal orderNumber={order?.number} />
           </Modal>

@@ -1,4 +1,4 @@
-import { getCookie } from "../../utils/cookie";
+import { deleteCookie, getCookie } from "../../utils/cookie";
 import { request } from "../../utils/request";
 import {
   GET_PROFILE,
@@ -64,6 +64,11 @@ export const tokenRequestThunk: AppThunk =
         }
       }
     } catch (error: any) {
+      if (error.message === "Token is invalid") {
+        deleteCookie("accessToken");
+        deleteCookie("refreshToken");
+      }
+
       dispatch(tokenRequestError(error));
     }
   };

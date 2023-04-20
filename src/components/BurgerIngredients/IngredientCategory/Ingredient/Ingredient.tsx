@@ -4,7 +4,7 @@ import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "../../../../hooks/hooks";
 import { Link, useLocation } from "react-router-dom";
 import { ingredientModalOpen } from "../../../../services/actions/ingredientModal";
-import { DNDTypes } from "../../../../services/dnd-types";
+import { DNDTypes } from "../../../../services/types/dnd-types";
 import { TBurgerIngredients } from "../../../../services/types/data";
 
 type IngredientProps = {

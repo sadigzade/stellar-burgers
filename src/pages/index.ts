@@ -7,7 +7,7 @@ import { ProfilePage } from "./Profile/Profile";
 import { RegisterPage } from "./Register/Register";
 import { ResetPasswordPage } from "./ResetPassword/ResetPassword";
 import { FeedPage } from "./Feed/Feed";
-import { OrderDetailsPage } from "./OrderDetails/OrderDetails";
+import { OrderPage } from "./Order/Order";
 
 export {
   HomePage,
@@ -19,5 +19,5 @@ export {
   IngredientPage,
   NotFoundPage,
   FeedPage,
-  OrderDetailsPage,
+  OrderPage,
 };

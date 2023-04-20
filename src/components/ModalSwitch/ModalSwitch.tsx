@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import IngredientDetails from "../BurgerIngredients/IngredientCategory/Ingredient/IngredientDetails/IngredientDetails";
 import { ingredientModalClose } from "../../services/actions/ingredientModal";
 import Modal from "../Modal/Modal";
+import FeedOrderDetails from "../HistoryOrders/FeedOrderDetails/FeedOrderDetails";
 
 type LocationState = {
   pathname: string;
@@ -20,7 +21,10 @@ const ModalSwitch: FC<ModalSwitchProps> = ({ background }) => {
 
   const handleModalClose = () => {
     dispatch(ingredientModalClose());
-    navigate("/");
+
+    if (background) {
+      navigate(background?.pathname);
+    }
   };
 
   return (
@@ -32,6 +36,22 @@ const ModalSwitch: FC<ModalSwitchProps> = ({ background }) => {
             element={
               <Modal onClose={handleModalClose}>
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal onClose={handleModalClose}>
+                <FeedOrderDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal onClose={handleModalClose}>
+                <FeedOrderDetails />
               </Modal>
             }
           />

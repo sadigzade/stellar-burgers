@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { useSelector } from "../../../../../hooks/hooks";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const IngredientDetails = () => {
   const { id } = useParams();
+  const { state } = useLocation();
   const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
   const ingredient = useMemo(() => ingredients.find((item) => item._id === id), [id, ingredients]);
 
@@ -12,11 +13,11 @@ const IngredientDetails = () => {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex items-center h-[64px] mt-10">
+    <div className="flex flex-col items-center p-10">
+      <div className={`flex h-[64px] items-center w-full ${state ? "" : "justify-center"}`}>
         <h2 className="text text_type_main-large">Детали ингредиента</h2>
       </div>
-      <div className="flex flex-col items-center mb-15">
+      <div className="flex flex-col items-center">
         <img className="pl-5 pr-5" src={ingredient.image_large} alt={ingredient.name} />
         <h3 className="text text_type_main-medium mt-4">{ingredient.name}</h3>
         <div className="flex gap-x-5 mt-8">

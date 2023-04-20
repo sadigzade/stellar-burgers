@@ -1,33 +1,35 @@
 import { Action, ActionCreator } from "redux";
 import { ThunkAction } from "redux-thunk";
 import {
-  BurgerIngredientActions,
-  ConstructorIngredientsActions,
+  WsActions,
+  LoginActions,
+  TokenActions,
+  SignupActions,
+  ProfileActions,
+  OrderModalActions,
+  ResetPasswordActions,
   ForgotPasswordActions,
   IngredientModalActions,
-  LoginActions,
-  OrderModalActions,
-  ProfileActions,
-  ResetPasswordActions,
-  SignupActions,
-  TokenActions,
+  BurgerIngredientActions,
+  ConstructorIngredientsActions,
 } from "../actions";
 import { store } from "../store";
 
 export type RootState = ReturnType<typeof store.getState>;
 
 // Типизация всех экшенов приложения
-type TApplicationActions =
-  | BurgerIngredientActions
+export type TApplicationActions =
   | ConstructorIngredientsActions
-  | ForgotPasswordActions
+  | BurgerIngredientActions
   | IngredientModalActions
-  | LoginActions
+  | ForgotPasswordActions
+  | ResetPasswordActions
   | OrderModalActions
   | ProfileActions
-  | ResetPasswordActions
   | SignupActions
-  | TokenActions;
+  | TokenActions
+  | LoginActions
+  | WsActions;
 
 // Типизация thunk'ов в нашем приложении
 export type AppThunk<TReturn = void> = ActionCreator<

@@ -59,7 +59,6 @@ export const ProfilePage = () => {
     if (userProfile) {
       setValues({ ...values, name: userProfile.name, email: userProfile.email });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
   return (
@@ -79,11 +78,11 @@ export const ProfilePage = () => {
             </NavLink>
           </li>
           <li className="flex items-center h-14">
-            <NavLink to="s" className={styles.link}>
+            <NavLink to="orders" className={styles.link}>
               {({ isActive }) => (
                 <span
                   className={`text text_type_main-medium ${
-                    isActive && pathname === "/profile/s" ? "" : "text_color_inactive"
+                    isActive && pathname === "/profile/orders" ? "" : "text_color_inactive"
                   }`.trim()}>
                   История заказов
                 </span>
