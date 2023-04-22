@@ -41,10 +41,12 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
         <span className="text text_type_main-medium">{name}</span>
         {pathname === "/profile/orders" && status === TWSOrdersStatus.CREATED ? (
           <span className="text text_type_main-default">Создан</span>
-        ) : status === TWSOrdersStatus.PENDING ? (
+        ) : pathname === "/profile/orders" && status === TWSOrdersStatus.PENDING ? (
           <span className="text text_type_main-default">Готовится</span>
-        ) : (
+        ) : pathname === "/profile/orders" && status === TWSOrdersStatus.DONE ? (
           <span className="text text_type_main-default text_color_success">Выполнен</span>
+        ) : (
+          <></>
         )}
       </div>
       <div className="flex justify-between">

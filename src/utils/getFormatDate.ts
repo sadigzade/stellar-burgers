@@ -1,4 +1,4 @@
-export const getFormatDate = (createdAt) => {
+export const getFormatDate = (createdAt: string) => {
   let result = "";
 
   const date = new Date(createdAt);

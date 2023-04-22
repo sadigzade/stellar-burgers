@@ -13,14 +13,14 @@ export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
     let socket: WebSocket | null = null;
 
     return (next) => (action: TApplicationActions) => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type } = action;
       const { wsInit, wsDisconnecting } = wsActions;
-      const user = getState().profile.user;
 
-      if (type === wsInit && user) {
+      if (type === wsInit) {
         // Объект класса WebSocket
         socket = new WebSocket(action.url);
+        console.log(2);
       }
 
       if (socket) {
