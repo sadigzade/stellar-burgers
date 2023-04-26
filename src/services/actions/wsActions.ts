@@ -12,18 +12,18 @@ type WSConnectionStartAction = {
   readonly type: typeof WS_CONNECTION_START;
   readonly url: string;
 };
-type WSConnectionSuccessAction = {
+export type WSConnectionSuccessAction = {
   readonly type: typeof WS_CONNECTION_SUCCESS;
   readonly payload: Event;
 };
-type WSConnectionErrorAction = {
+export type WSConnectionErrorAction = {
   readonly type: typeof WS_CONNECTION_ERROR;
   readonly payload: Event;
 };
-type WSConnectionClosedAction = {
+export type WSConnectionClosedAction = {
   readonly type: typeof WS_CONNECTION_CLOSED;
 };
-type WSGetMessageAction = {
+export type WSGetMessageAction = {
   readonly type: typeof WS_GET_MESSAGE;
   readonly data: Readonly<TWSGetMessage>;
 };

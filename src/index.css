@@ -84,7 +84,7 @@
 *,
 *::after,
 *::before {
-  box-sizing: b-box;
+  box-sizing: border-box;
 }
 
 h1,

@@ -6,7 +6,7 @@ export const getStatusOrders = (orders: ReadonlyArray<TWSOrders>, status: TWSOrd
   for (let i = 0; i < orders.length; i++) {
     if (res.length !== 10) {
       if (orders[i].status === status) {
-        res.push(orders[i].number);
+        res.push({ id: orders[i]._id, number: orders[i].number });
       }
 
       continue;

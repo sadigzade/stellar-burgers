@@ -23,7 +23,6 @@ const HistoryOrders = () => {
 
     if (pathname === "/feed") {
       dispatch(wsConnectionStart(`${WS_API}/orders/all`));
-      console.log(1);
     }
 
     return () => {

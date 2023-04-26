@@ -1,4 +1,10 @@
 import { WS_CONNECTION_START, WS_DISCONNECTING } from "../constants/wsActionTypes";
+import {
+  WSConnectionClosedAction,
+  WSConnectionErrorAction,
+  WSConnectionSuccessAction,
+  WSGetMessageAction,
+} from "../actions/wsActions";
 
 export type TRequestData = {
   readonly success: boolean;
@@ -89,4 +95,8 @@ export type TWSGetMessage = {
 export type TWSStoreActions = {
   wsInit: typeof WS_CONNECTION_START;
   wsDisconnecting: typeof WS_DISCONNECTING;
+  wsConnectionSuccess: (event: Event) => WSConnectionSuccessAction;
+  wsConnectionError: (event: Event) => WSConnectionErrorAction;
+  wsConnectionClosed: () => WSConnectionClosedAction;
+  wsGetMessage: (data: Readonly<TWSGetMessage>) => WSGetMessageAction;
 };

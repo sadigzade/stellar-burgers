@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import { useSelector } from "../../hooks/hooks";
 import { getStatusOrders } from "../../utils/getStatusOrders";
 import { TWSOrdersStatus } from "../../services/types/data";
@@ -23,15 +22,15 @@ export const FeedPage = () => {
               <div className="grid grid-cols-2">
                 <ul className="flex flex-col gap-y-2">
                   {doneOrders.slice(0, 5).map((order) => (
-                    <li key={uuid()} className="text text_type_digits-default text_color_success">
-                      {order}
+                    <li key={order.id} className="text text_type_digits-default text_color_success">
+                      {order.number}
                     </li>
                   ))}
                 </ul>
                 <ul className="flex flex-col gap-y-2">
                   {doneOrders.slice(5).map((order) => (
-                    <li key={uuid()} className="text text_type_digits-default text_color_success">
-                      {order}
+                    <li key={order.id} className="text text_type_digits-default text_color_success">
+                      {order.number}
                     </li>
                   ))}
                 </ul>
@@ -42,15 +41,15 @@ export const FeedPage = () => {
               <div className="grid grid-cols-2">
                 <ul className="flex flex-col gap-y-2">
                   {pendingOrders.slice(0, 5).map((order) => (
-                    <li key={uuid()} className="text text_type_digits-default text_color_success">
-                      {order}
+                    <li key={order.id} className="text text_type_digits-default text_color_success">
+                      {order.number}
                     </li>
                   ))}
                 </ul>
                 <ul className="flex flex-col gap-y-2">
                   {pendingOrders.slice(5).map((order) => (
-                    <li key={uuid()} className="text text_type_digits-default text_color_success">
-                      {order}
+                    <li key={order.id} className="text text_type_digits-default text_color_success">
+                      {order.number}
                     </li>
                   ))}
                 </ul>
