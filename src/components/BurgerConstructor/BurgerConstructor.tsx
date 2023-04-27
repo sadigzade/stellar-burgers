@@ -1,15 +1,15 @@
-import React from "react";
+import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { Reorder } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/hooks";
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
-import OrderDetails from "./OrderDetails/OrderDetails";
+import OrderDetailsModal from "./OrderDetailsModal/OrderDetailsModal";
 import ConstructorIngredients from "./ConstructorIngredients/ConstructorIngredients";
 import ConstructorElementEmpty from "./ConstructorElementEmpty/ConstructorElementEmpty";
 import {
@@ -17,47 +17,25 @@ import {
   constructorAddIngredient,
   constructorRemoveIngredient,
   constructorUpdate,
-} from "../../services/constructorIngredients/action";
-import { orderNumberRequestAsync, orderNumberReset } from "../../services/orderModal/action";
-import { DNDTypes } from "../../services/dnd-types";
-import styles from "./BurgerConstructor.module.css";
-import { TBurgerIngredients } from "../../services/types/types";
-
-interface BurgerConstructorState {
-  constructorIngredients: {
-    bun: TBurgerIngredients;
-    ingredients: TBurgerIngredients[];
-  };
-}
-
-interface OrderModalState {
-  orderModal: {
-    order: {
-      number: number;
-    };
-  };
-}
-
-interface ProfileState {
-  profile: {
-    user: {
-      email: string;
-      name: string;
-    };
-  };
-}
+} from "../../services/actions/constructorIngredients";
+import { orderNumberRequestAsync, orderNumberReset } from "../../services/actions/orderModal";
+import { DNDTypes } from "../../services/types/dnd-types";
+import { TBurgerIngredients } from "../../services/types/data";
+import {
+  ingredientMinusCount,
+  ingredientPlusCount,
+} from "../../services/actions/burgerIngredients";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const bun = useSelector((state: BurgerConstructorState) => state.constructorIngredients.bun);
-  const ingredients = useSelector(
-    (state: BurgerConstructorState) => state.constructorIngredients.ingredients,
-  );
-  const order = useSelector((state: OrderModalState) => state.orderModal.order);
-  const user = useSelector((state: ProfileState) => state.profile.user);
+  const bun = useSelector((state) => state.constructorIngredients.bun);
+  const ingredients = useSelector((state) => state.constructorIngredients.ingredients);
+  const order = useSelector((state) => state.orderModal.order);
+  const status = useSelector((state) => state.orderModal.status);
+  const user = useSelector((state) => state.profile.user);
   const navigate = useNavigate();
 
-  const totalPrice = React.useMemo(() => {
+  const totalPrice = useMemo(() => {
     const bunPrice = bun?.price ? bun?.price : 0;
     const ingredientsPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
     return 2 * bunPrice + ingredientsPrice;
@@ -68,7 +46,7 @@ const BurgerConstructor = () => {
     collect: (monitor) => ({
       isHoverBunTop: monitor.isOver(),
     }),
-    drop(item) {
+    drop: (item: TBurgerIngredients) => {
       dispatch(constructorAddBun(item));
     },
   });
@@ -77,7 +55,7 @@ const BurgerConstructor = () => {
     collect: (monitor) => ({
       isHoverBunBottom: monitor.isOver(),
     }),
-    drop(item) {
+    drop: (item: TBurgerIngredients) => {
       dispatch(constructorAddBun(item));
     },
   });
@@ -86,8 +64,9 @@ const BurgerConstructor = () => {
     collect: (monitor) => ({
       isHoverIngredient: monitor.isOver(),
     }),
-    drop(item) {
-      dispatch<any>(constructorAddIngredient(item));
+    drop: (item: TBurgerIngredients) => {
+      dispatch(constructorAddIngredient(item));
+      dispatch(ingredientPlusCount(item._id));
     },
   });
 
@@ -97,7 +76,8 @@ const BurgerConstructor = () => {
         (res, ingredient) => [...res, ingredient._id],
         [bun?._id],
       );
-      dispatch<any>(orderNumberRequestAsync(ingredientsId));
+      ingredientsId.push(bun?._id);
+      dispatch(orderNumberRequestAsync(ingredientsId));
     } else {
       navigate("/login");
     }
@@ -106,7 +86,8 @@ const BurgerConstructor = () => {
     dispatch(orderNumberReset());
   };
   const handleRemoveIngredient = (dragId: string, ingredientId: string) => {
-    dispatch<any>(constructorRemoveIngredient(dragId, ingredientId));
+    dispatch(constructorRemoveIngredient(dragId));
+    dispatch(ingredientMinusCount(ingredientId));
   };
   const handleUpdateConstructor = (newList: TBurgerIngredients[]) => {
     dispatch(constructorUpdate(newList));
@@ -116,9 +97,9 @@ const BurgerConstructor = () => {
   const borderColorIngredient = isHoverIngredient ? "lightgreen" : "transparent";
 
   return (
-    <section className={`${styles.BurgerConstructor} pt-25`}>
-      <div className={`${styles.BurgerConstructorBlock} mr-4`}>
-        <div ref={dropBunTopRef} className={styles.ConstructorBlock}>
+    <section className="mt-25 w-full flex flex-col items-end gap-y-10">
+      <div className={`flex flex-col gap-y-4 w-full mr-4`}>
+        <div ref={dropBunTopRef} className="flex justify-end w-full">
           {bun ? (
             <ConstructorElement
               type="top"
@@ -136,15 +117,14 @@ const BurgerConstructor = () => {
           )}
         </div>
 
-        <div ref={dropIngredientRef} className={styles.ConstructorIngredientsBlock}>
+        <div ref={dropIngredientRef} className="flex flex-col items-end w-full">
           {ingredients.length ? (
             <Reorder.Group
               axis="y"
               values={ingredients}
               onReorder={handleUpdateConstructor}
-              className={`${styles.IngredientsList} ${
-                ingredients.length > 4 ? styles.scrollbar : ""
-              }`}>
+              className={`flex flex-col gap-y-4 max-h-[368px] overflow-y-scroll pr-2 relative w-full
+              ${ingredients.length > 4 ? "scrollbar -right-4" : "-right-2"}`}>
               {ingredients.map((ingredient) => {
                 return (
                   <ConstructorIngredients
@@ -164,7 +144,7 @@ const BurgerConstructor = () => {
           )}
         </div>
 
-        <div ref={dropBunBottomRef} className={styles.ConstructorBlock}>
+        <div ref={dropBunBottomRef} className="flex justify-end w-full">
           {bun ? (
             <ConstructorElement
               type="bottom"
@@ -182,8 +162,8 @@ const BurgerConstructor = () => {
           )}
         </div>
       </div>
-      <div className={`${styles.BurgerConstructorFooter} mr-4`}>
-        <div className={styles.ConstructorPrice}>
+      <div className="flex gap-x-10 mr-4">
+        <div className="flex items-center gap-x-5 svg-33">
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
@@ -195,9 +175,9 @@ const BurgerConstructor = () => {
           onClick={handleClick}>
           Оформить заказ
         </Button>
-        {order?.number && (
+        {status && (
           <Modal onClose={handleModalClose}>
-            <OrderDetails orderNumber={order?.number} />
+            <OrderDetailsModal orderNumber={order?.number} />
           </Modal>
         )}
       </div>

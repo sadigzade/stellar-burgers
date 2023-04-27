@@ -1,35 +1,6 @@
-.ProfilePage {
-  width: 100%;
-  display: flex;
-}
-
-.Sidebar {
-  max-width: 320px;
-  width: 100%;
-}
-
-.SidebarItem {
-  display: flex;
-  align-items: center;
-  height: 64px;
-}
-
-.Form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 24px;
-}
-
-.ButtonExit {
-  cursor: pointer;
+.link span {
   transition: all 300ms ease-in-out;
 }
-
-.ButtonExit:hover {
+.link:hover span {
   color: #fff;
-}
-
-.Description {
-  opacity: 0.4;
 }

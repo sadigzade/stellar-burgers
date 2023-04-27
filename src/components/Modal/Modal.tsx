@@ -1,17 +1,16 @@
 import { FC, ReactNode, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import ReactDOM from "react-dom";
 import ModalOverlay from "./ModalOverlay/ModalOverlay";
-import styles from "./Modal.module.css";
 
 const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-interface IModalProps {
+type ModalProps = {
   children?: ReactNode;
   onClose: () => void;
-}
+};
 
-const Modal: FC<IModalProps> = ({ children, onClose }) => {
+const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const handleKeyDown = (e: globalThis.KeyboardEvent): void => {
     if (e.key === "Escape") {
       onClose();
@@ -21,13 +20,12 @@ const Modal: FC<IModalProps> = ({ children, onClose }) => {
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return ReactDOM.createPortal(
-    <div className={styles.Modal}>
-      <div className={`${styles.ModalWrapper} pr-10 pl-10`}>
-        <button className={styles.CloseIcon} onClick={onClose}>
+    <div className="absolute w-full h-full top-1/2 left-1/2 transform-50 z-10">
+      <div className="relative top-1/2 left-1/2 transform-50 z-20 rounded-[40px] max-w-[720px] w-full bg-[#1c1c21] px-[10px]">
+        <button className="absolute cursor-pointer right-10 top-[60px]" onClick={onClose}>
           <CloseIcon type="primary" />
         </button>
         {children}
