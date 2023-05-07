@@ -2,8 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-<p align="center">  
-  <img src="https://i.ibb.co/nwMYJGw/logo.png" alt="Project Logo" width="726" />
+<p>
+  <img src="https://i.ibb.co/thvwP21/logo.png" alt="Project Logo" width="726" />
 </p>
 
 ## Available Scripts
