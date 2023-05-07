@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 <p align="center">  
-  <img src="https://ibb.co/ZfzFDjf" alt="Project Logo" width="726" />
+  <img src="https://i.ibb.co/nwMYJGw/logo.png" alt="Project Logo" width="726" />
 </p>
 
 ## Available Scripts
