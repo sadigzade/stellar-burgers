@@ -4,10 +4,10 @@ import {
   INGREDIENTS_PLUS_COUNT,
   INGREDIENTS_REQUEST_ERROR,
   INGREDIENTS_REQUEST_SUCCESS,
-} from "../constants/burgerIngredients";
-import { initialCount } from "../../utils/initial-count";
-import { TBurgerIngredients, TRequestData } from "../types/data";
-import { BurgerIngredientActions } from "../actions/burgerIngredients";
+} from "../../constants/burgerIngredients";
+import { initialCount } from "../../../utils/initial-count";
+import { TBurgerIngredients, TRequestData } from "../../types/data";
+import { BurgerIngredientActions } from "../../actions/burgerIngredients";
 
 type BurgerIngredientsState = {
   ingredients: TBurgerIngredients[];

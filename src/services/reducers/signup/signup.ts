@@ -1,11 +1,11 @@
-import { setCookie } from "../../utils/cookie";
-import { SignupActions } from "../actions/signup";
+import { setCookie } from "../../../utils/cookie";
+import { SignupActions } from "../../actions/signup";
 import {
   SIGN_UP_REQUEST,
   SIGN_UP_REQUEST_ERROR,
   SIGN_UP_REQUEST_SUCCESS,
-} from "../constants/signup";
-import { TRequestData, TUser } from "../types/data";
+} from "../../constants/signup";
+import { TRequestData, TUser } from "../../types/data";
 
 type SignupState = {
   loading: boolean;

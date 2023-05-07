@@ -99,7 +99,7 @@ const BurgerConstructor = () => {
   return (
     <section className="mt-25 w-full flex flex-col items-end gap-y-10">
       <div className={`flex flex-col gap-y-4 w-full mr-4`}>
-        <div ref={dropBunTopRef} className="flex justify-end w-full">
+        <div id={"drop-top"} ref={dropBunTopRef} className="flex justify-end w-full">
           {bun ? (
             <ConstructorElement
               type="top"
@@ -117,13 +117,13 @@ const BurgerConstructor = () => {
           )}
         </div>
 
-        <div ref={dropIngredientRef} className="flex flex-col items-end w-full">
+        <div id={"drop-center"} ref={dropIngredientRef} className="flex flex-col items-end w-full">
           {ingredients.length ? (
             <Reorder.Group
               axis="y"
               values={ingredients}
               onReorder={handleUpdateConstructor}
-              className={`flex flex-col gap-y-4 max-h-[368px] overflow-y-scroll pr-2 relative w-full
+              className={`flex flex-col gap-y-4 max-h-[368px] pr-2 relative w-full overflow-y-auto
               ${ingredients.length > 4 ? "scrollbar -right-4" : "-right-2"}`}>
               {ingredients.map((ingredient) => {
                 return (
@@ -144,7 +144,7 @@ const BurgerConstructor = () => {
           )}
         </div>
 
-        <div ref={dropBunBottomRef} className="flex justify-end w-full">
+        <div id={"drop-bottom"} ref={dropBunBottomRef} className="flex justify-end w-full">
           {bun ? (
             <ConstructorElement
               type="bottom"
@@ -168,6 +168,7 @@ const BurgerConstructor = () => {
           <CurrencyIcon type="primary" />
         </div>
         <Button
+          id={"checkout"}
           htmlType="button"
           type="primary"
           disabled={!bun || !ingredients.length}

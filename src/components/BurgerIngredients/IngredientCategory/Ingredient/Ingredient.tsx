@@ -30,7 +30,11 @@ const Ingredient: FC<IngredientProps> = ({ ingredient }) => {
   };
 
   return (
-    <Link key={_id} to={`/ingredients/${_id}`} state={{ background: location }}>
+    <Link
+      key={_id}
+      data-ingredient={"ingredient"}
+      to={`/ingredients/${_id}`}
+      state={{ background: location }}>
       <div
         className="flex flex-col items-center relative"
         style={{ opacity }}

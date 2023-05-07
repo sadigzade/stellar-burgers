@@ -36,7 +36,7 @@ export const LoginPage = () => {
             extraClass="mb-2"
           />
         </div>
-        <Button htmlType="submit" type="primary" size="medium">
+        <Button id={"button-login"} htmlType="submit" type="primary" size="medium">
           Войти
         </Button>
       </form>

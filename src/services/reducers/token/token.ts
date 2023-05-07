@@ -1,7 +1,7 @@
-import { setCookie } from "../../utils/cookie";
-import { TokenActions } from "../actions/token";
-import { TOKEN_REQUEST_ERROR, TOKEN_REQUEST_SUCCESS } from "../constants/token";
-import { TRequestData } from "../types/data";
+import { setCookie } from "../../../utils/cookie";
+import { TokenActions } from "../../actions/token";
+import { TOKEN_REQUEST_ERROR, TOKEN_REQUEST_SUCCESS } from "../../constants/token";
+import { TRequestData } from "../../types/data";
 
 type TokenState = {
   error: Readonly<TRequestData> | null;

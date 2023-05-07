@@ -37,7 +37,7 @@ const AppHeader = () => {
               </NavLink>
             </li>
             <li className="flex justify-end grow py-4 pl-5">
-              <NavLink to="/profile" className="flex items-center">
+              <NavLink id={"username"} to="/profile" className="flex items-center">
                 {({ isActive }) => (
                   <>
                     <ProfileIcon type={isActive ? "primary" : "secondary"} />

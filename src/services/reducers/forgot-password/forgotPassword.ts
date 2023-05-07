@@ -1,11 +1,11 @@
-import { ForgotPasswordActions } from "../actions/forgotPassword";
+import { ForgotPasswordActions } from "../../actions/forgotPassword";
 import {
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_REQUEST_ERROR,
   FORGOT_PASSWORD_REQUEST_SUCCESS,
   FORGOT_PASSWORD_RESET,
-} from "../constants/forgotPassword";
-import { TRequestData } from "../types/data";
+} from "../../constants/forgotPassword";
+import { TRequestData } from "../../types/data";
 
 type ForgotPasswordState = {
   loading: boolean;
