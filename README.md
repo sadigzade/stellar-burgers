@@ -18,14 +18,18 @@
 + Framer-motion
 
 ## Как запустить приложение?
-```
 Склонируйте проект к себе локально на компьютер: 
+```
 git clone https://github.com/sadigzade/stellar-burgers.git
+```
 
 Далее установите зависимости:
+```
 npm install
+```
 
 Запустите проект:
+```
 npm run start
 ```
 
