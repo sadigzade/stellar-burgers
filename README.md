@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Проект Stellar Burgers
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+<p align="center">  
+  <img src="https://ibb.co/ZfzFDjf" alt="Project Logo" width="726" />
+</p>
 
 ## Available Scripts
 
