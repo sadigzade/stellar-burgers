@@ -1,11 +1,11 @@
-import { ResetPasswordActions } from "../actions/resetPassword";
+import { ResetPasswordActions } from "../../actions/resetPassword";
 import {
   RESET_PASSWORD_INITIAL,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_REQUEST_ERROR,
   RESET_PASSWORD_REQUEST_SUCCESS,
-} from "../constants/resetPassword";
-import { TRequestData } from "../types/data";
+} from "../../constants/resetPassword";
+import { TRequestData } from "../../types/data";
 
 type ResetPasswordState = {
   loading: boolean;

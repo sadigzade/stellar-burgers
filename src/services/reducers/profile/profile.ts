@@ -1,11 +1,11 @@
-import { ProfileActions } from "../actions/profile";
+import { ProfileActions } from "../../actions/profile";
 import {
   PROFILE_REQUEST,
   PROFILE_REQUEST_ERROR,
   PROFILE_STATE_RESET,
   PROFILE_REQUEST_SUCCESS,
-} from "../constants/profile";
-import { TRequestData, TUser } from "../types/data";
+} from "../../constants/profile";
+import { TRequestData, TUser } from "../../types/data";
 
 type ProfileState = {
   loading: boolean;

@@ -1,13 +1,13 @@
-import { setCookie } from "../../utils/cookie";
-import { LoginActions } from "../actions/login";
+import { setCookie } from "../../../utils/cookie";
+import { LoginActions } from "../../actions/login";
 import {
   LOGIN_REQUEST,
   LOGIN_REQUEST_ERROR,
   LOGIN_REQUEST_SUCCESS,
   LOGIN_STATE_RESET,
   LOGOUT_REQUEST_ERROR,
-} from "../constants/login";
-import { TRequestData, TUser } from "../types/data";
+} from "../../constants/login";
+import { TRequestData, TUser } from "../../types/data";
 
 type LoginState = {
   loading: boolean;

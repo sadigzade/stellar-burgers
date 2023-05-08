@@ -1,12 +1,12 @@
-import type { WsActions } from "../actions/wsActions";
+import type { WsActions } from "../../actions/wsActions";
 import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_SUCCESS,
   WS_DISCONNECTING,
   WS_GET_MESSAGE,
-} from "../constants/wsActionTypes";
-import { TWSOrders } from "../types/data";
+} from "../../constants/wsActionTypes";
+import { TWSOrders } from "../../types/data";
 
 type WSState = {
   wsConnected: boolean;

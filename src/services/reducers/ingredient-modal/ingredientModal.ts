@@ -1,6 +1,6 @@
-import { IngredientModalActions } from "../actions/ingredientModal";
-import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../constants/ingredientModal";
-import { TBurgerIngredients } from "../types/data";
+import { IngredientModalActions } from "../../actions/ingredientModal";
+import { INGREDIENT_MODAL_CLOSE, INGREDIENT_MODAL_OPEN } from "../../constants/ingredientModal";
+import { TBurgerIngredients } from "../../types/data";
 
 type IngredientModalState = {
   ingredient: Readonly<TBurgerIngredients> | null;

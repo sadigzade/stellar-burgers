@@ -1,12 +1,12 @@
-import { ConstructorIngredientsActions } from "../actions/constructorIngredients";
+import { ConstructorIngredientsActions } from "../../actions/constructorIngredients";
 import {
   CONSTRUCTOR_ADD_BUN,
   CONSTRUCTOR_ADD_INDGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
   CONSTRUCTOR_RESET,
   CONSTRUCTOR_UPDATE,
-} from "../constants/constructorIngredients";
-import { TBurgerIngredients } from "../types/data";
+} from "../../constants/constructorIngredients";
+import { TBurgerIngredients } from "../../types/data";
 
 type ConstructorIngredientsState = {
   bun: TBurgerIngredients | null;

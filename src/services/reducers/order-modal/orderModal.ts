@@ -1,11 +1,11 @@
-import { OrderModalActions } from "../actions/orderModal";
+import { OrderModalActions } from "../../actions/orderModal";
 import {
   ORDER_NUMBER_REQUEST,
   ORDER_NUMBER_REQUEST_ERROR,
   ORDER_NUMBER_REQUEST_SUCCESS,
   ORDER_NUMBER_RESET,
-} from "../constants/orderModal";
-import { TOrder, TRequestData } from "../types/data";
+} from "../../constants/orderModal";
+import { TOrder, TRequestData } from "../../types/data";
 
 type OrderModalState = {
   status: boolean;

@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import { deleteCookie, getCookie } from "../../utils/cookie";
 import { request } from "../../utils/request";
 import {
@@ -8,10 +7,9 @@ import {
   LOGIN_STATE_RESET,
   LOGOUT_REQUEST_ERROR,
 } from "../constants/login";
-import type { AppDispatch, AppThunk, RootState } from "../types";
+import type { AppDispatch, AppThunk } from "../types";
 import type { TForm, TLogin, TRequestData } from "../types/data";
 import { checkUserAuth, profileStateReset } from "./profile";
-import { wsDisconnecting } from "./wsActions";
 
 type LoginRequestAction = {
   readonly type: typeof LOGIN_REQUEST;

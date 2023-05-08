@@ -1,16 +1,16 @@
 import { combineReducers } from "redux";
 
-import { loginReducer } from "./login";
-import { tokenReducer } from "./token";
-import { wsReducer } from "./wsReducer";
-import { signupReducer } from "./signup";
-import { profileReducer } from "./profile";
-import { orderModalReducer } from "./orderModal";
-import { resetPasswordReducer } from "./resetPassword";
-import { forgotPasswordReducer } from "./forgotPassword";
-import { ingredientModalReducer } from "./ingredientModal";
-import { burgerIngredientsReducer } from "./burgerIngredients";
-import { constructorIngredientsReducer } from "./constructorIngredients";
+import { loginReducer } from "./login/login";
+import { tokenReducer } from "./token/token";
+import { wsReducer } from "./ws-reducer/wsReducer";
+import { signupReducer } from "./signup/signup";
+import { profileReducer } from "./profile/profile";
+import { orderModalReducer } from "./order-modal/orderModal";
+import { resetPasswordReducer } from "./reset-password/resetPassword";
+import { forgotPasswordReducer } from "./forgot-password/forgotPassword";
+import { ingredientModalReducer } from "./ingredient-modal/ingredientModal";
+import { burgerIngredientsReducer } from "./burger-ingredients/burgerIngredients";
+import { constructorIngredientsReducer } from "./constructor-ingredients/constructorIngredients";
 
 export const rootReducer = combineReducers({
   login: loginReducer,
