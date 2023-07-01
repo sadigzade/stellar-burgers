@@ -1,23 +1,52 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import {
   BurgerIcon,
   ListIcon,
   Logo,
+  MenuIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import MobileLogo from "../../images/logo-mobile.svg";
+import MenuMobile from "./MenuMobile/MenuMobile";
 
 const AppHeader = () => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsOpened(!isOpened);
+
+    if (isOpened) {
+      document.body.style.overflow = "";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  };
+
   return (
-    <header className="absolute top-0 left-0 w-full box-shadow bg-[#1c1c21]">
-      <div className="container">
-        <nav className="relative">
+    <header className="fixed top-0 left-0 z-20 w-full box-shadow bg-[#1c1c21]">
+      <div className="flex items-center justify-between px-2 py-3 md:hidden">
+        <Link to={"/"}>
+          <img src={MobileLogo} alt="Mobile Logo" />
+        </Link>
+        <div className="cursor-pointer">
+          <MenuIcon type="primary" onClick={handleMenuClick} />
+        </div>
+      </div>
+      <div className="container hidden md:block">
+        <nav className="relative" role="navigation">
           <ul className="flex items-center justify-between py-4">
             <li className="py-4 pr-5">
               <NavLink to="/" className="flex items-center">
                 {({ isActive }) => (
                   <>
                     <BurgerIcon type={isActive ? "primary" : "secondary"} />
-                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                    <span
+                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
+                        isActive ? "" : "text_color_inactive"
+                      }`.trim()}
+                    >
                       Конструктор
                     </span>
                   </>
@@ -29,7 +58,11 @@ const AppHeader = () => {
                 {({ isActive }) => (
                   <>
                     <ListIcon type={isActive ? "primary" : "secondary"} />
-                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                    <span
+                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
+                        isActive ? "" : "text_color_inactive"
+                      }`.trim()}
+                    >
                       Лента заказов
                     </span>
                   </>
@@ -41,7 +74,11 @@ const AppHeader = () => {
                 {({ isActive }) => (
                   <>
                     <ProfileIcon type={isActive ? "primary" : "secondary"} />
-                    <span className={`pl-2 ${isActive ? "" : "text_color_inactive"}`.trim()}>
+                    <span
+                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
+                        isActive ? "" : "text_color_inactive"
+                      }`.trim()}
+                    >
                       Личный кабинет
                     </span>
                   </>
@@ -51,11 +88,15 @@ const AppHeader = () => {
           </ul>
           <div className="absolute top-1/2 left-1/2 transform-50">
             <Link to="/" replace className="flex">
-              <Logo />
+              <div className="hidden xl:block">
+                <Logo />
+              </div>
+              <img src={MobileLogo} width={55} height={55} className="block xl:hidden" alt="Logo" />
             </Link>
           </div>
         </nav>
       </div>
+      <AnimatePresence>{isOpened && <MenuMobile onCloseModal={handleMenuClick} />}</AnimatePresence>
     </header>
   );
 };

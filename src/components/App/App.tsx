@@ -50,7 +50,8 @@ const App = () => {
                 <ProtectedRouteElement>
                   <ProfilePage />
                 </ProtectedRouteElement>
-              }>
+              }
+            >
               <Route path="/profile/orders" element={<HistoryOrders />} />
             </Route>
             <Route

@@ -31,7 +31,7 @@ const MenuMobile: FC<MenuMobileProps> = ({ onCloseModal }) => {
       initial={variantFrom}
       animate={variantTo}
       exit={variantFrom}
-      className="absolute top-0 left-0 w-full h-screen bg-[#1c1c21] duration-300 ease-in-out"
+      className="absolute top-0 left-0 w-full z-20 h-screen bg-[#1c1c21] duration-300 ease-in-out"
     >
       <div className="flex items-center justify-between px-2 py-4">
         <h3 className="text text_type_main-medium">Меню</h3>
