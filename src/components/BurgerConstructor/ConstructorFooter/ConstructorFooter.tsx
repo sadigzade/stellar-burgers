@@ -6,7 +6,15 @@ import OrderDetailsModal from "../OrderDetailsModal/OrderDetailsModal";
 import { useDispatch, useSelector } from "../../../hooks/hooks";
 import { orderNumberRequestAsync, orderNumberReset } from "../../../services/actions/orderModal";
 
-const ConstructorFooter = () => {
+type ConstructorFooterProps = {
+  constructorVisible: boolean;
+  onConstructorVisible: () => void;
+};
+
+const ConstructorFooter: FC<ConstructorFooterProps> = ({
+  constructorVisible,
+  onConstructorVisible,
+}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.profile.user);
   const order = useSelector((state) => state.orderModal.order);
@@ -56,6 +64,16 @@ const ConstructorFooter = () => {
         <CurrencyIcon type="primary" />
       </div>
       <Button
+        htmlType="button"
+        type="primary"
+        size="small"
+        disabled={constructorVisible && (!bun || !ingredients.length)}
+        onClick={constructorVisible ? handleOrderClick : onConstructorVisible}
+        extraClass="w-[196px]"
+      >
+        {constructorVisible ? "Заказать" : "Cмотреть заказ"}
+      </Button>
+      {/* <Button
         id={"checkout"}
         htmlType="button"
         type="primary"
@@ -65,7 +83,7 @@ const ConstructorFooter = () => {
         extraClass="hidden"
       >
         Оформить заказ
-      </Button>
+      </Button> */}
       {status && (
         <Modal onClose={handleModalClose}>
           <OrderDetailsModal orderNumber={order?.number} />

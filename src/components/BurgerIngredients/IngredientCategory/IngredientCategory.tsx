@@ -10,7 +10,7 @@ type IngredientCategoryProps = {
 const IngredientCategory = forwardRef<HTMLDivElement, IngredientCategoryProps>(
   ({ text, products }, ref) => {
     return (
-      <div ref={ref} className="mb-10">
+      <div ref={ref}>
         <h2 className="mb-6">{text}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 gap-4 lg:gap-6 lg:pl-4">
           {products.map((ingredient, index) => (

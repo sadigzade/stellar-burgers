@@ -80,7 +80,7 @@ const BurgerIngredients = () => {
           clickHandler={handleClick}
         />
       </div>
-      <div onScroll={handleScroll} className="mt-5 lg:mt-10 px-2">
+      <div onScroll={handleScroll} className="flex flex-col gap-y-3 mt-5 mb-20 lg:mt-10 px-2">
         <IngredientCategory ref={refBun} text={"Булки"} products={buns} />
         <IngredientCategory ref={refSauce} text={"Соусы"} products={sauces} />
         <IngredientCategory ref={refMain} text={"Начинки"} products={mains} />
