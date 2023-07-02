@@ -27,14 +27,14 @@ const AppHeader = () => {
   return (
     <header className="fixed top-0 left-0 z-20 w-full box-shadow bg-[#1c1c21]">
       <div className="flex items-center justify-between px-2 py-3 md:hidden">
-        <Link to={"/"}>
+        <Link to={"/"} className="w-10 h-10">
           <img src={MobileLogo} alt="Mobile Logo" />
         </Link>
         <div className="cursor-pointer">
           <MenuIcon type="primary" onClick={handleMenuClick} />
         </div>
       </div>
-      <div className="container hidden md:block">
+      <div className="max-w-[1280px] w-full md:px-2 lg:px-5 mx-auto hidden md:block">
         <nav className="relative" role="navigation">
           <ul className="flex items-center justify-between py-4">
             <li className="py-4 pr-5">

@@ -11,8 +11,8 @@ const IngredientCategory = forwardRef<HTMLDivElement, IngredientCategoryProps>(
   ({ text, products }, ref) => {
     return (
       <div ref={ref} className="mb-10">
-        <h2 className="text text_type_main-medium mb-6">{text}</h2>
-        <div className="grid grid-cols-2 gap-6 mt-6 ml-4">
+        <h2 className="mb-6">{text}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 gap-4 lg:gap-6 lg:pl-4">
           {products.map((ingredient, index) => (
             <Ingredient key={`${ingredient._id}_${index}`} ingredient={ingredient} />
           ))}

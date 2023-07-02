@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { Reorder } from "framer-motion";
-import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  ConstructorElement,
+  CurrencyIcon,
+  DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import type { TBurgerIngredients } from "../../../services/types/data";
 
 type ConstructorIngredientsProps = {
@@ -9,18 +13,20 @@ type ConstructorIngredientsProps = {
 };
 
 const ConstructorIngredients: FC<ConstructorIngredientsProps> = ({ item, onRemoveHandler }) => {
-  const { _id, dragId, name, price, image } = item;
+  const { _id, dragId, name, price, image_mobile } = item;
 
   return (
-    <Reorder.Item value={item}>
-      <div className="flex items-center justify-end w-full gap-x-[7px]">
+    <Reorder.Item value={item} className="flex items-center">
+      <div className="h-4 w-4 svg-16">
         <DragIcon type="primary" />
-        <ConstructorElement
-          text={name}
-          price={price}
-          thumbnail={image}
-          handleClose={() => onRemoveHandler(dragId, _id)}
-        />
+      </div>
+      <div className="flex w-full gap-x-2 py-4 pr-2">
+        <img src={image_mobile} height={40} width={52} className="object-cover" alt="" />
+        <span className="grow">{name}</span>
+        <span className="flex gap-x-2 font-iceland text-[22px] leading-6">
+          {price}
+          <CurrencyIcon type="primary" />
+        </span>
       </div>
     </Reorder.Item>
   );

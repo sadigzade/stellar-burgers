@@ -40,11 +40,11 @@ const App = () => {
   return (
     <div className="relative h-full">
       <AppHeader />
-      <main className="container pt-88 h-full">
+      <main className="max-w-[1280px] w-full lg:px-5 mx-auto pt-16 md:pt-[88px] h-full">
         {user || !token ? (
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
-            <Route
+            {/* <Route
               path="/profile"
               element={
                 <ProtectedRouteElement>
@@ -69,7 +69,7 @@ const App = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} /> */}
           </Routes>
         ) : (
           <Preloader />

@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { TIngredient } from "../../../services/types/data";
 
 type IngredientTabProps = {
@@ -11,9 +10,20 @@ type IngredientTabProps = {
 
 const IngredientTab: FC<IngredientTabProps> = ({ type, text, currentTab, clickHandler }) => {
   return (
-    <Tab value={type} active={currentTab === type} onClick={() => clickHandler(type)}>
-      {text}
-    </Tab>
+    <div
+      className={`relative w-full h-[52px] px-10 py-4 cursor-pointer duration-300 ease-in-out noselect ${
+        type === currentTab ? "tab_type_current" : "tab-underline"
+      }`}
+      onClick={() => clickHandler(type)}
+    >
+      <span
+        className={`absolute top-1/2 left-1/2 transform-50 text-sm md:text-base duration-300 ease-in-out ${
+          type === currentTab ? "text-white" : "text_color_inactive"
+        } hover:text-white`}
+      >
+        {text}
+      </span>
+    </div>
   );
 };
 

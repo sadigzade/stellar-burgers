@@ -56,9 +56,11 @@ const BurgerIngredients = () => {
   };
 
   return (
-    <section className="w-full mt-10">
-      <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
-      <div className="flex mb-10">
+    <section className="mt-4 lg:mt-10 w-full">
+      <h1 className="text-center lg:text-start text-[28px] md:text-[32px] lg:text-4xl">
+        Соберите бургер
+      </h1>
+      <div className="grid grid-cols-3 mt-2 lg:mt-5">
         <IngredientTab
           type={"bun"}
           text={"Булки"}
@@ -78,7 +80,7 @@ const BurgerIngredients = () => {
           clickHandler={handleClick}
         />
       </div>
-      <div onScroll={handleScroll} className="overflow-y-scroll scrollbar pr-2 h-auto-304 mb-5">
+      <div onScroll={handleScroll} className="mt-5 lg:mt-10 px-2">
         <IngredientCategory ref={refBun} text={"Булки"} products={buns} />
         <IngredientCategory ref={refSauce} text={"Соусы"} products={sauces} />
         <IngredientCategory ref={refMain} text={"Начинки"} products={mains} />

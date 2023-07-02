@@ -1,20 +1,26 @@
-import { FC } from "react";
-import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FC, MouseEvent } from "react";
+import { Button, Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "../../../../hooks/hooks";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { ingredientModalOpen } from "../../../../services/actions/ingredientModal";
 import { DNDTypes } from "../../../../services/types/dnd-types";
 import { TBurgerIngredients } from "../../../../services/types/data";
+import {
+  constructorAddBun,
+  constructorAddIngredient,
+} from "../../../../services/actions/constructorIngredients";
+import { ingredientPlusCount } from "../../../../services/actions/burgerIngredients";
 
 type IngredientProps = {
   ingredient: TBurgerIngredients;
 };
 
 const Ingredient: FC<IngredientProps> = ({ ingredient }) => {
-  const { _id, image, name, price, type, count } = ingredient;
+  const { _id, image, image_mobile, name, price, type, count } = ingredient;
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const bunConstructor = useSelector((state) => state.constructorIngredients.bun);
 
   const [{ opacity }, dragRef] = useDrag({
@@ -25,33 +31,62 @@ const Ingredient: FC<IngredientProps> = ({ ingredient }) => {
     }),
   });
 
+  const handleAddBun = () => {
+    dispatch(constructorAddBun(ingredient));
+  };
+
+  const handleAddIngredient = () => {
+    dispatch(constructorAddIngredient(ingredient));
+    dispatch(ingredientPlusCount(ingredient._id));
+  };
+
   const handleOpenModal = () => {
+    navigate(`/ingredients/${_id}`, {
+      state: {
+        background: location,
+      },
+    });
     dispatch(ingredientModalOpen(ingredient));
   };
 
   return (
-    <Link
-      key={_id}
-      data-ingredient={"ingredient"}
-      to={`/ingredients/${_id}`}
-      state={{ background: location }}>
+    <div data-ingredient={"ingredient"}>
       <div
-        className="flex flex-col items-center relative"
+        ref={dragRef}
+        className="flex flex-col items-center gap-y-2 lg:gap-1 relative"
+        onClick={handleOpenModal}
         style={{ opacity }}
-        onClick={handleOpenModal}>
-        <img ref={dragRef} src={image} alt={name} />
-        <div className="flex items-center my-1">
+      >
+        <img src={window.innerWidth < 768 ? image_mobile : image} alt={name} />
+        <div className="flex items-center">
           <span className="text text_type_digits-default mr-2">{price}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <p className="text-center">{name}</p>
+        <p className="text-center block h-[60px] lg:h-12 truncate-text">{name}</p>
         {type === "bun" && bunConstructor?._id === _id ? (
-          <Counter count={2} size="default" extraClass="m-1" />
+          <Counter
+            count={2}
+            size={window.innerWidth < 768 ? "small" : "default"}
+            extraClass="m-1"
+          />
         ) : count ? (
-          <Counter count={count} size="default" extraClass="m-1" />
+          <Counter
+            count={count}
+            size={window.innerWidth < 768 ? "small" : "default"}
+            extraClass="m-1"
+          />
         ) : null}
       </div>
-    </Link>
+      <Button
+        htmlType="button"
+        type="secondary"
+        size="small"
+        onClick={type === "bun" ? handleAddBun : handleAddIngredient}
+        extraClass="w-full mt-2 lg:hidden"
+      >
+        Добавить
+      </Button>
+    </div>
   );
 };
 
