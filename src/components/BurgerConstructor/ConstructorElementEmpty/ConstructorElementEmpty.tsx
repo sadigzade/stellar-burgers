@@ -13,14 +13,10 @@ const ConstructorElementEmpty: FC<ConstructorElementEmptyProps> = ({
   text,
 }) => {
   return (
-    <div className="flex items-center space-x-2 w-full pr-4">
-      <div className="h-6 w-6" />
+    <div className="hidden lg:flex items-center gap-x-2 mr-4">
+      <div className="w-6 shrink-0" />
       <div
-        className={`${
-          styles[position]
-        } flex items-center justify-center bg-[#2f2f37] border border-solid border-[#2f2f37] min-h-[80px] w-full ${
-          position === "center" ? "" : ""
-        }`}
+        className={`${styles[position]} flex items-center justify-center grow  bg-[#1C1C21] border border-solid border-[##1C1C21] min-h-[80px] w-full`}
         style={{ borderColor }}
       >
         <p className="text text_type_main-medium">{text}</p>

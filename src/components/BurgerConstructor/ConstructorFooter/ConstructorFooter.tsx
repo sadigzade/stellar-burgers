@@ -58,32 +58,30 @@ const ConstructorFooter: FC<ConstructorFooterProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 flex items-center justify-end gap-x-4 w-full px-2 py-4 bg-[#1C1C21] rounded-t-2xl">
+    <div className="fixed lg:sticky bottom-0 left-0 flex items-center justify-end gap-x-4 w-full px-2 lg:px-0 py-4 lg:py-0 bg-[#1C1C21] lg:bg-transparent rounded-t-2xl lg:mt-10">
       <div className="flex items-center gap-x-2">
-        <span className="font-iceland text-[22px] leading-6">{totalPrice}</span>
+        <span className="font-iceland text-[22px] lg:text-[48px] leading-6 lg:leading-9">
+          {totalPrice}
+        </span>
         <CurrencyIcon type="primary" />
       </div>
-      <Button
-        htmlType="button"
-        type="primary"
-        size="small"
-        disabled={constructorVisible && (!bun || !ingredients.length)}
-        onClick={constructorVisible ? handleOrderClick : onConstructorVisible}
-        extraClass="w-[196px]"
-      >
-        {constructorVisible ? "Заказать" : "Cмотреть заказ"}
-      </Button>
-      {/* <Button
-        id={"checkout"}
-        htmlType="button"
-        type="primary"
-        disabled={!bun || !ingredients.length}
-        size="medium"
-        onClick={handleClick}
-        extraClass="hidden"
-      >
-        Оформить заказ
-      </Button> */}
+      <div className="lg:hidden">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="small"
+          disabled={constructorVisible && (!bun || !ingredients.length)}
+          onClick={constructorVisible ? handleOrderClick : onConstructorVisible}
+          extraClass="w-[196px]"
+        >
+          {constructorVisible ? "Заказать" : "Cмотреть заказ"}
+        </Button>
+      </div>
+      <div className="hidden lg:block mr-4">
+        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
+          Оформить заказ
+        </Button>
+      </div>
       {status && (
         <Modal onClose={handleModalClose}>
           <OrderDetailsModal orderNumber={order?.number} />
