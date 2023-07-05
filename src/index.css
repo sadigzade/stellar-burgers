@@ -6,11 +6,8 @@
   .font-iceland {
     font-family: "Iceland", monospace, "Arial", sans-serif;
   }
-  .constructor-width {
-    width: calc((536 / 584) * 100%);
-  }
-  .constructor-center-width {
-    width: calc((568 / 584) * 100%);
+  .width-content-full div {
+    width: 100%;
   }
   .pt-88 {
     padding-top: 88px;

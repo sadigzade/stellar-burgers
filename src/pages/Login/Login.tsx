@@ -1,13 +1,10 @@
 import { FormEvent, useCallback } from "react";
 import { useDispatch } from "../../hooks/hooks";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  EmailInput,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { loginRequestThunk } from "../../services/actions/login";
 import { useForm } from "../../hooks/useForm";
+import Input from "../../components/Input/Input";
 
 type Login = (e: FormEvent<HTMLFormElement>) => void;
 
@@ -24,30 +21,43 @@ export const LoginPage = () => {
   );
 
   return (
-    <section className="mt-45">
+    <section className="mt-4 lg:mt-[180px] px-2">
       <form className="flex flex-col items-center" onSubmit={login}>
-        <h1 className="mb-6">Вход</h1>
-        <div className="flex flex-col gap-y-6 mb-6">
-          <EmailInput onChange={handleChange} value={values.email} name={"email"} isIcon={false} />
-          <PasswordInput
+        <h1 className="mb-6 text-[28px]">Вход</h1>
+        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
+          <Input
+            value={values.email}
+            type={"email"}
+            name={"email"}
+            title={"E-mail"}
             onChange={handleChange}
-            value={values.password}
-            name={"password"}
-            extraClass="mb-2"
           />
+          <Input
+            value={values.password}
+            type={"password"}
+            name={"password"}
+            title={"Пароль"}
+            onChange={handleChange}
+          />
+          <Button
+            id={"button-login"}
+            htmlType="submit"
+            type="primary"
+            size={window.innerWidth < 768 ? "small" : "medium"}
+            extraClass="self-center"
+          >
+            Войти
+          </Button>
         </div>
-        <Button id={"button-login"} htmlType="submit" type="primary" size="medium">
-          Войти
-        </Button>
       </form>
-      <div className="flex flex-col items-center gap-y-4 mt-20">
-        <div className="flex items-center gap-x-4">
+      <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
+        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
           <span className="text_color_inactive">Вы — новый пользователь?</span>
           <Link to="/register" className="login">
             Зарегистрироваться
           </Link>
         </div>
-        <div className="flex items-center gap-x-4">
+        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
           <span className="text_color_inactive">Забыли пароль?</span>
           <Link to="/forgot-password" className="login">
             Восстановить пароль

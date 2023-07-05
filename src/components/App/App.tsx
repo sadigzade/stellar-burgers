@@ -53,7 +53,7 @@ const App = () => {
               }
             >
               <Route path="/profile/orders" element={<HistoryOrders />} />
-            </Route>
+            </Route> */}
             <Route
               path="/login"
               element={
@@ -62,7 +62,7 @@ const App = () => {
                 </ProtectedRouteElement>
               }
             />
-            <Route path="/feed" element={<FeedPage />} />
+            {/* <Route path="/feed" element={<FeedPage />} />
             <Route path="/feed/:id" element={<OrderPage />} />
             <Route path="/profile/orders/:id" element={<OrderPage />} />
             <Route path="/ingredients/:id" element={<IngredientPage />} />
