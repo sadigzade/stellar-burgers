@@ -1,12 +1,12 @@
 import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordRequestThunk } from "../../services/actions/forgotPassword";
-import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
 import { useDispatch, useSelector } from "../../hooks/hooks";
+import Input from "../../components/Input/Input";
 
 type ForgotPassword = (e: FormEvent<HTMLFormElement>) => void;
 
@@ -40,27 +40,35 @@ export const ForgotPasswordPage = () => {
   }
 
   return (
-    <section className="flex flex-col items-center mt-45">
+    <section className="mt-4 md:mt-[180px] px-2">
       <form className="flex flex-col items-center" onSubmit={forgotPassword}>
-        <h1 className="mb-6">Восстановление пароля</h1>
-        <div className="mb-6">
-          <EmailInput
-            onChange={handleChange}
-            placeholder="Укажите e-mail"
+        <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
+        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
+          <Input
             value={values.email}
+            type={"email"}
             name={"email"}
-            isIcon={false}
+            title={"Укажите e-mail"}
+            onChange={handleChange}
           />
+          <Button
+            id={"button-login"}
+            htmlType="submit"
+            type="primary"
+            size={window.innerWidth < 768 ? "small" : "medium"}
+            extraClass="self-center"
+          >
+            Войти
+          </Button>
         </div>
-        <Button htmlType="submit" type="primary" size="medium">
-          Восстановить
-        </Button>
       </form>
-      <div className="flex items-center gap-x-2 mt-20">
-        <span className="text_color_inactive">Вспомнили пароль?</span>
-        <Link to="/login" className="login">
-          Войти
-        </Link>
+      <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
+        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
+          <span className="text_color_inactive">Вспомнили пароль?</span>
+          <Link to="/login" className="login">
+            Войти
+          </Link>
+        </div>
       </div>
     </section>
   );

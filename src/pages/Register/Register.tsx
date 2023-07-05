@@ -1,11 +1,7 @@
 import { FormEvent, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "../../hooks/hooks";
-import {
-  Button,
-  EmailInput,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { signupRequestAsync } from "../../services/actions/signup";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
@@ -39,9 +35,9 @@ export const RegisterPage = () => {
   }
 
   return (
-    <section className="mt-4 lg:mt-[180px] px-2">
+    <section className="mt-4 md:mt-[180px] px-2">
       <form className="flex flex-col items-center" onSubmit={register}>
-        <h1 className="mb-6 text-[28px]">Регистрация</h1>
+        <h1 className="mb-6 text-[28px] text-center">Регистрация</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
           <Input
             value={values.name}

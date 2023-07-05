@@ -21,9 +21,9 @@ export const LoginPage = () => {
   );
 
   return (
-    <section className="mt-4 lg:mt-[180px] px-2">
+    <section className="mt-4 md:mt-[180px] px-2">
       <form className="flex flex-col items-center" onSubmit={login}>
-        <h1 className="mb-6 text-[28px]">Вход</h1>
+        <h1 className="mb-6 text-[28px] text-center">Вход</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
           <Input
             value={values.email}

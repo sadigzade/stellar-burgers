@@ -67,8 +67,8 @@ const App = () => {
             <Route path="/profile/orders/:id" element={<OrderPage />} />
             <Route path="/ingredients/:id" element={<IngredientPage />} /> */}
             <Route path="/register" element={<RegisterPage />} />
-            {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            {/* <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="*" element={<NotFoundPage />} /> */}
           </Routes>
         ) : (
