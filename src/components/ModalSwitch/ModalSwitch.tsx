@@ -21,6 +21,7 @@ const ModalSwitch: FC<ModalSwitchProps> = ({ background }) => {
 
   const handleModalClose = () => {
     dispatch(ingredientModalClose());
+    document.body.style.overflow = "";
 
     if (background) {
       navigate(background?.pathname);

@@ -47,6 +47,7 @@ const Ingredient: FC<IngredientProps> = ({ ingredient }) => {
       },
     });
     dispatch(ingredientModalOpen(ingredient));
+    document.body.style.overflow = "hidden";
   };
 
   return (

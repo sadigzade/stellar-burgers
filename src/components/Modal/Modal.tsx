@@ -23,14 +23,16 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   }, []);
 
   return ReactDOM.createPortal(
-    <div className="absolute w-full h-full top-1/2 left-1/2 transform-50 z-10">
+    <div className="fixed w-full h-full top-1/2 left-1/2 transform-50 z-20">
       <div
         id="modal"
-        className="relative top-1/2 left-1/2 transform-50 z-20 rounded-[40px] max-w-[720px] w-full bg-[#1c1c21] px-[10px]">
+        className="lg:relative lg:rounded-[40px] lg:max-w-[720px] w-full h-full lg:h-auto lg:top-1/2 lg:left-1/2 lg:transform-50 flex items-center justify-center z-20 bg-[#131317]"
+      >
         <button
           id="modal-close"
-          className="absolute cursor-pointer right-10 top-[60px]"
-          onClick={onClose}>
+          className="absolute cursor-pointer top-4 lg:top-[60px] right-2 lg:right-10"
+          onClick={onClose}
+        >
           <CloseIcon type="primary" />
         </button>
         {children}
