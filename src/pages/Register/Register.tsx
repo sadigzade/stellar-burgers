@@ -4,13 +4,13 @@ import { useDispatch } from "../../hooks/hooks";
 import {
   Button,
   EmailInput,
-  Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { signupRequestAsync } from "../../services/actions/signup";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
+import Input from "../../components/Input/Input";
 
 type Register = (e: FormEvent<HTMLFormElement>) => void;
 
@@ -39,37 +39,48 @@ export const RegisterPage = () => {
   }
 
   return (
-    <section className="flex flex-col items-center mt-45">
+    <section className="mt-4 lg:mt-[180px] px-2">
       <form className="flex flex-col items-center" onSubmit={register}>
-        <h1 className="mb-6">Регистрация</h1>
-        <div className="flex flex-col items-center gap-y-6 mb-6">
+        <h1 className="mb-6 text-[28px]">Регистрация</h1>
+        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
           <Input
-            type={"text"}
-            placeholder={"Имя"}
-            onChange={handleChange}
             value={values.name}
+            type={"text"}
             name={"name"}
-            error={false}
-            errorText={"Ошибка"}
-            size={"default"}
-          />
-          <EmailInput onChange={handleChange} value={values.email} name={"email"} isIcon={false} />
-          <PasswordInput
+            title={"Имя"}
             onChange={handleChange}
-            value={values.password}
-            name={"password"}
-            extraClass="mb-2"
           />
+          <Input
+            value={values.email}
+            type={"email"}
+            name={"email"}
+            title={"E-mail"}
+            onChange={handleChange}
+          />
+          <Input
+            value={values.password}
+            type={"password"}
+            name={"password"}
+            title={"Пароль"}
+            onChange={handleChange}
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size={window.innerWidth < 768 ? "small" : "medium"}
+            extraClass="self-center"
+          >
+            Зарегистрироваться
+          </Button>
         </div>
-        <Button htmlType="submit" type="primary" size="medium">
-          Зарегистрироваться
-        </Button>
       </form>
-      <div className="flex gap-x-2 mt-20">
-        <span className="text_color_inactive">Уже зарегистрированы?</span>
-        <Link to="/login" className="login">
-          Войти
-        </Link>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center mt-10">
+          <span className="text_color_inactive">Уже зарегистрированы?</span>
+          <Link to="/login" className="login">
+            Войти
+          </Link>
+        </div>
       </div>
     </section>
   );
