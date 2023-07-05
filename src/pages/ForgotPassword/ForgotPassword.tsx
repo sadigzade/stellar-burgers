@@ -58,7 +58,7 @@ export const ForgotPasswordPage = () => {
             size={window.innerWidth < 768 ? "small" : "medium"}
             extraClass="self-center"
           >
-            Войти
+            Восстановить
           </Button>
         </div>
       </form>
