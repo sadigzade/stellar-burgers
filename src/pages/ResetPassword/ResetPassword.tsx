@@ -15,7 +15,8 @@ import Input from "../../components/Input/Input";
 type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ResetPasswordPage = () => {
-  const { values, handleChange } = useForm({ password: "", token: "" });
+  const password = useForm("", { isEmpty: true, minLength: 8 });
+  const code = useForm("", { isEmpty: true, minLength: 36 });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,9 +27,14 @@ export const ResetPasswordPage = () => {
   const resetPassword = useCallback<TResetPassword>(
     (e) => {
       e.preventDefault();
-      dispatch(resetPasswordRequestAsync(values));
+      dispatch(
+        resetPasswordRequestAsync({
+          password: password.value,
+          code: code.value,
+        }),
+      );
     },
-    [dispatch, values],
+    [code.value, dispatch, password.value],
   );
 
   useEffect(() => {
@@ -59,20 +65,20 @@ export const ResetPasswordPage = () => {
       <form className="flex flex-col items-center" onSubmit={resetPassword}>
         <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          <Input
-            value={values.password}
+          {/* <Input
+            value={password.value}
             type={"password"}
             name={"password"}
             title={"Введите новый пароль"}
-            onChange={handleChange}
+            onChange={password.onChange}
           />
           <Input
-            value={values.token}
+            value={code.value}
             type={"text"}
             name={"token"}
             title={"Введите код из письма"}
-            onChange={handleChange}
-          />
+            onChange={code.onChange}
+          /> */}
           <Button
             id={"button-login"}
             htmlType="submit"

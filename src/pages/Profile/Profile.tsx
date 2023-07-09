@@ -15,11 +15,9 @@ import styles from "./Profile.module.css";
 type UpdateSumbitType = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ProfilePage = () => {
-  const { values, handleChange, setValues } = useForm({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const name = useForm("", { isEmpty: true, minLength: 4 });
+  const email = useForm("", { isEmpty: true });
+  const password = useForm("", { isEmpty: true, minLength: 8 });
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -32,19 +30,27 @@ export const ProfilePage = () => {
   const updateSumbit = useCallback<UpdateSumbitType>(
     (e) => {
       e.preventDefault();
-      dispatch(profileRequestUpdate(values));
-      setValues({ ...values, password: "" });
+      dispatch(
+        profileRequestUpdate({
+          name: name.value,
+          email: email.value,
+          password: password.value,
+        }),
+      );
+      password.setValue("");
     },
-    [dispatch, setValues, values],
+    [dispatch, email.value, name.value, password],
   );
 
   const cancleClick = useCallback(
     (e: SyntheticEvent) => {
       if (userProfile) {
-        setValues({ name: userProfile.name, email: userProfile.email, password: "" });
+        name.setValue(userProfile.name);
+        email.setValue(userProfile.email);
+        password.setValue("");
       }
     },
-    [setValues, userProfile],
+    [email, name, password, userProfile],
   );
 
   const logout = useCallback(
@@ -57,7 +63,8 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     if (userProfile) {
-      setValues({ ...values, name: userProfile.name, email: userProfile.email });
+      name.setValue(userProfile.name);
+      email.setValue(userProfile.email);
     }
   }, [userProfile]);
 
@@ -71,7 +78,8 @@ export const ProfilePage = () => {
                 <span
                   className={`text text_type_main-medium ${
                     isActive && pathname === "/profile" ? "" : "text_color_inactive"
-                  }`.trim()}>
+                  }`.trim()}
+                >
                   Профиль
                 </span>
               )}
@@ -83,7 +91,8 @@ export const ProfilePage = () => {
                 <span
                   className={`text text_type_main-medium ${
                     isActive && pathname === "/profile/orders" ? "" : "text_color_inactive"
-                  }`.trim()}>
+                  }`.trim()}
+                >
                   История заказов
                 </span>
               )}
@@ -94,7 +103,8 @@ export const ProfilePage = () => {
               to="/login"
               replace
               className={`text text_type_main-medium text_color_inactive ${styles.link}`}
-              onClick={logout}>
+              onClick={logout}
+            >
               <span>Выход</span>
             </NavLink>
           </li>
@@ -107,22 +117,21 @@ export const ProfilePage = () => {
         <form className="flex flex-col items-end gap-y-6 form mt-30" onSubmit={updateSumbit}>
           <Input
             type="text"
-            onChange={handleChange}
-            value={values.name}
-            name="name"
+            onChange={name.onChange}
+            value={name.value}
             placeholder="Имя"
             icon="EditIcon"
             ref={inputRef}
             onIconClick={onIconClick}
           />
           <EmailInput
-            onChange={handleChange}
-            value={values.email}
+            value={email.value}
             name="email"
             placeholder="Логин"
             isIcon={true}
+            onChange={email.onChange}
           />
-          <PasswordInput
+          {/* <PasswordInput
             onChange={handleChange}
             value={values.password}
             name="password"
@@ -140,7 +149,7 @@ export const ProfilePage = () => {
                   Сохранить
                 </Button>
               </div>
-            )}
+            )} */}
         </form>
       )}
       <div className="w-full mt-10 mb-5">

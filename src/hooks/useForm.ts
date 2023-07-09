@@ -1,12 +1,14 @@
 import { useState, ChangeEvent } from "react";
 
-export const useForm = (inputValues: { [key: string]: string } = {}) => {
-  const [values, setValues] = useState(inputValues);
+export const useForm = (
+  inintialValue: string = "",
+  validations: { [key: string]: number | boolean },
+) => {
+  const [value, setValue] = useState(inintialValue);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   };
 
-  return { values, handleChange, setValues };
+  return { value, onChange, setValue };
 };

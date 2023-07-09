@@ -11,7 +11,7 @@ import Input from "../../components/Input/Input";
 type ForgotPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ForgotPasswordPage = () => {
-  const { values, handleChange } = useForm({ email: "" });
+  const email = useForm("", { isEmpty: true });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
@@ -20,9 +20,13 @@ export const ForgotPasswordPage = () => {
   const forgotPassword = useCallback<ForgotPassword>(
     (e) => {
       e.preventDefault();
-      dispatch(forgotPasswordRequestThunk(values));
+      dispatch(
+        forgotPasswordRequestThunk({
+          email: email.value,
+        }),
+      );
     },
-    [dispatch, values],
+    [dispatch, email.value],
   );
 
   useEffect(() => {
@@ -44,13 +48,13 @@ export const ForgotPasswordPage = () => {
       <form className="flex flex-col items-center" onSubmit={forgotPassword}>
         <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          <Input
-            value={values.email}
+          {/* <Input
+            value={email.value}
             type={"email"}
             name={"email"}
             title={"Укажите e-mail"}
-            onChange={handleChange}
-          />
+            onChange={email.onChange}
+          /> */}
           <Button
             id={"button-login"}
             htmlType="submit"

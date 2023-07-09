@@ -9,6 +9,9 @@
   .width-content-full div {
     width: 100%;
   }
+  .input-help:-webkit-autofill {
+    -webkit-text-fill-color: #ffffff !important;
+  }
   .pt-88 {
     padding-top: 88px;
   }

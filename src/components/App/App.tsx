@@ -44,7 +44,7 @@ const App = () => {
         {user || !token ? (
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
-            {/* <Route
+            <Route
               path="/profile"
               element={
                 <ProtectedRouteElement>
@@ -53,7 +53,7 @@ const App = () => {
               }
             >
               <Route path="/profile/orders" element={<HistoryOrders />} />
-            </Route> */}
+            </Route>
             <Route
               path="/login"
               element={

@@ -11,7 +11,9 @@ import Input from "../../components/Input/Input";
 type Register = (e: FormEvent<HTMLFormElement>) => void;
 
 export const RegisterPage = () => {
-  const { values, handleChange } = useForm({ name: "", email: "", password: "" });
+  const name = useForm("", { isEmpty: true, minLength: 4 });
+  const email = useForm("", { isEmpty: true });
+  const password = useForm("", { isEmpty: true, minLength: 8 });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = getCookie("accessToken");
@@ -19,9 +21,15 @@ export const RegisterPage = () => {
   const register = useCallback<Register>(
     (e) => {
       e.preventDefault();
-      dispatch(signupRequestAsync(values));
+      dispatch(
+        signupRequestAsync({
+          name: name.value,
+          email: email.value,
+          password: password.value,
+        }),
+      );
     },
-    [dispatch, values],
+    [dispatch, email.value, name.value, password.value],
   );
 
   useEffect(() => {
@@ -39,26 +47,26 @@ export const RegisterPage = () => {
       <form className="flex flex-col items-center" onSubmit={register}>
         <h1 className="mb-6 text-[28px] text-center">Регистрация</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          <Input
-            value={values.name}
+          {/* <Input
+            value={name.value}
             type={"text"}
             name={"name"}
             title={"Имя"}
-            onChange={handleChange}
+            onChange={name.onChange}
           />
           <Input
-            value={values.email}
+            value={email.value}
             type={"email"}
             name={"email"}
             title={"E-mail"}
-            onChange={handleChange}
+            onChange={email.onChange}
           />
           <Input
-            value={values.password}
+            value={password.value}
             type={"password"}
             name={"password"}
             title={"Пароль"}
-            onChange={handleChange}
+            onChange={password.onChange}
           />
           <Button
             htmlType="submit"
@@ -67,7 +75,7 @@ export const RegisterPage = () => {
             extraClass="self-center"
           >
             Зарегистрироваться
-          </Button>
+          </Button> */}
         </div>
       </form>
       <div className="flex flex-col items-center">
