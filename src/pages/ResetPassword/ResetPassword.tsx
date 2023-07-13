@@ -10,32 +10,28 @@ import { forgotPasswordReset } from "../../services/actions/forgotPassword";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
-import Input from "../../components/Input/Input";
 
 type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ResetPasswordPage = () => {
-  const password = useForm("", { isEmpty: true, minLength: 8 });
-  const code = useForm("", { isEmpty: true, minLength: 36 });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const resetAnswer = useSelector((state) => state.resetPassword.success);
   const token = getCookie("accessToken");
 
-  const resetPassword = useCallback<TResetPassword>(
-    (e) => {
-      e.preventDefault();
-      dispatch(
-        resetPasswordRequestAsync({
-          password: password.value,
-          code: code.value,
-        }),
-      );
-    },
-    [code.value, dispatch, password.value],
-  );
+  // const resetPassword = useCallback<TResetPassword>(
+  //   (e) => {
+  //     e.preventDefault();
+  //     dispatch(
+  //       resetPasswordRequestAsync({
+  //         password: password.value,
+  //         code: code.value,
+  //       }),
+  //     );
+  //   },
+  //   [code.value, dispatch, password.value],
+  // );
 
   useEffect(() => {
     if (resetAnswer) {
@@ -62,10 +58,10 @@ export const ResetPasswordPage = () => {
 
   return (
     <section className="mt-4 md:mt-[180px] px-2">
-      <form className="flex flex-col items-center" onSubmit={resetPassword}>
+      {/* <form className="flex flex-col items-center" onSubmit={resetPassword}>
         <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          {/* <Input
+          <Input
             value={password.value}
             type={"password"}
             name={"password"}
@@ -78,7 +74,7 @@ export const ResetPasswordPage = () => {
             name={"token"}
             title={"Введите код из письма"}
             onChange={code.onChange}
-          /> */}
+          />
           <Button
             id={"button-login"}
             htmlType="submit"
@@ -89,7 +85,7 @@ export const ResetPasswordPage = () => {
             Сохранить
           </Button>
         </div>
-      </form>
+      </form> */}
       <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
         <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
           <span className="text_color_inactive">Вспомнили пароль?</span>

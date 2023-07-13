@@ -1,63 +1,66 @@
-import { FC, useState } from "react";
 import { HideIcon, ShowIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Control, UseFormRegisterReturn, useController } from "react-hook-form";
-import { LoginInputs } from "../../pages/Login/Login";
+import React, { forwardRef, useState } from "react";
 
-type InputProps = {
-  type: string;
-  name: keyof LoginInputs;
-  label: string;
-  register: UseFormRegisterReturn;
-  errorMessage?: string;
-  control: Control<LoginInputs>;
-};
+interface InputProps {
+  id?: string;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  value?: string | number;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+}
 
-const Input: FC<InputProps> = ({ type, name, label, register, errorMessage, control }) => {
-  const [show, setShow] = useState(false);
-  const [inputActive, setInputActive] = useState(false);
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ id, type, name, placeholder, value, onChange, onBlur }, ref) => {
+    const [show, setShow] = useState(false);
+    const [inputActive, setInputActive] = useState(false);
 
-  const { field } = useController({
-    name,
-    control,
-  });
+    const onClickOutside = () => {};
+    const onShowPassword = () => {
+      setShow(!show);
+    };
+    const onBlurInput = () => {
+      setInputActive(false);
+    };
 
-  const onShowPassword = () => {
-    setShow(!show);
-  };
-
-  return (
-    <div className="flex flex-col gap-y-2">
-      <div
-        className={`relative flex items-center px-5 lg:px-6 lg:py-3 border-2 border-solid ease-in duration-200 cursor-text bg-[#2F2F37] rounded-[40px] w-full ${
-          inputActive ? "border-[#4c4cff]" : "border-transparent"
-        }`}
-      >
-        <label
-          className={`absolute text-[#8585AD] ease-in duration-300 z-10 ${
-            inputActive || field.value ? "top-1 lg:top-2" : "top-[14px] lg:top-5"
+    return (
+      <div className="flex flex-col gap-y-2">
+        <div
+          className={`relative flex items-center px-5 lg:px-6 lg:py-3 border-2 border-solid ease-in duration-200 cursor-text bg-[#2F2F37] rounded-[40px] w-full ${
+            inputActive ? "border-[#4c4cff]" : "border-transparent"
           }`}
+          onClick={onClickOutside}
         >
-          {label}
-        </label>
-        <input
-          {...register}
-          value={field.value}
-          onChange={field.onChange}
-          type={show ? "text" : type}
-          onFocus={() => setInputActive(true)}
-          onBlur={() => setInputActive(false)}
-          className="h-8 lg:h-5 bg-transparent input-help border-none outline-none caret-white w-full mt-4 text-white text-[16px] focus:text-white"
-        />
+          <label
+            htmlFor={id}
+            className={`absolute text-[#8585AD] ease-in duration-300 z-10 ${
+              inputActive || value ? "top-1 lg:top-2" : "top-[14px] lg:top-5"
+            }`}
+          >
+            {placeholder}
+          </label>
+          <input
+            ref={ref}
+            id={id}
+            type={show ? "text" : type}
+            name={name}
+            value={value}
+            onChange={onChange}
+            onFocus={() => setInputActive(true)}
+            onBlur={onBlurInput}
+            className="h-8 lg:h-5 bg-transparent input-help border-none outline-none caret-white w-full mt-4 text-white text-[16px] focus:text-white"
+          />
 
-        {type === "password" && (
-          <div className="flex items-center cursor-pointer" onClick={onShowPassword}>
-            {show ? <HideIcon type="primary" /> : <ShowIcon type="primary" />}
-          </div>
-        )}
+          {type === "password" && (
+            <div className="flex items-center cursor-pointer" onClick={onShowPassword}>
+              {show ? <HideIcon type="primary" /> : <ShowIcon type="primary" />}
+            </div>
+          )}
+        </div>
       </div>
-      {errorMessage && <span className="text-[red]">{errorMessage}</span>}
-    </div>
-  );
-};
+    );
+  },
+);
 
 export default Input;

@@ -1,33 +1,23 @@
-import { FormEvent, useCallback, useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPasswordRequestThunk } from "../../services/actions/forgotPassword";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
-import { useForm } from "../../hooks/useForm";
 import Preloader from "../../components/Preloader/Preloader";
 import { useDispatch, useSelector } from "../../hooks/hooks";
-import Input from "../../components/Input/Input";
 
 type ForgotPassword = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ForgotPasswordPage = () => {
-  const email = useForm("", { isEmpty: true });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const token = getCookie("accessToken");
 
-  const forgotPassword = useCallback<ForgotPassword>(
-    (e) => {
-      e.preventDefault();
-      dispatch(
-        forgotPasswordRequestThunk({
-          email: email.value,
-        }),
-      );
-    },
-    [dispatch, email.value],
-  );
+  const forgotPasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // dispatch(forgotPasswordRequestThunk(data));
+  };
 
   useEffect(() => {
     if (forgotAnswer) {
@@ -45,15 +35,16 @@ export const ForgotPasswordPage = () => {
 
   return (
     <section className="mt-4 md:mt-[180px] px-2">
-      <form className="flex flex-col items-center" onSubmit={forgotPassword}>
+      <form className="flex flex-col items-center" onSubmit={forgotPasswordSubmit}>
         <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
           {/* <Input
-            value={email.value}
             type={"email"}
             name={"email"}
-            title={"Укажите e-mail"}
-            onChange={email.onChange}
+            label={"Укажите e-mail"}
+            register={{ ...register("email") }}
+            errorMessage={errors.email?.message}
+            control={control}
           /> */}
           <Button
             id={"button-login"}

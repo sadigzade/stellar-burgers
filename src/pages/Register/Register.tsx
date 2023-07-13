@@ -1,36 +1,34 @@
-import { FormEvent, useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "../../hooks/hooks";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { signupRequestAsync } from "../../services/actions/signup";
+import { useDispatch } from "../../hooks/hooks";
 import { getCookie } from "../../utils/cookie";
-import { useForm } from "../../hooks/useForm";
+import { signupRequestAsync } from "../../services/actions/signup";
 import Preloader from "../../components/Preloader/Preloader";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { registerFormScheme } from "../../utils/scheme";
+import { z } from "zod";
 import Input from "../../components/Input/Input";
-
-type Register = (e: FormEvent<HTMLFormElement>) => void;
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormInputsTypes } from "../../@types/App.types";
 
 export const RegisterPage = () => {
-  const name = useForm("", { isEmpty: true, minLength: 4 });
-  const email = useForm("", { isEmpty: true });
-  const password = useForm("", { isEmpty: true, minLength: 8 });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = getCookie("accessToken");
-
-  const register = useCallback<Register>(
-    (e) => {
-      e.preventDefault();
-      dispatch(
-        signupRequestAsync({
-          name: name.value,
-          email: email.value,
-          password: password.value,
-        }),
-      );
+  const { handleSubmit, control } = useForm<z.infer<typeof registerFormScheme>>({
+    mode: "onChange",
+    resolver: zodResolver(registerFormScheme),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
     },
-    [dispatch, email.value, name.value, password.value],
-  );
+  });
+
+  const registerSubmit: SubmitHandler<FormInputsTypes> = (data) => {
+    dispatch(signupRequestAsync(data));
+  };
 
   useEffect(() => {
     if (token) {
@@ -44,30 +42,12 @@ export const RegisterPage = () => {
 
   return (
     <section className="mt-4 md:mt-[180px] px-2">
-      <form className="flex flex-col items-center" onSubmit={register}>
+      <form className="flex flex-col items-center" onSubmit={handleSubmit(registerSubmit)}>
         <h1 className="mb-6 text-[28px] text-center">Регистрация</h1>
         <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          {/* <Input
-            value={name.value}
-            type={"text"}
-            name={"name"}
-            title={"Имя"}
-            onChange={name.onChange}
-          />
-          <Input
-            value={email.value}
-            type={"email"}
-            name={"email"}
-            title={"E-mail"}
-            onChange={email.onChange}
-          />
-          <Input
-            value={password.value}
-            type={"password"}
-            name={"password"}
-            title={"Пароль"}
-            onChange={password.onChange}
-          />
+          {/* <Input type={"text"} label={"Имя"} name={"name"} control={control} />
+          <Input type={"email"} label={"E-mail"} name={"email"} control={control} />
+          <Input type={"password"} label={"Пароль"} name={"password"} control={control} /> */}
           <Button
             htmlType="submit"
             type="primary"
@@ -75,7 +55,7 @@ export const RegisterPage = () => {
             extraClass="self-center"
           >
             Зарегистрироваться
-          </Button> */}
+          </Button>
         </div>
       </form>
       <div className="flex flex-col items-center">

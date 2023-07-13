@@ -15,9 +15,6 @@ import styles from "./Profile.module.css";
 type UpdateSumbitType = (e: FormEvent<HTMLFormElement>) => void;
 
 export const ProfilePage = () => {
-  const name = useForm("", { isEmpty: true, minLength: 4 });
-  const email = useForm("", { isEmpty: true });
-  const password = useForm("", { isEmpty: true, minLength: 8 });
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -27,46 +24,46 @@ export const ProfilePage = () => {
     inputRef?.current?.focus();
   };
 
-  const updateSumbit = useCallback<UpdateSumbitType>(
-    (e) => {
-      e.preventDefault();
-      dispatch(
-        profileRequestUpdate({
-          name: name.value,
-          email: email.value,
-          password: password.value,
-        }),
-      );
-      password.setValue("");
-    },
-    [dispatch, email.value, name.value, password],
-  );
+  // const updateSumbit = useCallback<UpdateSumbitType>(
+  //   (e) => {
+  //     e.preventDefault();
+  //     dispatch(
+  //       profileRequestUpdate({
+  //         name: name.value,
+  //         email: email.value,
+  //         password: password.value,
+  //       }),
+  //     );
+  //     password.setValue("");
+  //   },
+  //   [dispatch, email.value, name.value, password],
+  // );
 
-  const cancleClick = useCallback(
-    (e: SyntheticEvent) => {
-      if (userProfile) {
-        name.setValue(userProfile.name);
-        email.setValue(userProfile.email);
-        password.setValue("");
-      }
-    },
-    [email, name, password, userProfile],
-  );
+  // const cancleClick = useCallback(
+  //   (e: SyntheticEvent) => {
+  //     if (userProfile) {
+  //       name.setValue(userProfile.name);
+  //       email.setValue(userProfile.email);
+  //       password.setValue("");
+  //     }
+  //   },
+  //   [email, name, password, userProfile],
+  // );
 
-  const logout = useCallback(
-    (e: SyntheticEvent) => {
-      e.preventDefault();
-      dispatch(logoutRequestThunk());
-    },
-    [dispatch],
-  );
+  // const logout = useCallback(
+  //   (e: SyntheticEvent) => {
+  //     e.preventDefault();
+  //     dispatch(logoutRequestThunk());
+  //   },
+  //   [dispatch],
+  // );
 
-  useEffect(() => {
-    if (userProfile) {
-      name.setValue(userProfile.name);
-      email.setValue(userProfile.email);
-    }
-  }, [userProfile]);
+  // useEffect(() => {
+  //   if (userProfile) {
+  //     name.setValue(userProfile.name);
+  //     email.setValue(userProfile.email);
+  //   }
+  // }, [userProfile]);
 
   return (
     <section className="flex gap-x-14">
@@ -103,7 +100,7 @@ export const ProfilePage = () => {
               to="/login"
               replace
               className={`text text_type_main-medium text_color_inactive ${styles.link}`}
-              onClick={logout}
+              // onClick={logout}
             >
               <span>Выход</span>
             </NavLink>
@@ -113,7 +110,7 @@ export const ProfilePage = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      {pathname === "/profile" && (
+      {/* {pathname === "/profile" && (
         <form className="flex flex-col items-end gap-y-6 form mt-30" onSubmit={updateSumbit}>
           <Input
             type="text"
@@ -131,7 +128,7 @@ export const ProfilePage = () => {
             isIcon={true}
             onChange={email.onChange}
           />
-          {/* <PasswordInput
+          <PasswordInput
             onChange={handleChange}
             value={values.password}
             name="password"
@@ -149,9 +146,9 @@ export const ProfilePage = () => {
                   Сохранить
                 </Button>
               </div>
-            )} */}
+            )}
         </form>
-      )}
+      )} */}
       <div className="w-full mt-10 mb-5">
         <Outlet />
       </div>
