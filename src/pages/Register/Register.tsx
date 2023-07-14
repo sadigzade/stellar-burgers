@@ -1,24 +1,26 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "../../hooks/hooks";
 import { getCookie } from "../../utils/cookie";
 import { signupRequestAsync } from "../../services/actions/signup";
 import Preloader from "../../UI/Preloader/Preloader";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { registerFormScheme } from "../../utils/scheme";
-import { z } from "zod";
 import Input from "../../UI/Input/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInputsTypes } from "../../@types/App.types";
+import { registerScheme } from "./register-scheme";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+import Button from "../../UI/Button/Button";
+import styles from "./Register.module.css";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { z } from "zod";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = getCookie("accessToken");
-  const { handleSubmit, control } = useForm<z.infer<typeof registerFormScheme>>({
-    mode: "onChange",
-    resolver: zodResolver(registerFormScheme),
+  const form = useForm<z.infer<typeof registerScheme>>({
+    resolver: zodResolver(registerScheme),
     defaultValues: {
       name: "",
       email: "",
@@ -41,29 +43,68 @@ export const RegisterPage = () => {
   }
 
   return (
-    <section className="mt-4 md:mt-[180px] px-2">
-      <form className="flex flex-col items-center" onSubmit={handleSubmit(registerSubmit)}>
-        <h1 className="mb-6 text-[28px] text-center">Регистрация</h1>
-        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          {/* <Input type={"text"} label={"Имя"} name={"name"} control={control} />
-          <Input type={"email"} label={"E-mail"} name={"email"} control={control} />
-          <Input type={"password"} label={"Пароль"} name={"password"} control={control} /> */}
-          <Button
-            htmlType="submit"
-            type="primary"
-            size={window.innerWidth < 768 ? "small" : "medium"}
-            extraClass="self-center"
-          >
-            Зарегистрироваться
-          </Button>
-        </div>
-      </form>
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center mt-10">
-          <span className="text_color_inactive">Уже зарегистрированы?</span>
-          <Link to="/login" className="login">
+    <section className={styles.register}>
+      <Form {...form}>
+        <form className={styles.register__form} onSubmit={form.handleSubmit(registerSubmit)}>
+          <h1 className={styles["register__form-title"]}>Регистрация</h1>
+          <div className={styles["register__form-content"]}>
+            <FormField
+              control={form.control}
+              name={"name"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder={"Имя"} {...field} onFocus={form.setFocus} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"email"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder={"E-mail"} {...field} onFocus={form.setFocus} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"password"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type={"password"}
+                      placeholder={"Пароль"}
+                      endIcon={{
+                        initial: <EyeIcon />,
+                        active: <EyeSlashIcon />,
+                      }}
+                      {...field}
+                      onFocus={form.setFocus}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type={"primary"} htmlType={"submit"}>
+              Зарегистрироваться
+            </Button>
+          </div>
+        </form>
+      </Form>
+      <div className={styles.register__footer}>
+        <div className={styles["register__footer-content"]}>
+          <span>Уже зарегистрированы?</span>
+          <Button type={"secondary"} href={"/login"}>
             Войти
-          </Link>
+          </Button>
         </div>
       </div>
     </section>

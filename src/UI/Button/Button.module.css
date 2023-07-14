@@ -26,12 +26,14 @@
   filter: drop-shadow(0 4px 32px rgba(51, 51, 255, 0.5));
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 768px) {
   .button {
     font-size: 1rem;
     line-height: 24px;
   }
+}
 
+@media screen and (min-width: 992px) {
   .button--primary {
     padding: 16px 40px;
   }

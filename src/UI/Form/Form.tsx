@@ -8,6 +8,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { Slot } from "@radix-ui/react-slot";
+import styles from "./Form.module.css";
 
 const Form = FormProvider;
 
@@ -47,7 +48,7 @@ const FormItem = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>
 
     return (
       <FormItemContext.Provider value={value}>
-        <div ref={ref} {...props} className={className} />
+        <div ref={ref} {...props} className={className ? className : styles.form__item} />
       </FormItemContext.Provider>
     );
   },
@@ -119,7 +120,12 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPa
     }
 
     return (
-      <p ref={ref} id={formMessageId} className={className} {...props}>
+      <p
+        ref={ref}
+        id={formMessageId}
+        className={className ? className : styles.form__message}
+        {...props}
+      >
         {body}
       </p>
     );

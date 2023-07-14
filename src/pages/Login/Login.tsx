@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { z } from "zod";
 import { loginScheme } from "./login-scheme";
 import Input from "../../UI/Input/Input";
@@ -12,6 +11,10 @@ import Button from "../../UI/Button/Button";
 export const LoginPage = () => {
   const form = useForm<z.infer<typeof loginScheme>>({
     resolver: zodResolver(loginScheme),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = (data: z.infer<typeof loginScheme>) => console.log(data);
@@ -26,11 +29,11 @@ export const LoginPage = () => {
               control={form.control}
               name={"email"}
               render={({ field }) => (
-                <FormItem className={styles["login__form-item"]}>
+                <FormItem>
                   <FormControl>
                     <Input placeholder={"E-mail"} {...field} onFocus={form.setFocus} />
                   </FormControl>
-                  <FormMessage className={styles["login__form-message"]} />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -38,7 +41,7 @@ export const LoginPage = () => {
               control={form.control}
               name={"password"}
               render={({ field }) => (
-                <FormItem className={styles["login__form-item"]}>
+                <FormItem>
                   <FormControl>
                     <Input
                       type={"password"}
@@ -51,7 +54,7 @@ export const LoginPage = () => {
                       onFocus={form.setFocus}
                     />
                   </FormControl>
-                  <FormMessage className={styles["login__form-message"]} />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -61,18 +64,18 @@ export const LoginPage = () => {
           </div>
         </form>
       </Form>
-      <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
-        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
-          <span className="text_color_inactive">Вы — новый пользователь?</span>
-          <Link to="/register" className="login">
+      <div className={styles.login__footer}>
+        <div className={styles["login__footer-block"]}>
+          <span>Вы — новый пользователь?</span>
+          <Button type={"secondary"} href={"/register"}>
             Зарегистрироваться
-          </Link>
+          </Button>
         </div>
-        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
-          <span className="text_color_inactive">Забыли пароль?</span>
-          <Link to="/forgot-password" className="login">
+        <div className={styles["login__footer-block"]}>
+          <span>Забыли пароль?</span>
+          <Button type={"secondary"} href={"/forgot-password"}>
             Восстановить пароль
-          </Link>
+          </Button>
         </div>
       </div>
     </section>
