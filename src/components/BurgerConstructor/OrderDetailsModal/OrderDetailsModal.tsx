@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import Preloader from "../../Preloader/Preloader";
+import Preloader from "../../../UI/Preloader/Preloader";
 
 type OrderDetailsModalProps = {
   orderNumber: number | undefined;

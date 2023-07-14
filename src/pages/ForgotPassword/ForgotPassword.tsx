@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { forgotPasswordRequestThunk } from "../../services/actions/forgotPassword";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
-import Preloader from "../../components/Preloader/Preloader";
+import Preloader from "../../UI/Preloader/Preloader";
 import { useDispatch, useSelector } from "../../hooks/hooks";
 
 type ForgotPassword = (e: FormEvent<HTMLFormElement>) => void;

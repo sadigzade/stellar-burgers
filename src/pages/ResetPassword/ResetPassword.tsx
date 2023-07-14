@@ -9,7 +9,7 @@ import {
 import { forgotPasswordReset } from "../../services/actions/forgotPassword";
 import { getCookie } from "../../utils/cookie";
 import { useForm } from "../../hooks/useForm";
-import Preloader from "../../components/Preloader/Preloader";
+import Preloader from "../../UI/Preloader/Preloader";
 
 type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
 

@@ -1,0 +1,38 @@
+.button {
+  align-self: center;
+  cursor: pointer;
+  transition: all 300ms ease-in;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
+
+.button--secondary {
+  color: #4c4cff;
+}
+
+.button--secondary:hover {
+  color: #ffffff;
+}
+
+.button--primary {
+  padding: 10px 32px;
+  border-radius: 32px;
+  background: linear-gradient(63.18deg, #801ab3, #4c4cff);
+  color: #ffffff;
+}
+
+.button--primary:hover {
+  box-shadow: 0 0 16px 8px rgba(51, 51, 255, 0.25), 0 0 8px 8px rgba(51, 51, 255, 0.25);
+  filter: drop-shadow(0 4px 32px rgba(51, 51, 255, 0.5));
+}
+
+@media screen and (min-width: 992px) {
+  .button {
+    font-size: 1rem;
+    line-height: 24px;
+  }
+
+  .button--primary {
+    padding: 16px 40px;
+  }
+}

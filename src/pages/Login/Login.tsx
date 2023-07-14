@@ -1,12 +1,13 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { loginScheme } from "./login-scheme";
-import Input from "../../components/Input/Input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/Form/Form";
-// import Input from "../../components/Input";
+import Input from "../../UI/Input/Input";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import styles from "./Login.module.css";
+import Button from "../../UI/Button/Button";
 
 export const LoginPage = () => {
   const form = useForm<z.infer<typeof loginScheme>>({
@@ -16,20 +17,20 @@ export const LoginPage = () => {
   const onSubmit = (data: z.infer<typeof loginScheme>) => console.log(data);
 
   return (
-    <section className="mt-4 md:mt-[180px] px-2">
+    <section className={styles.login}>
       <Form {...form}>
-        <form className="flex flex-col items-center" onSubmit={form.handleSubmit(onSubmit)}>
-          <h1 className="mb-6 text-[28px] text-center">Вход</h1>
-          <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
+        <form className={styles.login__form} onSubmit={form.handleSubmit(onSubmit)}>
+          <h1 className={styles["login__form-title"]}>Вход</h1>
+          <div className={styles["login__form-content"]}>
             <FormField
               control={form.control}
               name={"email"}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={styles["login__form-item"]}>
                   <FormControl>
-                    <Input placeholder={"E-mail"} {...field} />
+                    <Input placeholder={"E-mail"} {...field} onFocus={form.setFocus} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className={styles["login__form-message"]} />
                 </FormItem>
               )}
             />
@@ -37,23 +38,24 @@ export const LoginPage = () => {
               control={form.control}
               name={"password"}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={styles["login__form-item"]}>
                   <FormControl>
-                    <Input placeholder={"Пароль"} {...field} />
+                    <Input
+                      type={"password"}
+                      placeholder={"Пароль"}
+                      endIcon={{
+                        initial: <EyeIcon />,
+                        active: <EyeSlashIcon />,
+                      }}
+                      {...field}
+                      onFocus={form.setFocus}
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className={styles["login__form-message"]} />
                 </FormItem>
               )}
             />
-            {/* <Input type={"email"} label={"E-mail"} name="email" control={control} />
-          <Input type={"password"} label={"Пароль"} name="password" control={control} /> */}
-            <Button
-              id={"button-login"}
-              htmlType="submit"
-              type="primary"
-              size={window.innerWidth < 768 ? "small" : "medium"}
-              extraClass="self-center"
-            >
+            <Button type={"primary"} htmlType={"submit"}>
               Войти
             </Button>
           </div>

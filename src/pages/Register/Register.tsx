@@ -4,11 +4,11 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "../../hooks/hooks";
 import { getCookie } from "../../utils/cookie";
 import { signupRequestAsync } from "../../services/actions/signup";
-import Preloader from "../../components/Preloader/Preloader";
+import Preloader from "../../UI/Preloader/Preloader";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { registerFormScheme } from "../../utils/scheme";
 import { z } from "zod";
-import Input from "../../components/Input/Input";
+import Input from "../../UI/Input/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInputsTypes } from "../../@types/App.types";
 

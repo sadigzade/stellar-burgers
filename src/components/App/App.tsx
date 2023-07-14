@@ -15,7 +15,7 @@ import {
 } from "../../pages";
 
 import AppHeader from "../AppHeader/AppHeader";
-import Preloader from "../Preloader/Preloader";
+import Preloader from "../../UI/Preloader/Preloader";
 import ModalSwitch from "../ModalSwitch/ModalSwitch";
 import HistoryOrders from "../HistoryOrders/HistoryOrders";
 import ProtectedRouteElement from "../ProtectedRouteElement/ProtectedRouteElement";
