@@ -1,19 +1,26 @@
-import { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "../../hooks/hooks";
-import { getCookie } from "../../utils/cookie";
-import { signupRequestAsync } from "../../services/actions/signup";
-import Preloader from "../../UI/Preloader/Preloader";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Input from "../../UI/Input/Input";
+
+import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormInputsTypes } from "../../@types/App.types";
-import { registerScheme } from "./register-scheme";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
-import Button from "../../UI/Button/Button";
-import styles from "./Register.module.css";
+
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { z } from "zod";
+
+import { useDispatch } from "../../hooks/hooks";
+
+import { getCookie } from "../../utils/cookie";
+
+import { registerScheme } from "./register-scheme";
+
+import { signupRequestAsync } from "../../services/actions/signup";
+
+import Input from "../../UI/Input/Input";
+import Button from "../../UI/Button/Button";
+import Preloader from "../../UI/Preloader/Preloader";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+
+import styles from "./Register.module.css";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -28,11 +35,11 @@ export const RegisterPage = () => {
     },
   });
 
-  const registerSubmit: SubmitHandler<FormInputsTypes> = (data) => {
+  const registerSubmit: SubmitHandler<z.infer<typeof registerScheme>> = (data) => {
     dispatch(signupRequestAsync(data));
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (token) {
       navigate("/", { replace: true });
     }
@@ -54,7 +61,7 @@ export const RegisterPage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder={"Имя"} {...field} onFocus={form.setFocus} />
+                    <Input placeholder={"Имя"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,7 +73,7 @@ export const RegisterPage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder={"E-mail"} {...field} onFocus={form.setFocus} />
+                    <Input placeholder={"E-mail"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

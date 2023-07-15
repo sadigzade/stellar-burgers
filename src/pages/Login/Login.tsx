@@ -1,12 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { loginScheme } from "./login-scheme";
-import Input from "../../UI/Input/Input";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import styles from "./Login.module.css";
+
+import { loginScheme } from "./login-scheme";
+
+import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+
+import styles from "./Login.module.css";
 
 export const LoginPage = () => {
   const form = useForm<z.infer<typeof loginScheme>>({
@@ -31,7 +36,7 @@ export const LoginPage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder={"E-mail"} {...field} onFocus={form.setFocus} />
+                    <Input placeholder={"E-mail"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

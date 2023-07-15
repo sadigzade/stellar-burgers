@@ -1,17 +1,31 @@
-import { FormEvent, useCallback, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+
 import { useDispatch, useSelector } from "../../hooks/hooks";
+
 import {
   resetPasswordInitial,
   resetPasswordRequestAsync,
 } from "../../services/actions/resetPassword";
 import { forgotPasswordReset } from "../../services/actions/forgotPassword";
-import { getCookie } from "../../utils/cookie";
-import { useForm } from "../../hooks/useForm";
-import Preloader from "../../UI/Preloader/Preloader";
 
-type TResetPassword = (e: FormEvent<HTMLFormElement>) => void;
+import { getCookie } from "../../utils/cookie";
+
+import { resetPasswordScheme } from "./reset-password-scheme";
+
+import Input from "../../UI/Input/Input";
+import Button from "../../UI/Button/Button";
+import Preloader from "../../UI/Preloader/Preloader";
+import { Form, FormControl, FormField, FormItem } from "../../UI/Form/Form";
+
+import styles from "./ResetPassword.module.css";
 
 export const ResetPasswordPage = () => {
   const dispatch = useDispatch();
@@ -19,21 +33,19 @@ export const ResetPasswordPage = () => {
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const resetAnswer = useSelector((state) => state.resetPassword.success);
   const token = getCookie("accessToken");
+  const form = useForm<z.infer<typeof resetPasswordScheme>>({
+    resolver: zodResolver(resetPasswordScheme),
+    defaultValues: {
+      password: "",
+      code: "",
+    },
+  });
 
-  // const resetPassword = useCallback<TResetPassword>(
-  //   (e) => {
-  //     e.preventDefault();
-  //     dispatch(
-  //       resetPasswordRequestAsync({
-  //         password: password.value,
-  //         code: code.value,
-  //       }),
-  //     );
-  //   },
-  //   [code.value, dispatch, password.value],
-  // );
+  const resetPassword: SubmitHandler<z.infer<typeof resetPasswordScheme>> = (data) => {
+    dispatch(resetPasswordRequestAsync(data));
+  };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (resetAnswer) {
       navigate("/login", { replace: true });
     }
@@ -57,41 +69,54 @@ export const ResetPasswordPage = () => {
   }
 
   return (
-    <section className="mt-4 md:mt-[180px] px-2">
-      {/* <form className="flex flex-col items-center" onSubmit={resetPassword}>
-        <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
-        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          <Input
-            value={password.value}
-            type={"password"}
-            name={"password"}
-            title={"Введите новый пароль"}
-            onChange={password.onChange}
-          />
-          <Input
-            value={code.value}
-            type={"text"}
-            name={"token"}
-            title={"Введите код из письма"}
-            onChange={code.onChange}
-          />
-          <Button
-            id={"button-login"}
-            htmlType="submit"
-            type="primary"
-            size={window.innerWidth < 768 ? "small" : "medium"}
-            extraClass="self-center"
-          >
-            Сохранить
-          </Button>
-        </div>
-      </form> */}
-      <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
-        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
-          <span className="text_color_inactive">Вспомнили пароль?</span>
-          <Link to="/login" className="login">
+    <section className={styles.resetpassword}>
+      <Form {...form}>
+        <form className={styles.resetpassword__form} onSubmit={form.handleSubmit(resetPassword)}>
+          <h1 className={styles["resetpassword__form-title"]}>Восстановление пароля</h1>
+          <div className={styles["resetpassword__form-content"]}>
+            <FormField
+              control={form.control}
+              name={"password"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type={"password"}
+                      placeholder={"Введите новый пароль"}
+                      {...field}
+                      onFocus={form.setFocus}
+                      endIcon={{
+                        initial: <EyeIcon />,
+                        active: <EyeSlashIcon />,
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"code"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder={"Введите код из письма"} {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button type={"primary"} htmlType={"submit"}>
+              Сохранить
+            </Button>
+          </div>
+        </form>
+      </Form>
+      <div className={styles.resetpassword__footer}>
+        <div className={styles["resetpassword__footer-item"]}>
+          <span>Вспомнили пароль?</span>
+          <Button type={"secondary"} href={"/login"}>
             Войти
-          </Link>
+          </Button>
         </div>
       </div>
     </section>

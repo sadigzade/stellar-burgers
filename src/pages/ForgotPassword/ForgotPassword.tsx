@@ -1,25 +1,42 @@
-import { FormEvent, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { forgotPasswordRequestThunk } from "../../services/actions/forgotPassword";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { getCookie } from "../../utils/cookie";
-import Preloader from "../../UI/Preloader/Preloader";
+
+import { forgotPasswordScheme } from "./forgot-password-scheme";
+
 import { useDispatch, useSelector } from "../../hooks/hooks";
 
-type ForgotPassword = (e: FormEvent<HTMLFormElement>) => void;
+import { forgotPasswordRequestThunk } from "../../services/actions/forgotPassword";
+
+import Input from "../../UI/Input/Input";
+import Button from "../../UI/Button/Button";
+import Preloader from "../../UI/Preloader/Preloader";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+
+import styles from "./ForgotPassword.module.css";
 
 export const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const forgotAnswer = useSelector((state) => state.forgotPassword.success);
   const token = getCookie("accessToken");
+  const form = useForm<z.infer<typeof forgotPasswordScheme>>({
+    resolver: zodResolver(forgotPasswordScheme),
+    defaultValues: {
+      email: "",
+    },
+  });
 
-  const forgotPasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // dispatch(forgotPasswordRequestThunk(data));
+  const forgotPasswordSubmit: SubmitHandler<z.infer<typeof forgotPasswordScheme>> = (data) => {
+    dispatch(forgotPasswordRequestThunk(data));
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (forgotAnswer) {
       navigate("/reset-password", { replace: true });
     }
@@ -34,35 +51,38 @@ export const ForgotPasswordPage = () => {
   }
 
   return (
-    <section className="mt-4 md:mt-[180px] px-2">
-      <form className="flex flex-col items-center" onSubmit={forgotPasswordSubmit}>
-        <h1 className="mb-6 text-[28px] text-center">Восстановление пароля</h1>
-        <div className="flex flex-col gap-y-5 lg:gap-y-6 max-w-[480px] w-full">
-          {/* <Input
-            type={"email"}
-            name={"email"}
-            label={"Укажите e-mail"}
-            register={{ ...register("email") }}
-            errorMessage={errors.email?.message}
-            control={control}
-          /> */}
-          <Button
-            id={"button-login"}
-            htmlType="submit"
-            type="primary"
-            size={window.innerWidth < 768 ? "small" : "medium"}
-            extraClass="self-center"
-          >
-            Восстановить
-          </Button>
-        </div>
-      </form>
-      <div className="flex flex-col items-center gap-y-5 mt-10 lg:mt-20">
-        <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center">
-          <span className="text_color_inactive">Вспомнили пароль?</span>
-          <Link to="/login" className="login">
+    <section className={styles.forgotpassword}>
+      <Form {...form}>
+        <form
+          className={styles.forgotpassword__form}
+          onSubmit={form.handleSubmit(forgotPasswordSubmit)}
+        >
+          <h1 className={styles["forgotpassword__form-title"]}>Восстановление пароля</h1>
+          <div className={styles["forgotpassword__form-content"]}>
+            <FormField
+              control={form.control}
+              name={"email"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder={"Укажите e-mail"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type={"primary"} htmlType={"submit"}>
+              Восстановить
+            </Button>
+          </div>
+        </form>
+      </Form>
+      <div className={styles.forgotpassword__footer}>
+        <div className={styles["forgotpassword__footer-item"]}>
+          <span>Вспомнили пароль?</span>
+          <Button type={"secondary"} href={"/login"}>
             Войти
-          </Link>
+          </Button>
         </div>
       </div>
     </section>
