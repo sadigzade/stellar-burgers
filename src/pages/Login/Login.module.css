@@ -11,7 +11,8 @@
 
 .login__form-title {
   margin: 0 0 24px 0;
-  font-size: 28px;
+  font-size: 1.75rem;
+  font-weight: 700;
   text-align: center;
 }
 

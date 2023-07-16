@@ -11,7 +11,6 @@
   padding: 0 20px;
   border: 2px solid transparent;
   transition: border-color ease-in 300ms;
-  /* cursor: text; */
   background-color: #2f2f37;
   border-radius: 40px;
   width: 100%;
@@ -27,6 +26,8 @@
   color: #8585ad;
   transition: all 300ms ease-in;
   z-index: 2;
+  font-size: 0.875rem;
+  line-height: 20px;
 }
 
 .input__label.active {
@@ -42,7 +43,14 @@
   width: 100%;
   padding: 16px 0 0 0;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 0.875rem;
+  line-height: 20px;
+  transition: color 300ms ease-in;
+}
+
+.input__field--disabled {
+  cursor: not-allowed;
+  color: #8585ad;
 }
 
 .input__field:-webkit-autofill {
@@ -62,6 +70,7 @@
 
   .input__label {
     top: 20px;
+    font-size: 1rem;
   }
 
   .input__label.active {
@@ -70,5 +79,9 @@
 
   .input__field {
     height: 64px;
+  }
+
+  .input__field {
+    font-size: 1rem;
   }
 }

@@ -8,17 +8,37 @@ interface InputProps {
   type?: string;
   name?: string;
   placeholder?: string;
-  value?: string | number;
+  value?: string;
+  disabled?: boolean;
   endIcon?: {
     initial: React.ReactNode;
     active?: React.ReactNode;
+  };
+  changeInput?: {
+    initialValue: string;
+    setChange: (val: boolean) => void;
   };
   onFocus?: UseFormSetFocus<FieldValues>;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ id, type, name, placeholder, value, endIcon, onFocus, onChange }, ref) => {
+  (
+    {
+      id,
+      type,
+      name,
+      placeholder,
+      value,
+      disabled = false,
+      endIcon,
+      changeInput,
+      onFocus,
+      onChange,
+    },
+    ref,
+  ) => {
+    const [inputDisabled, setInputDisabled] = React.useState(disabled);
     const [inputActive, setInputActive] = React.useState(false);
     const [activeEndIcon, setActiveEndIcon] = React.useState(false);
 
@@ -27,9 +47,27 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     const onClickEndIcon = () => {
-      setActiveEndIcon(!activeEndIcon);
-      if (onFocus && name) onFocus(name);
+      if (endIcon) setActiveEndIcon(!activeEndIcon);
+      if (disabled) setInputDisabled(!inputDisabled);
     };
+
+    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (changeInput) {
+        if (changeInput.initialValue === event.target.value) {
+          changeInput.setChange(false);
+        } else {
+          changeInput.setChange(true);
+        }
+      }
+
+      if (onChange) {
+        onChange(event);
+      }
+    };
+
+    React.useEffect(() => {
+      if (onFocus && name) onFocus(name);
+    }, [activeEndIcon]);
 
     return (
       <div>
@@ -46,19 +84,23 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={activeEndIcon ? "text" : type}
             name={name}
             value={value}
-            className={styles.input__field}
+            className={classNames(styles.input__field, {
+              [styles["input__field--disabled"]]: inputDisabled,
+            })}
             onFocus={() => setInputActive(true)}
-            onChange={onChange}
+            onChange={onChangeInput}
             onBlur={onBlurInput}
+            {...(disabled ? { disabled: inputDisabled } : {})}
           />
-          {endIcon &&
-            (endIcon?.active ? (
-              <div className={styles["input__icon--end"]} onClick={onClickEndIcon}>
-                {!activeEndIcon ? endIcon.initial : endIcon.active}
-              </div>
-            ) : (
-              <div>{endIcon.initial}</div>
-            ))}
+          {endIcon && (
+            <div className={styles["input__icon--end"]} onClick={onClickEndIcon}>
+              {endIcon.active
+                ? activeEndIcon
+                  ? endIcon.active
+                  : endIcon.initial
+                : endIcon.initial}
+            </div>
+          )}
         </div>
       </div>
     );

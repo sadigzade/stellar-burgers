@@ -8,9 +8,10 @@ interface ButtonProps {
   type?: "secondary" | "primary";
   htmlType?: "button" | "submit" | "reset";
   href?: string;
+  onClick?: () => void;
 }
 
-const Button: FC<ButtonProps> = ({ children, type, htmlType = "button", href }) => {
+const Button: FC<ButtonProps> = ({ children, type, htmlType = "button", href, onClick }) => {
   const className = classNames(styles.button, {
     [styles["button--secondary"]]: type === "secondary",
     [styles["button--primary"]]: type === "primary",
@@ -21,7 +22,7 @@ const Button: FC<ButtonProps> = ({ children, type, htmlType = "button", href }) 
       {children}
     </Link>
   ) : (
-    <button type={htmlType} className={className}>
+    <button type={htmlType} className={className} {...(onClick ? { onClick: onClick } : {})}>
       {children}
     </button>
   );

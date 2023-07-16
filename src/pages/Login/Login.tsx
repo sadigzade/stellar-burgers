@@ -7,13 +7,17 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { loginScheme } from "./login-scheme";
 
+import { useDispatch } from "../../hooks/hooks";
+
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
 
 import styles from "./Login.module.css";
+import { loginRequestThunk } from "../../services/actions/login";
 
 export const LoginPage = () => {
+  const dispatch = useDispatch();
   const form = useForm<z.infer<typeof loginScheme>>({
     resolver: zodResolver(loginScheme),
     defaultValues: {
@@ -22,7 +26,9 @@ export const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof loginScheme>) => console.log(data);
+  const onSubmit = (data: z.infer<typeof loginScheme>) => {
+    dispatch(loginRequestThunk(data));
+  };
 
   return (
     <section className={styles.login}>

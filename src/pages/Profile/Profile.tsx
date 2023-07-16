@@ -1,157 +1,161 @@
-import { FormEvent, SyntheticEvent, useCallback, useEffect, useRef } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "../../hooks/hooks";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Outlet, useLocation } from "react-router-dom";
 import { profileRequestUpdate } from "../../services/actions/profile";
 import { logoutRequestThunk } from "../../services/actions/login";
-import { useForm } from "../../hooks/useForm";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { profileScheme } from "./profile-scheme";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Input from "../../UI/Input/Input";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import Button from "../../UI/Button/Button";
 import styles from "./Profile.module.css";
 
-type UpdateSumbitType = (e: FormEvent<HTMLFormElement>) => void;
-
 export const ProfilePage = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const userProfile = useSelector((state) => state.profile.user);
+  const [saveVisible, setSaveVisible] = React.useState(false);
 
-  const onIconClick = () => {
-    inputRef?.current?.focus();
+  const form = useForm<z.infer<typeof profileScheme>>({
+    resolver: zodResolver(profileScheme),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const updateSumbit: SubmitHandler<z.infer<typeof profileScheme>> = (data) => {
+    dispatch(profileRequestUpdate(data));
   };
 
-  // const updateSumbit = useCallback<UpdateSumbitType>(
-  //   (e) => {
-  //     e.preventDefault();
-  //     dispatch(
-  //       profileRequestUpdate({
-  //         name: name.value,
-  //         email: email.value,
-  //         password: password.value,
-  //       }),
-  //     );
-  //     password.setValue("");
-  //   },
-  //   [dispatch, email.value, name.value, password],
-  // );
+  const cancleClick = React.useCallback(() => {
+    if (userProfile) {
+      form.setValue("name", userProfile.name);
+      form.setValue("email", userProfile.email);
+      form.setValue("password", "");
+    }
+  }, [form, userProfile]);
 
-  // const cancleClick = useCallback(
-  //   (e: SyntheticEvent) => {
-  //     if (userProfile) {
-  //       name.setValue(userProfile.name);
-  //       email.setValue(userProfile.email);
-  //       password.setValue("");
-  //     }
-  //   },
-  //   [email, name, password, userProfile],
-  // );
-
-  // const logout = useCallback(
-  //   (e: SyntheticEvent) => {
-  //     e.preventDefault();
-  //     dispatch(logoutRequestThunk());
-  //   },
-  //   [dispatch],
-  // );
-
-  // useEffect(() => {
-  //   if (userProfile) {
-  //     name.setValue(userProfile.name);
-  //     email.setValue(userProfile.email);
-  //   }
-  // }, [userProfile]);
+  React.useEffect(() => {
+    if (userProfile) {
+      form.setValue("name", userProfile.name);
+      form.setValue("email", userProfile.email);
+    }
+  }, [userProfile]);
 
   return (
-    <section className="flex gap-x-14">
-      <div className="max-w-[320px] w-full mt-30">
-        <ul>
-          <li className="flex items-center h-14">
-            <NavLink to="/profile" className={styles.link}>
-              {({ isActive }) => (
-                <span
-                  className={`text text_type_main-medium ${
-                    isActive && pathname === "/profile" ? "" : "text_color_inactive"
-                  }`.trim()}
-                >
-                  Профиль
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li className="flex items-center h-14">
-            <NavLink to="orders" className={styles.link}>
-              {({ isActive }) => (
-                <span
-                  className={`text text_type_main-medium ${
-                    isActive && pathname === "/profile/orders" ? "" : "text_color_inactive"
-                  }`.trim()}
-                >
-                  История заказов
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li className="flex items-center h-14">
-            <NavLink
-              to="/login"
-              replace
-              className={`text text_type_main-medium text_color_inactive ${styles.link}`}
-              // onClick={logout}
-            >
-              <span>Выход</span>
-            </NavLink>
-          </li>
-        </ul>
-        <p className="text text_type_main-default text_color_inactive mt-20 opacity-60">
+    <section className={styles.profile}>
+      <div className={styles.profile__sidebar}>
+        <Sidebar />
+        <p className={styles["profile__sidebar-description"]}>
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      {/* {pathname === "/profile" && (
-        <form className="flex flex-col items-end gap-y-6 form mt-30" onSubmit={updateSumbit}>
-          <Input
-            type="text"
-            onChange={name.onChange}
-            value={name.value}
-            placeholder="Имя"
-            icon="EditIcon"
-            ref={inputRef}
-            onIconClick={onIconClick}
-          />
-          <EmailInput
-            value={email.value}
-            name="email"
-            placeholder="Логин"
-            isIcon={true}
-            onChange={email.onChange}
-          />
-          <PasswordInput
-            onChange={handleChange}
-            value={values.password}
-            name="password"
-            icon="EditIcon"
-          />
-          {userProfile &&
-            (values.name !== userProfile.name ||
-              values.email !== userProfile.email ||
-              values.password !== "") && (
-              <div className="flex items-center">
-                <Button htmlType="button" type="secondary" size="medium" onClick={cancleClick}>
+      {pathname === "/profile" && userProfile && (
+        <Form {...form}>
+          <form className={styles.profile__form} onSubmit={form.handleSubmit(updateSumbit)}>
+            <h1 className={styles["profile__form-title"]}>Профиль</h1>
+            <div className={styles["profile__form-content"]}>
+              <FormField
+                control={form.control}
+                name={"name"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder={"Имя"}
+                        {...field}
+                        onFocus={form.setFocus}
+                        endIcon={{
+                          initial: <PencilIcon />,
+                          active: <XMarkIcon />,
+                        }}
+                        changeInput={{
+                          initialValue: userProfile.name,
+                          setChange: setSaveVisible,
+                        }}
+                        disabled
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"email"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder={"Логин"}
+                        {...field}
+                        onFocus={form.setFocus}
+                        endIcon={{
+                          initial: <PencilIcon />,
+                          active: <XMarkIcon />,
+                        }}
+                        changeInput={{
+                          initialValue: userProfile.email,
+                          setChange: setSaveVisible,
+                        }}
+                        disabled
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"password"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type={"password"}
+                        placeholder={"Пароль"}
+                        {...field}
+                        onFocus={form.setFocus}
+                        endIcon={{
+                          initial: <PencilIcon />,
+                          active: <XMarkIcon />,
+                        }}
+                        changeInput={{
+                          initialValue: "",
+                          setChange: setSaveVisible,
+                        }}
+                        disabled
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {saveVisible && (
+              <div className={styles["profile__form-footer"]}>
+                <Button type={"secondary"} onClick={cancleClick}>
                   Отмена
                 </Button>
-                <Button htmlType="submit" type="primary" size="medium">
+                <Button type={"primary"} htmlType={"submit"}>
                   Сохранить
                 </Button>
               </div>
             )}
-        </form>
-      )} */}
-      <div className="w-full mt-10 mb-5">
-        <Outlet />
-      </div>
+          </form>
+        </Form>
+      )}
+      {pathname === "/profile/orders" && (
+        <div className="w-full mt-10 mb-5">
+          <Outlet />
+        </div>
+      )}
     </section>
   );
 };
