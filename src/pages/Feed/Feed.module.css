@@ -1,0 +1,154 @@
+.feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0 0 0;
+}
+
+.feed__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.feed__content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.feed__content-tabs {
+  display: flex;
+  width: 100%;
+}
+
+.feed__orders {
+  margin: 20px 0 0 0;
+  padding: 0 8px;
+}
+
+.feed__statistics {
+  margin: 20px 0 0 0;
+  padding: 0 8px;
+}
+
+.feed__statistics-readiness {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.readiness__block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.readiness__block-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.readiness__block-list {
+  display: grid;
+}
+
+.list__readiness {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.list__readiness:nth-child(2) {
+  display: none;
+}
+
+.list__item {
+  font-family: "Iceland", sans-serif;
+  font-size: 1.375rem;
+}
+
+.item-success {
+  color: var(--interface-success);
+}
+
+.feed__statistics-total {
+  margin: 24px 0 0 0;
+}
+
+.total__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.total__value {
+  font-family: "Iceland", sans-serif;
+  font-size: 4.5rem;
+  line-height: 80px;
+}
+
+@media screen and (min-width: 576px) {
+  .readiness__block-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .list__readiness:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .feed {
+    margin: 40px 0 0 0;
+    padding: 0 8px;
+  }
+
+  .feed__title {
+    align-self: flex-start;
+  }
+
+  .feed__content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+  }
+
+  .feed__content-tabs {
+    display: none;
+  }
+
+  .feed__orders,
+  .feed__statistics {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .feed {
+    padding: 0;
+  }
+
+  .feed__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 40px;
+  }
+
+  .feed__statistics-readiness {
+    gap: 36px;
+  }
+
+  .readiness__block-title {
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+
+  .list__readiness {
+    gap: 8px;
+  }
+
+  .list__item {
+    font-size: 1.75rem;
+  }
+}

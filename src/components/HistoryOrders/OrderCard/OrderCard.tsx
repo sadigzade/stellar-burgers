@@ -1,16 +1,17 @@
+import React from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientImage from "./IngredientImage/IngredientImage";
-import { FC } from "react";
 import { TWSOrders, TWSOrdersStatus } from "../../../services/types/data";
 import { getFormatDate } from "../../../utils/getFormatDate";
 import { useSelector } from "../../../hooks/hooks";
+import styles from "./OrderCard.module.css";
 
-type OrderCardProps = {
+interface OrderCardProps {
   order: TWSOrders;
-};
+}
 
-const OrderCard: FC<OrderCardProps> = ({ order }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const { _id, number, name, ingredients, createdAt, status } = order;
 
   const { pathname } = useParams();
@@ -29,28 +30,29 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
   }, 0);
 
   return (
-    <Link
-      to={_id}
-      className="flex flex-col gap-y-6 p-6 rounded-[40px] bg-[#1C1C21]"
-      state={{ background: location }}>
-      <div className="flex justify-between">
-        <span className="text text_type_digits-default">#{number}</span>
-        <span className="text text_type_main-default text_color_inactive">{formatedData}</span>
+    <Link to={_id} className={styles.ordercard} state={{ background: location }}>
+      <div className={styles.ordercard__header}>
+        <span className={styles["ordercard__header-number"]}>#{number}</span>
+        <span className={styles["ordercard__header-time"]}>{formatedData}</span>
       </div>
-      <div className="flex flex-col gap-y-2">
-        <span className="text text_type_main-medium">{name}</span>
-        {pathname === "/profile/orders" && status === TWSOrdersStatus.CREATED ? (
-          <span className="text text_type_main-default">Создан</span>
-        ) : pathname === "/profile/orders" && status === TWSOrdersStatus.PENDING ? (
-          <span className="text text_type_main-default">Готовится</span>
-        ) : pathname === "/profile/orders" && status === TWSOrdersStatus.DONE ? (
-          <span className="text text_type_main-default text_color_success">Выполнен</span>
-        ) : (
-          <></>
-        )}
+      <div className={styles.ordercard__title}>
+        <span>{name}</span>
       </div>
-      <div className="flex justify-between">
-        <div className="flex items-center">
+      {pathname === "/profile/orders" && (
+        <div className={styles.ordercard__status}>
+          {status === TWSOrdersStatus.CREATED ? (
+            <span className="text text_type_main-default">Создан</span>
+          ) : status === TWSOrdersStatus.PENDING ? (
+            <span className="text text_type_main-default">Готовится</span>
+          ) : status === TWSOrdersStatus.DONE ? (
+            <span className="text text_type_main-default text_color_success">Выполнен</span>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
+      <div className={styles.ordercard__body}>
+        <div className={styles["ordercard__body-ingredients"]}>
           {requiredIngredients.slice(0, 6).map((ingredient, index) => (
             <IngredientImage
               key={index}
@@ -60,8 +62,8 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
             />
           ))}
         </div>
-        <div className="flex items-center gap-x-2">
-          <span className="text text_type_digits-default">{totalPrice}</span>
+        <div className={styles["ordercard__body-price"]}>
+          <span>{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
       </div>

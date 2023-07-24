@@ -73,4 +73,9 @@
   .profile__form-title {
     display: none;
   }
+
+  .profile__form-footer {
+    flex-direction: row;
+    align-self: flex-end;
+  }
 }

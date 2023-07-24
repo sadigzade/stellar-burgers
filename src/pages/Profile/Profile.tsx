@@ -39,6 +39,8 @@ export const ProfilePage = () => {
       form.setValue("email", userProfile.email);
       form.setValue("password", "");
     }
+
+    setSaveVisible(false);
   }, [form, userProfile]);
 
   React.useEffect(() => {

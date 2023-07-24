@@ -25,6 +25,8 @@ import { useSelector, useDispatch } from "../../hooks/hooks";
 import { checkUserAuth } from "../../services/actions/profile";
 import { ingredientsRequestAsync } from "../../services/actions/burgerIngredients";
 
+import styles from "./App.module.css";
+
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -38,9 +40,9 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className="relative h-full">
+    <div className={styles.app}>
       <AppHeader />
-      <main className="max-w-[1280px] w-full lg:px-5 mx-auto pt-16 md:pt-[88px] h-full">
+      <main className={styles.app__main}>
         {user || !token ? (
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
@@ -62,14 +64,14 @@ const App = () => {
                 </ProtectedRouteElement>
               }
             />
-            {/* <Route path="/feed" element={<FeedPage />} />
-            <Route path="/feed/:id" element={<OrderPage />} />
+            <Route path="/feed" element={<FeedPage />} />
+            {/* <Route path="/feed/:id" element={<OrderPage />} />
             <Route path="/profile/orders/:id" element={<OrderPage />} />
             <Route path="/ingredients/:id" element={<IngredientPage />} /> */}
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            {/* <Route path="*" element={<NotFoundPage />} /> */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         ) : (
           <Preloader />

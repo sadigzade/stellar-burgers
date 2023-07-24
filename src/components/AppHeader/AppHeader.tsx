@@ -8,7 +8,7 @@ import {
   MenuIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import MobileLogo from "../../images/logo-mobile.svg";
+import MobileLogo from "../../assets/images/logo-mobile.svg";
 import MenuMobile from "./MenuMobile/MenuMobile";
 
 const AppHeader = () => {

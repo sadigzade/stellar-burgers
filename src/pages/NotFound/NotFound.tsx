@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import ErrorImg from "../../images/404.svg";
+import ErrorImg from "../../assets/images/404.svg";
+import styles from "./NotFound.module.css";
+import Button from "../../UI/Button/Button";
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -10,10 +11,10 @@ export const NotFoundPage = () => {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-10 h-full">
-      <img src={ErrorImg} className="w-[350]" alt="404" />
-      <p className="text text_type_main-medium">Похоже ты потерялся?</p>
-      <Button htmlType="button" type="primary" size="medium" onClick={clickBack}>
+    <div className={styles.notfound}>
+      <img src={ErrorImg} className={styles.notfound__img} alt="404" />
+      <p className={styles.notfound__text}>Похоже ты потерялся?</p>
+      <Button type={"primary"} htmlType={"button"} onClick={clickBack}>
         Вернуться на главную
       </Button>
     </div>

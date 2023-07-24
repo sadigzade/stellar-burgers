@@ -1,0 +1,24 @@
+.app {
+  position: relative;
+  height: 100vh;
+}
+
+.app__main {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 64px 0 0 0;
+  height: 100vh;
+}
+
+@media screen and (min-width: 768px) {
+  .app__main {
+    padding: 88px 0 0 0;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .app__main {
+    padding: 88px 20px;
+  }
+}
