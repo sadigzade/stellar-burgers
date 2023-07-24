@@ -78,7 +78,7 @@
   }
 
   .ordercard__body-ingredients {
-    height: 64px;
+    height: 50px;
   }
 
   .ordercard__title {
@@ -93,5 +93,11 @@
 
   .ordercard__body-price span {
     font-size: 1.75rem;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .ordercard__body-ingredients {
+    height: 64px;
   }
 }

@@ -103,17 +103,17 @@
 
 @media screen and (min-width: 992px) {
   .ingredientimage {
-    height: 64px;
-    width: 64px;
+    height: 50px;
+    width: 50px;
   }
 
   .ingredientimage__body {
-    height: 60px;
-    width: 60px;
+    height: 46px;
+    width: 46px;
   }
 
   .ingredientimage__image {
-    height: 56px;
+    height: 44px;
   }
 
   .left-1 {
@@ -130,5 +130,37 @@
   }
   .left-5 {
     left: 180px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .ingredientimage {
+    height: 64px;
+    width: 64px;
+  }
+
+  .ingredientimage__body {
+    height: 60px;
+    width: 60px;
+  }
+
+  .ingredientimage__image {
+    height: 56px;
+  }
+
+  .left-1 {
+    left: 48px;
+  }
+  .left-2 {
+    left: 96px;
+  }
+  .left-3 {
+    left: 144px;
+  }
+  .left-4 {
+    left: 192px;
+  }
+  .left-5 {
+    left: 240px;
   }
 }
