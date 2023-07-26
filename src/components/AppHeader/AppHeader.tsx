@@ -10,6 +10,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import MobileLogo from "../../assets/images/logo-mobile.svg";
 import MenuMobile from "./MenuMobile/MenuMobile";
+import styles from "./AppHeader.module.css";
+import classNames from "classnames";
 
 const AppHeader = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -25,27 +27,27 @@ const AppHeader = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-20 w-full box-shadow bg-[#1c1c21]">
-      <div className="flex items-center justify-between px-2 py-3 md:hidden">
-        <Link to={"/"} className="w-10 h-10">
+    <header className={styles.appheader}>
+      <div className={styles.appheader__mobile}>
+        <Link to={"/"} className={styles["appheader__mobile-logo"]}>
           <img src={MobileLogo} alt="Mobile Logo" />
         </Link>
-        <div className="cursor-pointer">
+        <div className={styles["appheader__mobile-burger"]}>
           <MenuIcon type="primary" onClick={handleMenuClick} />
         </div>
       </div>
-      <div className="max-w-[1280px] w-full md:px-2 lg:px-5 mx-auto hidden md:block">
-        <nav className="relative" role="navigation">
-          <ul className="flex items-center justify-between py-4">
-            <li className="py-4 pr-5">
-              <NavLink to="/" className="flex items-center">
+      <div className={styles.appheader__desktop}>
+        <nav className={styles.appheader__navigation} role="navigation">
+          <ul className={styles["appheader__navigation-list"]}>
+            <li className={styles["navigation__list-item"]}>
+              <NavLink to="/" className={styles["list__item-link"]}>
                 {({ isActive }) => (
                   <>
                     <BurgerIcon type={isActive ? "primary" : "secondary"} />
                     <span
-                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
-                        isActive ? "" : "text_color_inactive"
-                      }`.trim()}
+                      className={classNames({
+                        [styles["navigation__list-item--active"]]: isActive,
+                      })}
                     >
                       Конструктор
                     </span>
@@ -53,15 +55,15 @@ const AppHeader = () => {
                 )}
               </NavLink>
             </li>
-            <li className="py-4 px-5">
-              <NavLink to="/feed" className="flex items-center">
+            <li className={styles["navigation__list-item"]}>
+              <NavLink to="/feed" className={styles["list__item-link"]}>
                 {({ isActive }) => (
                   <>
                     <ListIcon type={isActive ? "primary" : "secondary"} />
                     <span
-                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
-                        isActive ? "" : "text_color_inactive"
-                      }`.trim()}
+                      className={classNames({
+                        [styles["navigation__list-item--active"]]: isActive,
+                      })}
                     >
                       Лента заказов
                     </span>
@@ -69,15 +71,15 @@ const AppHeader = () => {
                 )}
               </NavLink>
             </li>
-            <li className="flex justify-end grow py-4 pl-5">
-              <NavLink id={"username"} to="/profile" className="flex items-center">
+            <li className={styles["navigation__list-item"]}>
+              <NavLink id={"username"} to="/profile" className={styles["list__item-link"]}>
                 {({ isActive }) => (
                   <>
                     <ProfileIcon type={isActive ? "primary" : "secondary"} />
                     <span
-                      className={`pl-2 hover:text-white duration-300 ease-in-out ${
-                        isActive ? "" : "text_color_inactive"
-                      }`.trim()}
+                      className={classNames({
+                        [styles["navigation__list-item--active"]]: isActive,
+                      })}
                     >
                       Личный кабинет
                     </span>
@@ -86,12 +88,18 @@ const AppHeader = () => {
               </NavLink>
             </li>
           </ul>
-          <div className="absolute top-1/2 left-1/2 transform-50">
-            <Link to="/" replace className="flex">
-              <div className="hidden xl:block">
+          <div className={styles.appheader__logo}>
+            <Link to="/" replace>
+              <img
+                src={MobileLogo}
+                width={55}
+                height={55}
+                className={styles["appheader__logo--md"]}
+                alt="Logo"
+              />
+              <div className={styles["appheader__logo--xl"]}>
                 <Logo />
               </div>
-              <img src={MobileLogo} width={55} height={55} className="block xl:hidden" alt="Logo" />
             </Link>
           </div>
         </nav>

@@ -5,8 +5,9 @@
 
 @media screen and (min-width: 992px) {
   .home {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 10px;
+    display: grid;
+    align-items: start;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
   }
 }

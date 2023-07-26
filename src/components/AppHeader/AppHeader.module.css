@@ -1,0 +1,124 @@
+.appheader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+    0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  background-color: var(--interface-modal-bg);
+}
+
+.appheader__mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 8px;
+}
+
+.appheader__mobile-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.appheader__mobile-burger {
+  cursor: pointer;
+}
+
+.appheader__desktop {
+  display: none;
+}
+
+.appheader__navigation {
+  position: relative;
+}
+
+.appheader__navigation-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.navigation__list-item {
+  padding: 16px 20px;
+}
+.navigation__list-item:nth-child(1) {
+  padding: 16px 20px 16px 0;
+}
+.navigation__list-item:nth-child(3) {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  padding: 16px 0 16px 20px;
+}
+
+.list__item-link {
+  display: flex;
+  align-items: center;
+}
+.list__item-link svg path {
+  transition: fill 300ms ease-in-out;
+}
+.list__item-link:hover svg path {
+  fill: var(--text-primary-light-standart-text);
+}
+.list__item-link:hover span {
+  color: var(--text-primary-light-standart-text);
+}
+
+.navigation__list-item span {
+  padding: 0 0 0 8px;
+  transition: all 300ms ease-in-out;
+  color: var(--text-dark-grey-secondary-text);
+}
+
+.navigation__list-item--active {
+  color: var(--text-primary-light-standart-text) !important;
+}
+
+.appheader__logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.appheader__logo--md {
+  display: none;
+}
+.appheader__logo--xl {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .appheader__mobile {
+    display: none;
+  }
+
+  .appheader__desktop {
+    display: block;
+    max-width: 1280px;
+    width: 100%;
+    padding: 0 8px;
+    margin: 0 auto;
+  }
+
+  .appheader__logo--md {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .appheader__desktop {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .appheader__logo--md {
+    display: none;
+  }
+  .appheader__logo--xl {
+    display: block;
+  }
+}
