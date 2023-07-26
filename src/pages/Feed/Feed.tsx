@@ -5,15 +5,11 @@ import { TWSOrdersStatus } from "../../services/types/data";
 import HistoryOrders from "../../components/HistoryOrders/HistoryOrders";
 import styles from "./Feed.module.css";
 import Tab from "../../UI/Tab/Tab";
-import { useLocation } from "react-router-dom";
-import { getCookie } from "../../utils/cookie";
-import { wsConnectionStart, wsDisconnecting } from "../../services/actions/wsActions";
-import { WS_API } from "../../utils/request";
 import classNames from "classnames";
+import { wsDisconnecting } from "../../services/actions/wsActions";
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const total = useSelector((state) => state.webSocket.total);
   const totalToday = useSelector((state) => state.webSocket.totalToday);
   const orders = useSelector((state) => state.webSocket.orders);
@@ -30,28 +26,14 @@ export const FeedPage = () => {
   };
 
   React.useEffect(() => {
-    if (pathname === "/profile/orders") {
-      const accessToken = getCookie("accessToken");
-      dispatch(wsConnectionStart(`${WS_API}/orders?token=${accessToken}`));
-    }
-
-    if (pathname === "/feed") {
-      dispatch(wsConnectionStart(`${WS_API}/orders/all`));
-    }
-
-    return () => {
-      dispatch(wsDisconnecting());
-    };
-  }, [dispatch]);
-
-  React.useEffect(() => {
     window.addEventListener("resize", resizeHanlder);
     resizeHanlder();
 
     return () => {
       window.removeEventListener("resize", resizeHanlder);
+      dispatch(wsDisconnecting());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <section className={styles.feed}>

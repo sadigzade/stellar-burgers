@@ -13,6 +13,7 @@ import Input from "../../UI/Input/Input";
 import { PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import Button from "../../UI/Button/Button";
 import styles from "./Profile.module.css";
+import { wsDisconnecting } from "../../services/actions/wsActions";
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,10 @@ export const ProfilePage = () => {
       form.setValue("name", userProfile.name);
       form.setValue("email", userProfile.email);
     }
+
+    return () => {
+      dispatch(wsDisconnecting());
+    };
   }, [userProfile]);
 
   return (
