@@ -1,0 +1,12 @@
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 992px) {
+  .home {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

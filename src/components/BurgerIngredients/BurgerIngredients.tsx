@@ -3,6 +3,7 @@ import { useSelector } from "../../hooks/hooks";
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
 import type { TIngredient } from "../../services/types/data";
+import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
   const [ingredientType, setIngredientType] = useState<TIngredient>("bun");
@@ -56,7 +57,7 @@ const BurgerIngredients = () => {
   };
 
   return (
-    <section className="mt-4 lg:mt-10 w-full">
+    <section className={styles.burgeringredients}>
       <h1 className="text-center lg:text-start text-[28px] md:text-[32px] lg:text-4xl">
         Соберите бургер
       </h1>

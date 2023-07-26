@@ -14,7 +14,6 @@ interface OrderCardProps {
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const { _id, number, name, ingredients, createdAt, status } = order;
 
-  const { pathname } = useParams();
   const location = useLocation();
   const burgerIngredients = useSelector((state) => state.burgerIngredients.ingredients);
 
@@ -38,14 +37,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       <div className={styles.ordercard__title}>
         <span>{name}</span>
       </div>
-      {pathname === "/profile/orders" && (
+      {location.pathname === "/profile/orders" && (
         <div className={styles.ordercard__status}>
           {status === TWSOrdersStatus.CREATED ? (
-            <span className="text text_type_main-default">Создан</span>
+            <span>Создан</span>
           ) : status === TWSOrdersStatus.PENDING ? (
-            <span className="text text_type_main-default">Готовится</span>
+            <span>Готовится</span>
           ) : status === TWSOrdersStatus.DONE ? (
-            <span className="text text_type_main-default text_color_success">Выполнен</span>
+            <span className={styles["status-success"]}>Выполнен</span>
           ) : (
             <></>
           )}

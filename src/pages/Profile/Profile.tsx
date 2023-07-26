@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "../../hooks/hooks";
 import { Outlet, useLocation } from "react-router-dom";
 import { profileRequestUpdate } from "../../services/actions/profile";
-import { logoutRequestThunk } from "../../services/actions/login";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../../UI/Form/Form";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -53,7 +52,7 @@ export const ProfilePage = () => {
     return () => {
       dispatch(wsDisconnecting());
     };
-  }, [userProfile]);
+  }, [dispatch, form, userProfile]);
 
   return (
     <section className={styles.profile}>
@@ -159,7 +158,8 @@ export const ProfilePage = () => {
         </Form>
       )}
       {pathname === "/profile/orders" && (
-        <div className="w-full mt-10 mb-5">
+        <div className={styles.profile__orders}>
+          <h1 className={styles["profile__orders-title"]}>История заказов</h1>
           <Outlet />
         </div>
       )}
