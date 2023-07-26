@@ -2,8 +2,29 @@
   margin: 16px 0 0 0;
 }
 
+.burgeringredients__tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 8px 0 0 0;
+  position: sticky;
+  top: 64px;
+  left: 0;
+  background-color: var(--interface-bg);
+  z-index: 9;
+}
+
 @media screen and (min-width: 768px) {
   .burgeringredients {
     margin: 40px 0 0 0;
+  }
+
+  .burgeringredients__tabs {
+    top: 88px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .burgeringredients__tabs {
+    margin: 20px 0 0 0;
   }
 }

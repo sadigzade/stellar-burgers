@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo, useRef, useState } from "react";
+import React from "react";
 import { useSelector } from "../../hooks/hooks";
 import IngredientTab from "./IngredientTab/IngredientTab";
 import IngredientCategory from "./IngredientCategory/IngredientCategory";
@@ -6,16 +6,25 @@ import type { TIngredient } from "../../services/types/data";
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const [ingredientType, setIngredientType] = useState<TIngredient>("bun");
-  const refBun = useRef<HTMLDivElement>(null);
-  const refSauce = useRef<HTMLDivElement>(null);
-  const refMain = useRef<HTMLDivElement>(null);
+  const [ingredientType, setIngredientType] = React.useState<TIngredient>("bun");
+  const refBun = React.useRef<HTMLDivElement>(null);
+  const refSauce = React.useRef<HTMLDivElement>(null);
+  const refMain = React.useRef<HTMLDivElement>(null);
 
   const ingredients = useSelector((state) => state.burgerIngredients.ingredients);
 
-  const buns = useMemo(() => ingredients.filter((item) => item.type === "bun"), [ingredients]);
-  const sauces = useMemo(() => ingredients.filter((item) => item.type === "sauce"), [ingredients]);
-  const mains = useMemo(() => ingredients.filter((item) => item.type === "main"), [ingredients]);
+  const buns = React.useMemo(
+    () => ingredients.filter((item) => item.type === "bun"),
+    [ingredients],
+  );
+  const sauces = React.useMemo(
+    () => ingredients.filter((item) => item.type === "sauce"),
+    [ingredients],
+  );
+  const mains = React.useMemo(
+    () => ingredients.filter((item) => item.type === "main"),
+    [ingredients],
+  );
 
   const handleClick = (type: TIngredient) => {
     setIngredientType(type);
@@ -39,29 +48,12 @@ const BurgerIngredients = () => {
     }
   };
 
-  const handleScroll = (e: MouseEvent<HTMLDivElement>) => {
-    const ingredeintsCoords = e.currentTarget.getBoundingClientRect();
-    const bunCoords = refBun.current?.getBoundingClientRect();
-    const sauceCoords = refSauce.current?.getBoundingClientRect();
-    const mainCoords = refMain.current?.getBoundingClientRect();
-
-    if (bunCoords && sauceCoords && mainCoords) {
-      if (ingredeintsCoords.top - bunCoords.top < 10) setIngredientType("bun");
-      if (sauceCoords.top - ingredeintsCoords.top < 10) setIngredientType("sauce");
-      if (
-        mainCoords.top <
-        ingredeintsCoords.top + (ingredeintsCoords.bottom - ingredeintsCoords.top) / 2
-      )
-        setIngredientType("main");
-    }
-  };
-
   return (
     <section className={styles.burgeringredients}>
       <h1 className="text-center lg:text-start text-[28px] md:text-[32px] lg:text-4xl">
         Соберите бургер
       </h1>
-      <div className="grid grid-cols-3 mt-2 lg:mt-5">
+      <div className={styles.burgeringredients__tabs}>
         <IngredientTab
           type={"bun"}
           text={"Булки"}
@@ -81,10 +73,7 @@ const BurgerIngredients = () => {
           clickHandler={handleClick}
         />
       </div>
-      <div
-        onScroll={handleScroll}
-        className="flex flex-col gap-y-3 mt-5 lg:mt-10 mb-20 lg:mb-0 px-2 lg:px-0"
-      >
+      <div className="flex flex-col gap-y-3 mt-5 lg:mt-10 mb-20 lg:mb-0 px-2 lg:px-0">
         <IngredientCategory ref={refBun} text={"Булки"} products={buns} />
         <IngredientCategory ref={refSauce} text={"Соусы"} products={sauces} />
         <IngredientCategory ref={refMain} text={"Начинки"} products={mains} />

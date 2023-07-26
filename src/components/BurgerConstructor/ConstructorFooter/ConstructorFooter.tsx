@@ -78,7 +78,13 @@ const ConstructorFooter: FC<ConstructorFooterProps> = ({
         </Button>
       </div>
       <div className="hidden lg:block mr-4">
-        <Button htmlType="button" type="primary" size="large" onClick={handleOrderClick}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          disabled={!bun || !ingredients.length}
+          onClick={handleOrderClick}
+        >
           Оформить заказ
         </Button>
       </div>

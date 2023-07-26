@@ -1,6 +1,7 @@
 :root {
   --interface-success: #00cccc;
   --interface-modal-bg: #1c1c21;
+  --interface-bg: #131316;
   --text-primary-light-standart-text: #f2f2f3;
   --text-dark-grey-secondary-text: #8585ad;
 }
